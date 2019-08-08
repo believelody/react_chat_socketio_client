@@ -9,9 +9,9 @@ const MessageListStyle = styled.ul`
   list-style: none;
   flex-direction: column;
   height: calc(100% - 130px);
-  width: 80%;
+  width: 100%;
   overflow: auto;
-  position: fixed;
+  position: relative;
   scroll-behavior: smooth;
 `;
 

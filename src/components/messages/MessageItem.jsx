@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 import Moment from "react-moment";
 import styled from "styled-components";
+import devices from "../../utils/devices";
 
 const MessageStyle = styled.li`
   border-radius: 8px;
@@ -29,6 +30,18 @@ const MessageStyle = styled.li`
     float: right;
     font-size: .8em;
     font-style: oblique;
+  }
+
+  @media ${devices.tablet} {
+    max-width: 55%;
+    left: ${props => (!props.isYou ? "0px" : "45%")};
+    margin: 5px 0;
+  }
+
+  @media ${devices.mobileL} {
+    max-width: 65%;
+    left: ${props => (!props.isYou ? "0px" : "35%")};
+    margin: 5px 0;
   }
 `;
 

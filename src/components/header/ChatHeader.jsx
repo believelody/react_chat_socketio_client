@@ -60,13 +60,7 @@ const ChatHeaderStyle = styled.header`
     font-style: italic;
   }
 
-  @media ${devices.tablet} {
-    width: 65%;
-  }
-
   @media ${devices.mobileL} {
-    width: 100%;
-
     & > .go-back {
       display: inline-block;
       padding: 5px;
@@ -85,7 +79,7 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, chat }) => {
 
   const [dest, setDest] = useState(null);
   const [isTyping, setTyping] = useState(false);
-  const [isSelected, setSelected] = useState(false)
+  const [isSelected, setSelected] = useState(false);
 
   const headerRef = useRef();
 
@@ -109,10 +103,9 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, chat }) => {
   }, [localStorage.username, dest]);
 
   useEffect(() => {
-    setSelected(!isSelected)
-    console.log(isSelected)
-  },[])
-
+    setSelected(!isSelected);
+    console.log(isSelected);
+  }, []);
 
   return (
     <ChatHeaderStyle ref={headerRef}>

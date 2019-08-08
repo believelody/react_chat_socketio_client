@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import devices from "../../utils/devices";
+import TextInput from "../inputs/TextInput";
 
 const MessageFormStyle = styled.form`
   position: absolute;
@@ -20,7 +21,7 @@ const MessageFormStyle = styled.form`
   }
 `;
 
-const MessageTextareaStyle = styled.textarea`
+const MessageInputStyle = styled.input`
   background-color: white;
   width: auto;
   border-radius: 10px;
@@ -39,16 +40,16 @@ const MessageBtnStyle = styled.span`
 const MessageForm = ({ chatId }) => {
   const { socket, useTransition } = useAppHooks();
 
-  const [{chatSelected}, _] = useTransition
+  const [{ chatSelected }, _] = useTransition;
 
   const [text, setText] = useState("");
-  const [isSelected, setSelected] = useState(false)
+  const [isSelected, setSelected] = useState(false);
 
   const handleSubmit = e => {
     e.preventDefault();
     socket.emit("new-message", { chatId, author: localStorage.username, text });
     socket.emit("stop-typing");
-    setText("");
+    setText(null);
   };
 
   const handleKeyPress = e => {
@@ -61,24 +62,16 @@ const MessageForm = ({ chatId }) => {
     timeout = setTimeout(() => {
       socket.emit("stop-typing");
     }, 1500);
-    // if (e.key === "Enter") handleSubmit(e);
   };
-
-  useEffect(() => {
-    setSelected(!isSelected)
-    console.log(isSelected)
-  })
 
   return (
     <MessageFormStyle isSelected={chatSelected} onSubmit={handleSubmit}>
-      <MessageTextareaStyle
-        placeholder="Write your message"
-        onChange={e => setText(e.target.value)}
+      <TextInput
         value={text}
-        onKeyPress={handleKeyPress}
-        rows={3}
+        handleChange={setText}
+        placeholder="Type your message..."
       />
-      <MessageBtnStyle as="button" type="submit">
+      <MessageBtnStyle as="button" type="submit" disabled={!text}>
         Send
       </MessageBtnStyle>
     </MessageFormStyle>
