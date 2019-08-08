@@ -4,6 +4,7 @@ import Users from "../users/Users";
 import Chats from "../chats/Chats";
 import ContactsTab from "./ContactTab";
 import ChatsTab from "./ChatTab";
+import Friends from "../friends/Friends";
 
 const TabStyle = styled.li`
   width: 100%;
@@ -52,15 +53,15 @@ const MenuTab = () => {
     <MenuTabStyle>
       <NavStyle>
         <TabStyle isSelected={tab === 0} onClick={() => setTab(0)}>
-          <ContactsTab />
+          <ChatsTab />
         </TabStyle>
         <TabStyle isSelected={tab === 1} onClick={() => setTab(1)}>
-          <ChatsTab />
+          <ContactsTab />
         </TabStyle>
       </NavStyle>
       <PaneStyle>
-        {tab === 0 && <Users />}
-        {tab === 1 && <Chats />}
+        {tab === 0 && <Chats />}
+        {tab === 1 && <Friends />}
       </PaneStyle>
     </MenuTabStyle>
   );

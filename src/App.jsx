@@ -6,12 +6,6 @@ import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/register/RegisterPage";
 import HomePage from "./pages/home/HomePage";
 import devices from "./utils/devices";
-import { useAppHooks } from "./contexts";
-import {
-  useTransition,
-  TransitionContext,
-  TransitionProvider
-} from "./contexts/transitionContext";
 
 const AppStyle = styled.div`
   display: flex;

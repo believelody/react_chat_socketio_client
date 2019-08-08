@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import io from "socket.io-client";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import User from "./User";
@@ -42,9 +41,7 @@ const Users = () => {
       <h4>Ils sont en ligne:</h4>
       <UserList>
         {users.length > 0 &&
-          users
-            .filter(user => user.username !== localStorage.username)
-            .map((user, i) => <User key={i} contact={user} />)}
+          users.map((user, i) => <User key={i} contact={user} />)}
       </UserList>
     </UsersContainer>
   );

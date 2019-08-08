@@ -2,14 +2,17 @@ import axios from "axios";
 import { baseUrl } from "./";
 
 export default {
-  getChats: () => axios.get(`${baseUrl}/chats`),
+  getUsers: () => axios.get(`${baseUrl}/users`),
 
   searchChatByUsers: users =>
     axios.get(`${baseUrl}/chats/searching-chat?users=${users}`),
 
-  getChat: id => axios.get(`${baseUrl}/chats/${id}`),
+  getUser: id => axios.get(`${baseUrl}/chats/${id}`),
 
-  createChat: data => axios.post(`${baseUrl}/chats`, data),
+  login: (email, password) =>
+    axios.post(`${baseUrl}/chats/login`, { email, password }),
+
+  register: data => axios.post(`${baseUrl}/chats/register`, data),
 
   addUserToChat: (id, user) => axios.post(`${baseUrl}/chats/${id}`, user),
 

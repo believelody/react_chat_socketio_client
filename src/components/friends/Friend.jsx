@@ -20,13 +20,13 @@ const UserStyle = styled.li`
   }
 `;
 
-const User = ({ contact }) => {
+const Friend = ({ contact }) => {
   const { useAuth, useTransition, history, socket } = useAppHooks();
-  const [{ username }, dispatchAuth] = useAuth;
-  const [_, dispatchTransition] = useTransition;
+  const [{ user }, dispatchAuth] = useAuth;
+  const [transition, dispatchTransition] = useTransition;
 
   const handleClick = async () => {
-    let users = [contact.username, username];
+    let users = [contact.id, user.id];
     socket.emit("new-chat", users);
     if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
     // try {
@@ -45,16 +45,7 @@ const User = ({ contact }) => {
     // }
   };
 
-  // useEffect(() => {
-  //   if (localStorage.username) {
-  //     dispatchAuth({
-  //       type: SET_CURRENT_PROFILE,
-  //       payload: localStorage.username
-  //     });
-  //   }
-  // }, [username, dispatchAuth]);
-
   return <UserStyle onClick={handleClick}>{contact.username}</UserStyle>;
 };
 
-export default User;
+export default Friend;

@@ -1,7 +1,6 @@
 import chat from "./chat";
+import user from "./user";
 
-export const baseUrl = "https://react-chat-socket-server.herokuapp.com";
+export const baseUrl = process.env.REACT_BASE_URL;
 
-export default {
-  chat
-};
+export default { chat, user };
