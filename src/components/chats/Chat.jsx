@@ -49,7 +49,7 @@ const Chat = () => {
         setChat(chatFetched);
       });
     }
-  }, [chat]);
+  }, [chat, chatSelected, socket]);
 
   return (
     <ChatStyle>

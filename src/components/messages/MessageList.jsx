@@ -7,11 +7,11 @@ const MessageListStyle = styled.ul`
   padding: 10px 10px 10px;
   display: flex;
   list-style: none;
-  flex-direction: column;
-  height: calc(100% - 130px);
+  flex-direction: column-reverse;
+  height: calc(100vh - 130px);
   width: 100%;
-  overflow: auto;
   position: relative;
+  bottom: 0;
   scroll-behavior: smooth;
 `;
 
@@ -19,17 +19,14 @@ const MessageList = ({ users, messages }) => {
   const messagesRef = React.useRef();
   const contact = users.find(user => user.username !== localStorage.username);
 
-  React.useEffect(() => {
-    if (messagesRef)
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-  }, [messages]);
-
   return (
     <MessageListStyle ref={messagesRef}>
       {messages.length > 0 &&
-        messages.map((message, i) => (
-          <MessageItem key={i} contact={contact} message={message} />
-        ))}
+        messages
+          .reverse()
+          .map((message, i) => (
+            <MessageItem key={i} contact={contact} message={message} />
+          ))}
     </MessageListStyle>
   );
 };

@@ -18,7 +18,7 @@ const MessageStyle = styled.li`
   /* right: ${props => (props.isYou ? "0px" : "40%")}; */
   & .message-author {
     padding: 0;
-    margin: 0;
+    margin: 4px 0;
   }
 
   & .message-text {
@@ -46,7 +46,6 @@ const MessageStyle = styled.li`
 `;
 
 const MessageItem = ({ message, contact }) => {
-  console.log(message);
   return (
     <MessageStyle isYou={message.author === localStorage.username}>
       <h5 className="message-author">

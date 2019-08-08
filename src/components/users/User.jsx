@@ -52,7 +52,7 @@ const User = ({ contact }) => {
         payload: localStorage.username
       });
     }
-  }, [username]);
+  }, [username, dispatchAuth]);
 
   return <UserStyle onClick={handleClick}>{contact.username}</UserStyle>;
 };

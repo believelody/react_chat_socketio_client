@@ -27,12 +27,7 @@ const HomePageStyle = styled.div`
     display: grid;
     grid-template-columns: 50% 50%;
     left: 0;
-    transform: translateX(
-      ${props => {
-        console.log(props.isSelected);
-        return props.isSelected ? -100 : 0;
-      }}vw
-    );
+    transform: translateX(${props => (props.isSelected ? -100 : 0)}vw);
     transition: all 600ms ease-in;
     overflow: hidden;
   }

@@ -42,8 +42,7 @@ const MessageForm = ({ chatId }) => {
 
   const [{ chatSelected }, _] = useTransition;
 
-  const [text, setText] = useState("");
-  const [isSelected, setSelected] = useState(false);
+  const [text, setText] = useState(null);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -69,6 +68,7 @@ const MessageForm = ({ chatId }) => {
       <TextInput
         value={text}
         handleChange={setText}
+        handleKeyPress={handleKeyPress}
         placeholder="Type your message..."
       />
       <MessageBtnStyle as="button" type="submit" disabled={!text}>

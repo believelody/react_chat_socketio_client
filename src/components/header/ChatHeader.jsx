@@ -104,7 +104,6 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, chat }) => {
 
   useEffect(() => {
     setSelected(!isSelected);
-    console.log(isSelected);
   }, []);
 
   return (
