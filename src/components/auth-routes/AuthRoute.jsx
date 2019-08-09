@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import { useAppHooks } from "../../contexts";
 import { SET_CURRENT_PROFILE, DISCONNECT } from "../../reducers/authReducer";
 import setAuth from "../../utils/setAuth";
+import secretDev from "../../misc/secretDev";
+
+const secret = process.env.SECRET || secretDev
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { useAuth, socket } = useAppHooks();
@@ -12,9 +15,9 @@ const AuthRoute = ({ component: Component, ...rest }) => {
   const [isLoaded, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    if (localStorage.token && !isConnected) {
-      setAuth(localStorage.token);
-      const decoded = jwt.verify(localStorage.token, process.env.REACT_SECRET);
+    if (localStorage.chat_token && !isConnected) {
+      setAuth(localStorage.chat_token);
+      const decoded = jwt.verify(localStorage.chat_token, secret);
       const currentTime = Date.now() / 1000;
       if (decoded.exp < currentTime) {
         dispatch({ type: DISCONNECT });

@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
-import { SET_CURRENT_PROFILE, AUTH_FAILED } from "../../reducers/authReducer";
+import { SET_CURRENT_PROFILE, AUTH_FAILED, CONNECTED } from "../../reducers/authReducer";
 import TextInput from "../inputs/TextInput";
+import EmailInput from "../inputs/EmailInput";
+import PwdInput from "../inputs/PwdInput";
+import api from "../../api";
+import storeToken from "../../utils/storeToken";
 
 const FormStyle = styled.form`
   padding: 0 10px 20px;
   display: flex;
   flex-direction: column;
+
+  & span {
+    margin: 10px 0;
+  }
 `;
 
 const LabelStyle = styled.label`
@@ -28,29 +36,34 @@ const RegisterForm = () => {
   const { useAuth, history } = useAppHooks();
   const [{ error, isConnected }, dispatch] = useAuth;
 
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [errorRegister, setError] = useState(null);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
+    try {
+      if (email && password) {
+        const res = await api.user.register(username, email, password);
+        storeToken(res)
+        dispatch({ type: CONNECTED });
 
-    if (username !== "") {
-      if (!localStorage.username) {
-        dispatch({
-          type: SET_CURRENT_PROFILE,
-          payload: username
-        });
-        localStorage.username = username;
-
-        setUsername("");
-      } else {
-        dispatch({
-          type: AUTH_FAILED,
-          payload: { code: "register", message: "This username already exists" }
-        });
+        setUsername(null)
+        setEmail(null);
+        setPassword(null);
+      } else if (!email) {
+        setError({ code: "email", message: "Username is required" });
+      } else if (!password) {
+        setError({ code: "password", message: "Password is required" });
+      } else if (!username) {
+        setError({ code: "username", message: "Username is required" });
       }
-    } else {
-      setError({ code: "username", message: "Username is required" });
+    } catch (error) {
+      dispatch({
+        type: AUTH_FAILED,
+        payload: error.response.data
+      });
     }
   };
 
@@ -60,7 +73,15 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (errorRegister) {
-      alert(errorRegister.message);
+      if (errorRegister.email) {
+        alert(errorRegister.email);
+      }
+      else if (errorRegister.password) {
+        alert(errorRegister.password);
+      }
+      else if (errorRegister.msg) {
+        alert(errorRegister.msg);
+      }
     }
   }, [errorRegister]);
 
@@ -79,6 +100,24 @@ const RegisterForm = () => {
           name="username"
           placeholder="Type your username"
           handleChange={setUsername}
+        />
+      </span>
+      <span>
+        <LabelStyle>Email</LabelStyle>
+        <EmailInput
+          value={email}
+          name="email"
+          placeholder="Type your email"
+          handleChange={setEmail}
+        />
+      </span>
+      <span>
+        <LabelStyle>Password</LabelStyle>
+        <PwdInput
+          value={password}
+          name="password"
+          placeholder="Type your password"
+          handleChange={setPassword}
         />
       </span>
       <ButtonStyle type="submit">Create user</ButtonStyle>

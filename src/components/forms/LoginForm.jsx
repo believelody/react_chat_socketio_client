@@ -7,14 +7,19 @@ import {
   RESET_ERROR,
   CONNECTED
 } from "../../reducers/authReducer";
-import TextInput from "../inputs/TextInput";
+import EmailInput from "../inputs/EmailInput";
 import PwdInput from "../inputs/PwdInput";
 import api from "../../api";
+import storeToken from "../../utils/storeToken";
 
 const FormStyle = styled.form`
   padding: 0 10px 20px;
   display: flex;
   flex-direction: column;
+
+  & span {
+    margin: 10px 0;
+  }
 `;
 
 const LabelStyle = styled.label`
@@ -43,7 +48,8 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       if (email && password) {
-        await api.user.login(email, password);
+        const res = await api.user.login(email, password);
+        storeToken(res)
         dispatch({ type: CONNECTED });
 
         setEmail(null);
@@ -68,7 +74,12 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (errorLogin) {
-      alert(errorLogin.message);
+      if (errorLogin.email) {
+        alert(errorLogin.email);
+      }
+      if (errorLogin.password) {
+        alert(errorLogin.password);
+      }
     }
     return () => setError(null);
   }, [errorLogin]);
@@ -82,13 +93,16 @@ const LoginForm = () => {
   return (
     <FormStyle onSubmit={handleSubmit}>
       <span>
-        <LabelStyle>Username</LabelStyle>
-        <TextInput
+        <LabelStyle>Email</LabelStyle>
+        <EmailInput
           value={email}
           name="email"
           placeholder="Type your email"
           handleChange={setEmail}
         />
+      </span>
+      <span>
+        <LabelStyle>Password</LabelStyle>
         <PwdInput
           value={password}
           name="password"

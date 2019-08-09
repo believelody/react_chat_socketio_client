@@ -4,20 +4,25 @@ import { baseUrl } from "./";
 export default {
   getUsers: () => axios.get(`${baseUrl}/users`),
 
-  searchChatByUsers: users =>
-    axios.get(`${baseUrl}/chats/searching-chat?users=${users}`),
-
-  getUser: id => axios.get(`${baseUrl}/chats/${id}`),
+  getUser: id => axios.get(`${baseUrl}/users/${id}`),
 
   login: (email, password) =>
-    axios.post(`${baseUrl}/chats/login`, { email, password }),
+    axios.post(`${baseUrl}/users/login`, { email, password }),
 
-  register: data => axios.post(`${baseUrl}/chats/register`, data),
+  register: (name, email, password) => axios.post(`${baseUrl}/users/register`, { name, email, password }),
 
-  addUserToChat: (id, user) => axios.post(`${baseUrl}/chats/${id}`, user),
+  updateUser: (id, data) =>
+    axios.post(`${baseUrl}/users/${id}`, data),
 
-  removeUserToChat: (id, userId) =>
-    axios.delete(`${baseUrl}/chats/${id}`, userId),
+  searchUser: (id, userQuery) => axios.get(`${baseUrl}/users/${id}/search-user?user=${userQuery}`),
 
-  deleteChat: id => axios.delete(`${baseUrl}/chats/${id}`)
+  searchFriend: (id, friendQuery) => axios.get(`${baseUrl}/users/${id}/search-friend?friend=${friendQuery}`),
+
+  getChatList: id => axios.get(`${baseUrl}/users/${id}/chat-list`),
+
+  getFriendList: id => axios.get(`${baseUrl}/users/${id}/friend-list`),
+
+  getBlockedList: id => axios.get(`${baseUrl}/users/${id}/blocked-list`),
+
+  deleteUser: id => axios.delete(`${baseUrl}/users/${id}`)
 };

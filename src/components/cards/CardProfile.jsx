@@ -38,24 +38,24 @@ const statusArray = [
 
 const CardProfile = () => {
   const { useAuth } = useAppHooks();
-  const [{ username }, dispatch] = useAuth;
+  const [{ user }, dispatch] = useAuth;
 
   const [imgBg, setImgbg] = React.useState(statusArray[0]);
 
-  useEffect(() => {
-    if (localStorage.username) {
-      dispatch({
-        type: SET_CURRENT_PROFILE,
-        payload: localStorage.username
-      });
-    }
-  }, [username]);
+  // useEffect(() => {
+  //   if (localStorage.username) {
+  //     dispatch({
+  //       type: SET_CURRENT_PROFILE,
+  //       payload: localStorage.username
+  //     });
+  //   }
+  // }, [username]);
 
   return (
-    username && (
+    user && (
       <CardProfileStyle imgBg={imgBg}>
-        <span className="img-card">{username[0].toUpperCase()}</span>
-        <h3 className="name-card">{username}</h3>
+        <span className="img-card">{user.username[0].toUpperCase()}</span>
+        <h3 className="name-card">{user.username}</h3>
       </CardProfileStyle>
     )
   );

@@ -13,7 +13,7 @@ export const AppContext = createContext();
 const history = createBrowserHistory({
   forceRefresh: true
 });
-let herokuUrl = "https://react-chat-socketio-server.herokuapp.com";
+let herokuUrl = process.env.BASE_URL || 'http://localhost:5000';
 const socket = io(`${herokuUrl}`);
 
 export const AppProvider = ({ children }) => {
