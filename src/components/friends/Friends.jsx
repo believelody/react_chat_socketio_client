@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-// import io from "socket.io-client";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import Friend from "./Friend";
+import api from "../../api";
 
 const FriendsContainer = styled.div`
   padding: 0;
@@ -15,6 +15,8 @@ const FriendsContainer = styled.div`
 
 const FriendList = styled.ul`
   list-style: none;
+  margin: 0;
+  padding: 0;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -29,23 +31,29 @@ const FriendList = styled.ul`
 // const socket = io(":5000");
 
 const Friends = () => {
-  const { authReducer, socket } = useAppHooks();
-  const [{ user }, _] = authReducer;
+  const { useAuth } = useAppHooks();
+  const [{ user }, _] = useAuth;
 
   const [friends, setFriends] = useState([]);
+  const [loading, setLoading] = useState(true)
 
-  socket.on("fetch-friends", data => {
-    console.log(user);
-    setFriends(data);
-  });
+  useEffect(() => {
+    const getFriends = async () => {
+      if (user) {
+        let f = await api.user.getFriendList(user.id)
+        if (f.length > 0) setFriends(f)
+      }
+      setLoading(false)
+    }
 
-  console.log(friends);
+    getFriends()
+  }, [user])
 
   return (
     <FriendsContainer>
       <FriendList>
-        {friends.length > 0 &&
-          friends.map(friend => <Friend key={friend.id} contact={friend} />)}
+        {!loading && friends.length === 0 && <h4>You have no friends. Start search amazing people.</h4>}
+        {!loading && friends.length > 0 && console.log(friends)}
       </FriendList>
     </FriendsContainer>
   );

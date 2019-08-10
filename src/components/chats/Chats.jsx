@@ -3,7 +3,29 @@ import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import api from "../../api";
 
-const ChatListStyle = styled.div``;
+const ChatsContainer = styled.div`
+  padding: 0;
+  margin: 0;
+
+  & h4 {
+    margin-left: 15px;
+  }
+`;
+
+const ChatListStyle = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background: #2c3e50;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #243140;
+  }
+`;
 
 const Chats = () => {
   const {useAuth} = useAppHooks()
@@ -25,14 +47,16 @@ const Chats = () => {
   }, [user])
 
   return (
-    <ChatListStyle>
-      {
-        !loading && chats.length === 0 && <h4>You have no chats. Choose a friend and start talking.</h4>
-      }
-      {
-        !loading && chats.length > 0 && console.log(chats)
-      }
-    </ChatListStyle>
+    <ChatsContainer>
+      <ChatListStyle>
+        {
+          !loading && chats.length === 0 && <h4>You have no chats. Choose a Chat and start talking.</h4>
+        }
+        {
+          !loading && chats.length > 0 && console.log(chats)
+        }
+      </ChatListStyle>
+    </ChatsContainer>
   );
 };
 
