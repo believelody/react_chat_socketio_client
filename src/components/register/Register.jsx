@@ -9,12 +9,7 @@ const RegisterStyle = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  background-image: linear-gradient(
-    to right,
-    #7f7fd5 0%,
-    #86a8e7 30%,
-    #91eae4 100%
-  );
+  background-image: linear-gradient(45deg, rgb(182, 217, 185) 0%, rgb(182, 217, 185) 7%,rgb(148, 203, 178) 7%, rgb(148, 203, 178) 16%,rgb(80, 177, 166) 16%, rgb(80, 177, 166) 18%,rgb(46, 163, 159) 18%, rgb(46, 163, 159) 26%,rgb(114, 190, 172) 26%, rgb(114, 190, 172) 37%,rgb(12, 150, 153) 37%, rgb(12, 150, 153) 100%);
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 
   & h4 {

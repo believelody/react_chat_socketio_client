@@ -9,7 +9,7 @@ const HeaderStyle = styled.header`
 
   & .search-contact {
     border-radius: 50%;
-    border: 1px solid white;
+    border: 1px solid black;
     padding: 4px 8px;
     margin-left: auto;
     cursor: pointer;

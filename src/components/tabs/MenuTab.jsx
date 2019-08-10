@@ -26,7 +26,6 @@ const NavStyle = styled.ul`
   width: 100%;
   height: 50px;
   border-radius: 10px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   list-style: none;
   flex: 1 auto;
   justify-content: center;
@@ -43,7 +42,7 @@ const MenuTabStyle = styled.div`
   display: block;
   width: 100%;
   border-radius: 10px;
-  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  border-top: 2px solid rgba(0, 0, 0, 0.25);
 `;
 
 const MenuTab = () => {

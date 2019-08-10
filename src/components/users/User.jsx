@@ -13,6 +13,7 @@ const UserStyle = styled.li`
   width: auto;
   height: 40px;
   line-height: 35px;
+  color: black;
 
   &:hover {
     background-color: #32465a;

@@ -43,6 +43,7 @@ const Dimmer = styled.div`
             width: ${props => props.isOpen ? 98 : 0}%;
 
             & > .close {
+                color: black;
                 position: absolute;
                 right: 8px;
                 top: 4px;

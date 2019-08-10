@@ -8,7 +8,7 @@ const CardProfileStyle = styled.div`
   height: 60px;
   line-height: 60px;
   padding: 0px 10px 30px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   display: flex;
 
