@@ -24,7 +24,7 @@ const Sidenav = () => {
     <SidenavStyle>
       <SidenavHeader />
       <CardProfile />
-      <SearchForm />
+      <SearchForm placeholder="Search a friend" />
       <MenuTab />
     </SidenavStyle>
   );

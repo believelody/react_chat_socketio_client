@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import devices from '../../utils/devices';
 import { useAppHooks } from '../../contexts';
 import { CLOSE_MODAL } from '../../reducers/modalReducer';
+import Users from '../users/Users';
+import { RESET_CONTENT } from '../../reducers/searchReducer';
 
 const Content = styled.section``
+
+const ErrorContentStyle = styled.div``
 
 const Dimmer = styled.div`
     top: 0;
@@ -17,6 +21,8 @@ const Dimmer = styled.div`
     z-index: ${props => props.isOpen ? 99 : -1};
     opacity: ${props => props.isOpen ? 1 : 0};
     transition: all 500ms ease-in-out;
+    padding: 0;
+    margin: 0;
 
     & ${Content} {
         position: absolute;
@@ -25,22 +31,59 @@ const Dimmer = styled.div`
         transform: translate3d(-50%, -50%, 0);
         transition: all 500ms 200ms ease-in-out;
         width: ${props => props.isOpen ? 60 : 0}%;
-        height: ${props => props.isOpen ? 90 : 0}%;
+        height: ${props => props.isOpen ? 95 : 0}%;
+
+        & > .close {
+            display: none;
+        }
     }
 
     @media ${devices.mobileL} {
-        $ ${Content} {
-            width: ${props => props.isOpen ? 90 : 0}%;
+        & ${Content} {
+            width: ${props => props.isOpen ? 98 : 0}%;
+
+            & > .close {
+                position: absolute;
+                right: 8px;
+                top: 4px;
+                display: block;
+                font-size: 1.2em;
+                cursor: pointer;
+            }
         }
     }
 `
 
-const Modal = ({ children }) => {
-    const { useModal } = useAppHooks()
-    const [{isOpen}, dispatch] = useModal
+const ErrorContent = () => {
+    return (
+        <ErrorContentStyle>
+            Oups!!! Something's wrong!!!
+        </ErrorContentStyle>
+    )
+}
+
+const Modal = () => {
+    const ContentRef = useRef()
+
+    const { useModal, useSearch } = useAppHooks()
+    const [{isOpen, label}, dispatchModal] = useModal
+    const [searchState, dispatchSearch] = useSearch
 
     const handleClick = e => {
-        dispatch({ type: CLOSE_MODAL })
+        if (!ContentRef.current.contains(e.target)) {
+            dispatchSearch({ type: RESET_CONTENT })
+            dispatchModal({ type: CLOSE_MODAL })
+        }
+    }
+
+    const renderContent = () => {
+        switch (label) {
+            case 'user':
+                return <Users />
+        
+            default:
+                return <ErrorContent />;
+        }
     }
 
     // useEffect(() => {
@@ -49,7 +92,10 @@ const Modal = ({ children }) => {
 
   return (
     <Dimmer isOpen={isOpen} onClick={handleClick}>
-      <Content>{children}</Content>
+      <Content ref={ContentRef}>
+        <span className='close' onClick={e => dispatchModal({ type: CLOSE_MODAL })}>X</span>
+        {renderContent()}
+      </Content>
     </Dimmer>
   )
 }

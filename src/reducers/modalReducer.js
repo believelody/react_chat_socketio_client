@@ -1,22 +1,25 @@
-export const OPEN_MODAL = "OPEN_MODAL"
+export const OPEN_USER = "OPEN_USER"
 export const CLOSE_MODAL = "CLOSE_MODAL"
 
 export const initModalState = {
-    isOpen: false
+    isOpen: false,
+    label: null
 }
 
 export const modalReducer = (state, {type, payload}) => {
     switch (type) {
-        case OPEN_MODAL:
+        case OPEN_USER:
             return {
                 ...state,
-                isOpen: true
+                isOpen: true,
+                label: payload
             }
 
         case CLOSE_MODAL:
             return {
                 ...state,
-                isOpen: false
+                isOpen: false,
+                label: null
             }
     
         default:

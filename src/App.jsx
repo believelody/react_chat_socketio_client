@@ -6,6 +6,7 @@ import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/register/RegisterPage";
 import HomePage from "./pages/home/HomePage";
 import devices from "./utils/devices";
+import Modal from "./components/modal/Modal";
 
 const AppStyle = styled.div`
   display: flex;
@@ -22,9 +23,10 @@ const AppStyle = styled.div`
   color: #32465a;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
   -webkit-font-smoothing: antialiased;
+  position: relative;
 
   @media ${devices.mobileL} {
-    /* width: 100vw; */
+    width: 100vw;
   }
 `;
 
@@ -37,6 +39,7 @@ const App = () => {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />}
         </Switch>
+        <Modal />
       </AppStyle>
     </BrowserRouter>
   );

@@ -8,6 +8,7 @@ import {
   initTransitionState
 } from "../reducers/transitionReducer";
 import { modalReducer, initModalState } from "../reducers/modalReducer";
+import { searchReducer, initSearchState } from "../reducers/searchReducer";
 
 export const AppContext = createContext();
 
@@ -24,6 +25,7 @@ export const AppProvider = ({ children }) => {
         useAuth: useReducer(authReducer, initAuthState),
         useTransition: useReducer(transitionReducer, initTransitionState),
         useModal: useReducer(modalReducer, initModalState),
+        useSearch: useReducer(searchReducer, initSearchState),
         socket,
         history
       }}

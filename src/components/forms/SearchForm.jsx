@@ -14,20 +14,20 @@ const SearchButtonStyle = styled.button`
   padding: 2px;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 2px -2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
-const SearchForm = () => {
-  const [search, setSearch] = useState("");
+const SearchForm = ({ handleSubmit, placeholder }) => {
+  const [search, setSearch] = useState('')
 
-  const handleSubmit = e => {
-    e.preventDefault();
-  };
-
+  const searchSubmit = e => {
+    e.preventDefault()
+    handleSubmit(search)
+  }
   return (
-    <SearchFormStyle onSubmit={handleSubmit}>
-      <SearchInput value={search} handleChange={setSearch} placeholder="Search a contact" />
-      <SearchButtonStyle type="submit">Search</SearchButtonStyle>
+    <SearchFormStyle onSubmit={searchSubmit}>
+      <SearchInput handleChange={setSearch} placeholder={placeholder} />
+      <SearchButtonStyle disabled={search === ''} type="submit">Search</SearchButtonStyle>
     </SearchFormStyle>
   );
 };
