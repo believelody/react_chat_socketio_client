@@ -43,9 +43,9 @@ const Modal = ({ children }) => {
         dispatch({ type: CLOSE_MODAL })
     }
 
-    useEffect(() => {
-        console.log(isOpen)
-    }, [isOpen])
+    // useEffect(() => {
+    //     console.log(isOpen)
+    // }, [isOpen])
 
   return (
     <Dimmer isOpen={isOpen} onClick={handleClick}>

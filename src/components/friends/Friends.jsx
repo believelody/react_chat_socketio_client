@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import Friend from "./Friend";
 import api from "../../api";
+import Requests from "../request/Requests";
 
 const FriendsContainer = styled.div`
   padding: 0;
@@ -55,6 +56,7 @@ const Friends = () => {
         {!loading && friends.length === 0 && <h4>You have no friends. Start search amazing people.</h4>}
         {!loading && friends.length > 0 && console.log(friends)}
       </FriendList>
+      <Requests />
     </FriendsContainer>
   );
 };

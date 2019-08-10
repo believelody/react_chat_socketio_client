@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
-import { SET_CURRENT_PROFILE, AUTH_FAILED, CONNECTED } from "../../reducers/authReducer";
+import { SET_CURRENT_PROFILE, AUTH_FAILED, CONNECTED, RESET_ERROR } from "../../reducers/authReducer";
 import TextInput from "../inputs/TextInput";
 import EmailInput from "../inputs/EmailInput";
 import PwdInput from "../inputs/PwdInput";
@@ -69,6 +69,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (error) setError(error);
+    return () => dispatch({ type: RESET_ERROR })
   }, [error]);
 
   useEffect(() => {
@@ -83,7 +84,8 @@ const RegisterForm = () => {
         alert(errorRegister.msg);
       }
     }
-  }, [errorRegister]);
+    return () => setError(null)
+  }, [errorRegister, dispatch]);
 
   useEffect(() => {
     if (isConnected) {

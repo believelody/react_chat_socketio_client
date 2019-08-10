@@ -46,6 +46,8 @@ const Chats = () => {
     getChats()
   }, [user])
 
+  console.log(loading)
+
   return (
     <ChatsContainer>
       <ChatListStyle>
