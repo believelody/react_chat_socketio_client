@@ -30,7 +30,7 @@ const Dimmer = styled.div`
         left: ${props => props.isOpen ? 50 : 0}%;
         transform: translate3d(-50%, -50%, 0);
         transition: all 500ms 200ms ease-in-out;
-        width: ${props => props.isOpen ? 60 : 0}%;
+        width: ${props => props.isOpen ? 40 : 0}%;
         height: ${props => props.isOpen ? 95 : 0}%;
 
         & > .close {
@@ -85,10 +85,6 @@ const Modal = () => {
                 return <ErrorContent />;
         }
     }
-
-    // useEffect(() => {
-    //     console.log(isOpen)
-    // }, [isOpen])
 
   return (
     <Dimmer isOpen={isOpen} onClick={handleClick}>

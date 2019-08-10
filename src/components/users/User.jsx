@@ -8,26 +8,28 @@ import api from "../../api";
 
 const UserStyle = styled.li`
   margin: 0;
-  padding-left: 8px;
   transition: all 300ms ease-in;
   cursor: pointer;
+  width: auto;
+  height: 40px;
+  line-height: 35px;
 
-  &:hover,
-  &:active {
+  &:hover {
     background-color: #32465a;
-    padding-left: 24px;
-    border-right: 2px solid #2c3e50;
+    padding-left: 16px;
+    border-right: .6em solid white;
+    color: white;
   }
 `;
 
 const User = ({ contact }) => {
   const { useAuth, useTransition, history, socket } = useAppHooks();
-  const [{ username }, dispatchAuth] = useAuth;
+  const [{ user }, dispatchAuth] = useAuth;
   const [_, dispatchTransition] = useTransition;
 
   const handleClick = async () => {
-    let users = [contact.username, username];
-    socket.emit("new-chat", users);
+    let users = [contact.name, user.name];
+    // socket.emit("new-chat", users);
     if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
     // try {
     //   let chatRequest = await api.chat.searchChatByUsers(users);
@@ -54,7 +56,9 @@ const User = ({ contact }) => {
   //   }
   // }, [username, dispatchAuth]);
 
-  return <UserStyle onClick={handleClick}>{contact.username}</UserStyle>;
+  console.log(contact)
+
+  return <UserStyle onClick={handleClick}>{contact.name}</UserStyle>;
 };
 
 export default User;
