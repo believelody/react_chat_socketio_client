@@ -77,8 +77,11 @@ const LoginForm = () => {
       if (errorLogin.email) {
         alert(errorLogin.email);
       }
-      if (errorLogin.password) {
+      else if (errorLogin.password) {
         alert(errorLogin.password);
+      }
+      else if (errorLogin.msg) {
+        alert(errorLogin.msg);
       }
     }
     return () => setError(null);

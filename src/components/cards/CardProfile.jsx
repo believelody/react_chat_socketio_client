@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
-import { SET_CURRENT_PROFILE } from "../../reducers/authReducer";
+import api from "../../api";
+import { DISCONNECT } from "../../reducers/authReducer";
 
 const CardProfileStyle = styled.div`
   height: 60px;
@@ -27,6 +28,11 @@ const CardProfileStyle = styled.div`
     margin: 0 0 0 20px;
     padding: 0;
   }
+
+  & .logout-card {
+    margin-left: auto;
+    cursor: pointer;
+  }
 `;
 
 const statusArray = [
@@ -42,20 +48,24 @@ const CardProfile = () => {
 
   const [imgBg, setImgbg] = React.useState(statusArray[0]);
 
-  // useEffect(() => {
-  //   if (localStorage.username) {
-  //     dispatch({
-  //       type: SET_CURRENT_PROFILE,
-  //       payload: localStorage.username
-  //     });
-  //   }
-  // }, [username]);
+  const handleClick = async e => {
+    e.preventDefault()
+    try {
+      localStorage.removeItem('chat_token')
+      dispatch({ type: DISCONNECT })
+    } catch (error) {
+      alert("Oups, something wrong!!!")
+    }
+  }
 
   return (
     user && (
       <CardProfileStyle imgBg={imgBg}>
         <span className="img-card">{user.username[0].toUpperCase()}</span>
         <h3 className="name-card">{user.username}</h3>
+        <span className='logout-card' onClick={handleClick}>
+          <i className='fas fa-power-off'></i>
+        </span>
       </CardProfileStyle>
     )
   );
