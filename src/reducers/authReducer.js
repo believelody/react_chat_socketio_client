@@ -1,5 +1,3 @@
-// import { useReducer } from "react";
-
 export const CONNECTED = "CONNECTED";
 export const SET_CURRENT_PROFILE = "SET_CURRENT_PROFILE";
 export const REGISTER = "REGISTER";

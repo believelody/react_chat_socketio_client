@@ -6,12 +6,12 @@ const SearchInputStyle = styled.input`
   border-radius: 10px;
 `;
 
-const SearchInput = ({ value, handleChange }) => {
+const SearchInput = ({ value, handleChange, placeholder }) => {
   return (
     <SearchInputStyle
       value={value}
       type="search"
-      placeholder="Search a contact"
+      placeholder={placeholder}
       onChange={e => handleChange(e.target.value)}
     />
   );

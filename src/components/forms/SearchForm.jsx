@@ -26,7 +26,7 @@ const SearchForm = () => {
 
   return (
     <SearchFormStyle onSubmit={handleSubmit}>
-      <SearchInput value={search} handleChange={setSearch} />
+      <SearchInput value={search} handleChange={setSearch} placeholder="Search a contact" />
       <SearchButtonStyle type="submit">Search</SearchButtonStyle>
     </SearchFormStyle>
   );

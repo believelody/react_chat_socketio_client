@@ -4,6 +4,7 @@ import Sidenav from "../../components/sidenav/Sidenav";
 import ChatDetail from "../detail/ChatDetail";
 import devices from "../../utils/devices";
 import { useAppHooks } from "../../contexts";
+import Modal from "../../components/modal/Modal";
 
 const HomePageStyle = styled.div`
   width: 100%;
@@ -12,6 +13,7 @@ const HomePageStyle = styled.div`
   margin: 0;
   display: grid;
   grid-template-columns: 30% 70%;
+  z-index: 0;
 
   @media ${devices.tablet} {
     grid-template-columns: 40% 60%;
@@ -41,6 +43,9 @@ const HomePage = () => {
     <HomePageStyle isSelected={chatSelected}>
       <Sidenav />
       <ChatDetail />
+      <Modal>
+        <div style={{ backgroundColor: 'white' }}>Yes we can</div>
+      </Modal>
     </HomePageStyle>
   );
 };

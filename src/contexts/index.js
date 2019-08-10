@@ -7,6 +7,7 @@ import {
   transitionReducer,
   initTransitionState
 } from "../reducers/transitionReducer";
+import { modalReducer, initModalState } from "../reducers/modalReducer";
 
 export const AppContext = createContext();
 
@@ -22,6 +23,7 @@ export const AppProvider = ({ children }) => {
       value={{
         useAuth: useReducer(authReducer, initAuthState),
         useTransition: useReducer(transitionReducer, initTransitionState),
+        useModal: useReducer(modalReducer, initModalState),
         socket,
         history
       }}
