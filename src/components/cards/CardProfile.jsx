@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
-import api from "../../api";
 import { DISCONNECT } from "../../reducers/authReducer";
 
 const CardProfileStyle = styled.div`
@@ -46,7 +45,7 @@ const CardProfile = () => {
   const { useAuth } = useAppHooks();
   const [{ user }, dispatch] = useAuth;
 
-  const [imgBg, setImgbg] = React.useState(statusArray[0]);
+  const [imgBg, _] = React.useState(statusArray[0]);
 
   const handleClick = async e => {
     e.preventDefault()

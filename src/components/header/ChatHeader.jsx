@@ -100,7 +100,7 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, chat }) => {
     if (localStorage.username) {
       setDest(chat.users.find(user => user.username !== localStorage.username));
     }
-  }, [localStorage.username, dest]);
+  }, [localStorage.username, dest, chat.users]);
 
   useEffect(() => {
     setSelected(!isSelected);

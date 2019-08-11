@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
-import { SET_CURRENT_PROFILE } from "../../reducers/authReducer";
 import { CHAT_SELECTED } from "../../reducers/transitionReducer";
 import isMobile from "../../utils/isMobile";
 import api from "../../api";
@@ -47,17 +46,6 @@ const User = ({ contact }) => {
     //   throw error;
     // }
   };
-
-  // useEffect(() => {
-  //   if (localStorage.username) {
-  //     dispatchAuth({
-  //       type: SET_CURRENT_PROFILE,
-  //       payload: localStorage.username
-  //     });
-  //   }
-  // }, [username, dispatchAuth]);
-
-  console.log(contact)
 
   return <UserStyle onClick={handleClick}>{contact.name}</UserStyle>;
 };

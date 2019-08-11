@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 import devices from '../../utils/devices';
 import { useAppHooks } from '../../contexts';

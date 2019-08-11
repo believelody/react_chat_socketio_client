@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import {
-  SET_CURRENT_PROFILE,
   AUTH_FAILED,
   RESET_ERROR,
   CONNECTED
@@ -49,7 +48,6 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       if (email && password) {
-        console.log((axios.defaults.baseUrl = "http://localhost:5000/api"));
         const res = await api.user.login(email, password);
         storeToken(res);
         dispatch({ type: CONNECTED });

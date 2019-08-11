@@ -21,12 +21,6 @@ const MessageFormStyle = styled.form`
   }
 `;
 
-const MessageInputStyle = styled.input`
-  background-color: white;
-  width: auto;
-  border-radius: 10px;
-`;
-
 const MessageBtnStyle = styled.span`
   height: 50px;
   width: 90%;

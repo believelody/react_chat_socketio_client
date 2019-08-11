@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Users from "../users/Users";
 import Chats from "../chats/Chats";
 import ContactsTab from "./ContactTab";
 import ChatsTab from "./ChatTab";
