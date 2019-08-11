@@ -49,7 +49,7 @@ const LoginForm = () => {
     try {
       if (email && password) {
         const res = await api.user.login(email, password);
-        storeToken(res)
+        storeToken(res);
         dispatch({ type: CONNECTED });
 
         setEmail(null);
@@ -60,6 +60,7 @@ const LoginForm = () => {
         setError({ code: "password", message: "Password is required" });
       }
     } catch (error) {
+      console.log(error);
       dispatch({
         type: AUTH_FAILED,
         payload: error.response.data
@@ -76,11 +77,9 @@ const LoginForm = () => {
     if (errorLogin) {
       if (errorLogin.email) {
         alert(errorLogin.email);
-      }
-      else if (errorLogin.password) {
+      } else if (errorLogin.password) {
         alert(errorLogin.password);
-      }
-      else if (errorLogin.msg) {
+      } else if (errorLogin.msg) {
         alert(errorLogin.msg);
       }
     }
