@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import io from "socket.io-client";
 import { createBrowserHistory } from "history";
-// import reducers from "../reducers";
 import { authReducer, initAuthState } from "../reducers/authReducer";
 import {
   transitionReducer,
@@ -15,8 +14,8 @@ export const AppContext = createContext();
 const history = createBrowserHistory({
   forceRefresh: true
 });
-let herokuUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
-const socket = io(`${herokuUrl}`);
+let herokuUrl = 'http://localhost:5000';
+const socket = io(herokuUrl);
 
 export const AppProvider = ({ children }) => {
   return (
