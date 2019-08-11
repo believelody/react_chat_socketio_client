@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { useAppHooks } from "../../contexts";
 import { SET_CURRENT_PROFILE, DISCONNECT } from "../../reducers/authReducer";
 import setAuth from "../../utils/setAuth";
-import secretDev from "../../misc/secretDev";
+import secretDev from "../../../misc/secretDev";
 
 const secret =
   process.env.NODE_ENV === "production"
