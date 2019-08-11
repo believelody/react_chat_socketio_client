@@ -4,12 +4,8 @@ import jwt from "jsonwebtoken";
 import { useAppHooks } from "../../contexts";
 import { SET_CURRENT_PROFILE, DISCONNECT } from "../../reducers/authReducer";
 import setAuth from "../../utils/setAuth";
-import secretDev from "../../../misc/secretDev";
 
-const secret =
-  process.env.NODE_ENV === "production"
-    ? process.env.REACT_APP_SECRET
-    : secretDev;
+const secret = `${process.env.REACT_APP_SECRET || process.env.REACT_APP_SECRET_DEV}`;
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { useAuth, socket } = useAppHooks();
