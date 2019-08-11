@@ -6,8 +6,7 @@ export default {
 
   getUser: id => axios.get(`${baseUrl}/users/${id}`),
 
-  login: (email, password) =>
-    axios.post(`${baseUrl}/users/login`, { email, password }),
+  login: (email, password) => axios.post(`${baseUrl}/users/login`, { email, password }),
 
   register: (name, email, password) => axios.post(`${baseUrl}/users/register`, { name, email, password }),
 
