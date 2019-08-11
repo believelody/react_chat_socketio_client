@@ -1,44 +1,48 @@
 import axios from "axios";
+import { baseUrl } from ".";
 
 export default {
-  getUsers: () => axios.get(`/users`),
+  getUsers: () => axios.get(`${baseUrl}/users`),
 
-  getUser: id => axios.get(`/users/${id}`),
+  getUser: id => axios.get(`${baseUrl}/users/${id}`),
 
-  login: (email, password) => axios.post(`/users/login`, { email, password }),
+  login: (email, password) =>
+    axios.post(`${baseUrl}/users/login`, { email, password }),
 
   register: (name, email, password) =>
-    axios.post(`/users/register`, { name, email, password }),
+    axios.post(`${baseUrl}/users/register`, { name, email, password }),
 
-  updateUser: (id, data) => axios.post(`/users/${id}`, data),
+  updateUser: (id, data) => axios.post(`${baseUrl}/users/${id}`, data),
 
-  addFriend: (id, data) => axios.post(`/users/${id}`, data),
+  addFriend: (id, data) => axios.post(`${baseUrl}/users/${id}`, data),
 
-  blockFriend: (id, data) => axios.post(`/users/${id}`, data),
+  blockFriend: (id, data) => axios.post(`${baseUrl}/users/${id}`, data),
 
-  requestFriend: (id, data) => axios.post(`/users/${id}`, data),
+  requestFriend: (id, data) => axios.post(`${baseUrl}/users/${id}`, data),
 
   searchUser: (id, userQuery) =>
-    axios.get(`/users/${id}/search-user?user=${userQuery}`),
+    axios.get(`${baseUrl}/users/${id}/search-user?user=${userQuery}`),
 
   searchFriend: (id, friendQuery) =>
-    axios.get(`/users/${id}/search-friend?friend=${friendQuery}`),
+    axios.get(`${baseUrl}/users/${id}/search-friend?friend=${friendQuery}`),
 
-  getChatList: id => axios.get(`/users/${id}/chat-list`),
+  getChatList: id => axios.get(`${baseUrl}/users/${id}/chat-list`),
 
-  getFriendList: id => axios.get(`/users/${id}/friend-list`),
+  getFriendList: id => axios.get(`${baseUrl}/users/${id}/friend-list`),
 
-  getRequestList: id => axios.get(`/users/${id}/request-list`),
+  getRequestList: id => axios.get(`${baseUrl}/users/${id}/request-list`),
 
-  getBlockedList: id => axios.get(`/users/${id}/blocked-list`),
+  getBlockedList: id => axios.get(`${baseUrl}/users/${id}/blocked-list`),
 
-  deleteChat: (id, chat) => axios.put(`/users/${id}`, { chat }),
+  deleteChat: (id, chat) => axios.put(`${baseUrl}/users/${id}`, { chat }),
 
-  deleteFriend: (id, friend) => axios.put(`/users/${id}`, { friend }),
+  deleteFriend: (id, friend) => axios.put(`${baseUrl}/users/${id}`, { friend }),
 
-  deleteBlocked: (id, blocked) => axios.put(`/users/${id}`, { blocked }),
+  deleteBlocked: (id, blocked) =>
+    axios.put(`${baseUrl}/users/${id}`, { blocked }),
 
-  deleteRequest: (id, request) => axios.put(`/users/${id}`, { request }),
+  deleteRequest: (id, request) =>
+    axios.put(`${baseUrl}/users/${id}`, { request }),
 
-  deleteUser: id => axios.delete(`/users/${id}`)
+  deleteUser: id => axios.delete(`${baseUrl}/users/${id}`)
 };
