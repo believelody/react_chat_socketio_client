@@ -11,6 +11,7 @@ import EmailInput from "../inputs/EmailInput";
 import PwdInput from "../inputs/PwdInput";
 import api from "../../api";
 import storeToken from "../../utils/storeToken";
+import axios from "axios";
 
 const FormStyle = styled.form`
   padding: 0 10px 20px;
@@ -48,6 +49,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       if (email && password) {
+        console.log(axios.defaults.baseUrl = "http://localhost:5000/api")
         const res = await api.user.login(email, password);
         storeToken(res);
         dispatch({ type: CONNECTED });
