@@ -49,7 +49,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       if (email && password) {
-        console.log(axios.defaults.baseUrl = "http://localhost:5000/api")
+        console.log((axios.defaults.baseUrl = "http://localhost:5000/api"));
         const res = await api.user.login(email, password);
         storeToken(res);
         dispatch({ type: CONNECTED });
@@ -62,7 +62,7 @@ const LoginForm = () => {
         setError({ code: "password", message: "Password is required" });
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
       dispatch({
         type: AUTH_FAILED,
         payload: error.response.data
