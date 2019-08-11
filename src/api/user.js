@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseUrl } from ".";
+import { baseUrl } from "./";
 
 export default {
   getUsers: () => axios.get(`${baseUrl}/users`),
