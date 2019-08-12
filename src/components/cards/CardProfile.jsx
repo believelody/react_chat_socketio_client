@@ -61,8 +61,8 @@ const CardProfile = () => {
   return (
     user && (
       <CardProfileStyle imgBg={imgBg}>
-        <span className="img-card">{user.username[0].toUpperCase()}</span>
-        <h3 className="name-card">{user.username}</h3>
+        <span className="img-card">{user.name[0].toUpperCase()}</span>
+        <h3 className="name-card">{user.name}</h3>
         <LogoutIcon className="logout-card" handleClick={handleClick} />
       </CardProfileStyle>
     )
