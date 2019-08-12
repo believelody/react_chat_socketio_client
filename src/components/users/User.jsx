@@ -51,7 +51,8 @@ const User = ({ contact }) => {
       console.log(contact);
       console.log(user);
       const res = await api.chat.getChats();
-      console.log(res.data);
+      let chat = res.data;
+      console.log(chat.getUsers());
       // let users = [contact, user];
       // let res = await api.chat.createChat(users);
       // console.log(res.data);
