@@ -7,7 +7,6 @@ import api, { baseUrl } from "../../api";
 import OpenChatIcon from "../icons/OpenChatIcon";
 import FriendRequestIcon from "../icons/FriendRequestIcon";
 import { CLOSE_MODAL } from "../../reducers/modalReducer";
-import console = require("console");
 
 const UserStyle = styled.li`
   margin: 0;
@@ -49,23 +48,23 @@ const User = ({ contact }) => {
   const openChat = async () => {
     // socket.emit("new-chat", users);
     try {
-      console.log(contact)
-      console.log(user)
-      const res = await api.chat.getChats()
-      console.log(res.data)
+      console.log(contact);
+      console.log(user);
+      const res = await api.chat.getChats();
+      console.log(res.data);
       // let users = [contact, user];
       // let res = await api.chat.createChat(users);
       // console.log(res.data);
       // let chatRequest = res.data;
       // if (chatRequest) {
-        // console.log(chatRequest);
-        // history.push(`/chats/${chatRequest.id}`);
+      // console.log(chatRequest);
+      // history.push(`/chats/${chatRequest.id}`);
       // } else {
-        // let res = await api.chat.createChat(users);
-        // let chat = res.data;
-        // if (chat) {
-        //   history.push(`/chats/${chat.id}`);
-        // }
+      // let res = await api.chat.createChat(users);
+      // let chat = res.data;
+      // if (chat) {
+      //   history.push(`/chats/${chat.id}`);
+      // }
       // }
       closeModal();
       if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
