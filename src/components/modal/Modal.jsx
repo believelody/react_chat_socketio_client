@@ -23,7 +23,7 @@ const Dimmer = styled.div`
   opacity: ${props => (props.isOpen ? 1 : 0)};
   padding: 0;
   margin: 0;
-  transition: all 500ms ${props => (props.isOpen ? 0 : 500)}ms ease-in-out;
+  transition: all 500ms ${props => (props.isOpen ? 0 : 200)}ms ease-in-out;
 
   & ${Content} {
     position: absolute;
