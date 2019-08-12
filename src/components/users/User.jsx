@@ -51,16 +51,17 @@ const User = ({ contact }) => {
       let users = [contact, user];
       let res = await api.chat.createChat(users);
       console.log(res.data);
-      // let chatRequest = res.data;
-      // if (chatRequest) {
-      //   history.push(`/chats/${chatRequest.id}`);
-      // } else {
-      //   let res = await api.chat.createChat(users);
-      //   let chat = res.data;
-      //   if (chat) {
-      //     history.push(`/chats/${chat.id}`);
-      //   }
-      // }
+      let chatRequest = res.data;
+      if (chatRequest) {
+        console.log(chatRequest);
+        // history.push(`/chats/${chatRequest.id}`);
+      } else {
+        // let res = await api.chat.createChat(users);
+        // let chat = res.data;
+        // if (chat) {
+        //   history.push(`/chats/${chat.id}`);
+        // }
+      }
       closeModal();
       if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
     } catch (error) {
