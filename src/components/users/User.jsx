@@ -52,7 +52,7 @@ const User = ({ contact }) => {
       console.log(user);
       const res = await api.chat.getChats();
       let chats = res.data;
-      console.log(chats.forEach(chat => chat.getUsers()));
+      console.log(chats.forEach(chat => chat.userId));
       // let users = [contact, user];
       // let res = await api.chat.createChat(users);
       // console.log(res.data);
