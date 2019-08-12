@@ -1,15 +1,15 @@
 import React from "react";
 import { Button } from "semantic-ui-react";
 
-const SearchUserIcon = ({ handleClick, className }) => {
+const FriendRequestIcon = ({ handleClick, className }) => {
   return (
     <Button
       circular
       className={className}
-      onClick={e => handleClick("user")}
-      icon="users"
+      onClick={handleClick}
+      icon="user plus"
     />
   );
 };
 
-export default SearchUserIcon;
+export default FriendRequestIcon;
