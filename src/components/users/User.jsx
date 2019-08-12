@@ -48,9 +48,8 @@ const User = ({ contact }) => {
   const openChat = async () => {
     // socket.emit("new-chat", users);
     try {
-      let users = [contact.id, user.id];
-      console.log(baseUrl);
-      let res = await api.chat.searchChatByUsers(users);
+      let users = [contact, user];
+      let res = await api.chat.createChat(users);
       console.log(res.data);
       // let chatRequest = res.data;
       // if (chatRequest) {
