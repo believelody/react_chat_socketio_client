@@ -39,6 +39,12 @@ const Dimmer = styled.div`
     }
   }
 
+  @media ${devices.tablet} {
+    & ${Content} {
+      width: ${props => (props.isOpen ? 70 : 0)}%;
+    }
+  }
+
   @media ${devices.mobileL} {
     & ${Content} {
       width: ${props => (props.isOpen ? 98 : 0)}%;
