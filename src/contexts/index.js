@@ -16,7 +16,7 @@ const history = createBrowserHistory({
 });
 let herokuUrl = process.env.REACT_APP_SERVER_URL
   ? process.env.REACT_APP_SERVER_URL
-  : "https://react-chat-socketio-server.herokuapp.com/";
+  : "http://localhost:5000";
 const socket = io(herokuUrl);
 
 export const AppProvider = ({ children }) => {

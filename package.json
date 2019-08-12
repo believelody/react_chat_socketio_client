@@ -5,6 +5,7 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "@csstools/normalize.css": "^10.1.0",
     "axios": "0.19.0",
     "history": "^4.9.0",
     "jsonwebtoken": "8.5.1",
