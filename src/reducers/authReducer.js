@@ -21,7 +21,7 @@ export const authReducer = (state, { type, payload }) => {
     case SET_CURRENT_PROFILE:
       return {
         ...state,
-        user: payload,
+        user: { name: payload.name, id: payload.id },
         isConnected: true
       };
 
