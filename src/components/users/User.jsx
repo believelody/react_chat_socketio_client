@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import { CHAT_SELECTED } from "../../reducers/transitionReducer";
 import isMobile from "../../utils/isMobile";
-import api from "../../api";
+import api, { baseUrl } from "../../api";
 import OpenChatIcon from "../icons/OpenChatIcon";
 import FriendRequestIcon from "../icons/FriendRequestIcon";
 import { CLOSE_MODAL } from "../../reducers/modalReducer";
@@ -48,7 +48,8 @@ const User = ({ contact }) => {
   const openChat = async () => {
     // socket.emit("new-chat", users);
     try {
-      let users = [contact.name, user.name];
+      let users = [contact.id, user.id];
+      console.log(baseUrl);
       let res = await api.chat.searchChatByUsers(users);
       console.log(res.data);
       // let chatRequest = res.data;
