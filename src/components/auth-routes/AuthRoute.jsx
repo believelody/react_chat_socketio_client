@@ -5,7 +5,7 @@ import { useAppHooks } from "../../contexts";
 import { SET_CURRENT_PROFILE, DISCONNECT } from "../../reducers/authReducer";
 import setAuth from "../../utils/setAuth";
 
-const secret = `${process.env.REACT_APP_SECRET || process.env.REACT_APP_SECRET_DEV}`;
+const secret = `${process.env.REACT_APP_SECRET || "yes_we_can"}`;
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { useAuth, socket } = useAppHooks();

@@ -8,7 +8,8 @@ import Friends from "../friends/Friends";
 const TabStyle = styled.li`
   width: 100%;
   border-radius: 8px;
-  border: 2px solid rgba(0, 0, 0, 0.3);
+  border: ${props =>
+    !props.isSelected ? "2px solid rgba(0, 0, 0, 0.3)" : "none"};
   cursor: pointer;
   padding: 2px;
   text-transform: uppercase;
@@ -17,7 +18,7 @@ const TabStyle = styled.li`
   align-items: center;
   background-color: ${props => props.isSelected && "white"};
   color: ${props => props.isSelected && "black"};
-  transition: all 300ms ease-in;
+  transition: all 200ms ease-in;
 `;
 
 const NavStyle = styled.ul`
@@ -41,7 +42,6 @@ const MenuTabStyle = styled.div`
   display: block;
   width: 100%;
   border-radius: 10px;
-  border-top: 2px solid rgba(0, 0, 0, 0.25);
 `;
 
 const MenuTab = () => {

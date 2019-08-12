@@ -2,17 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import { DISCONNECT } from "../../reducers/authReducer";
+import LogoutIcon from "../icons/LogoutIcon";
 
 const CardProfileStyle = styled.div`
   height: 60px;
-  line-height: 60px;
-  padding: 0px 10px 30px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+  padding: 20px 10px;
+  border-top: 2px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.25);
   display: flex;
+  align-items: center;
 
   & .img-card {
-    width: 50px;
+    width: 55px;
     line-height: 40px;
     border-radius: 50%;
     border: 2px solid ${props => props.imgBg.color};
@@ -48,23 +49,21 @@ const CardProfile = () => {
   const [imgBg, _] = React.useState(statusArray[0]);
 
   const handleClick = async e => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      localStorage.removeItem('chat_token')
-      dispatch({ type: DISCONNECT })
+      localStorage.removeItem("chat_token");
+      dispatch({ type: DISCONNECT });
     } catch (error) {
-      alert("Oups, something wrong!!!")
+      alert("Oups, something wrong!!!");
     }
-  }
+  };
 
   return (
     user && (
       <CardProfileStyle imgBg={imgBg}>
         <span className="img-card">{user.username[0].toUpperCase()}</span>
         <h3 className="name-card">{user.username}</h3>
-        <span className='logout-card' onClick={handleClick}>
-          <i className='fas fa-power-off'></i>
-        </span>
+        <LogoutIcon className="logout-card" handleClick={handleClick} />
       </CardProfileStyle>
     )
   );
