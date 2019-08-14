@@ -56,9 +56,14 @@ const ChatHeaderStyle = styled.header`
     cursor: pointer;
   }
 
-  & .header-typing {
+  & .user-header-typing {
     margin-left: 30px;
     font-style: italic;
+  }
+
+  & .users-header-typing {
+    font-style: italic;
+    font-size: 0.8em;
   }
 
   @media ${devices.mobileL} {
@@ -78,7 +83,7 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, users }) => {
 
   const [chatSelected, dispatchTransition] = useTransition;
 
-  const [isTyping, setTyping] = useState(false);
+  const [isTyping, setTyping] = useState(null);
   const [isSelected, setSelected] = useState(false);
 
   const headerRef = useRef();
@@ -130,6 +135,10 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, users }) => {
                 }
               })
             }
+            {
+              isTyping && isTyping.status && 
+              <span className="users-header-typing">{users.find(u => u.id === isTyping.id).name} is typing...</span>
+            }
           </React.Fragment>
         )
       }
@@ -146,10 +155,10 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, users }) => {
             {
               users.map(user => <h4 key={user.id}>{user.name}</h4>)
             }
+            {isTyping && isTyping.status && <span className="user-header-typing">is typing...</span>}
           </React.Fragment>
         )
       }      
-      {isTyping && <span className="header-typing">is typing...</span>}
     </ChatHeaderStyle>
   );
 };

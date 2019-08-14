@@ -32,8 +32,8 @@ const MessageBtnStyle = styled.span`
 `;
 
 const MessageForm = ({ chatId }) => {
-  const { socket, useTransition } = useAppHooks();
-
+  const { socket, useTransition, useAuth } = useAppHooks();
+  const [{user}, dispatchAuth] = useAuth
   const [{ chatSelected }, _] = useTransition;
 
   const [text, setText] = useState(null);
@@ -49,7 +49,7 @@ const MessageForm = ({ chatId }) => {
     let timeout = null;
 
     if (e.key !== "") {
-      socket.emit("typing");
+      socket.emit("typing", {id: user.id});
       if (timeout) clearTimeout(timeout);
     }
     timeout = setTimeout(() => {
