@@ -7,6 +7,7 @@ import RegisterPage from "./pages/register/RegisterPage";
 import HomePage from "./pages/home/HomePage";
 import devices from "./utils/devices";
 import Modal from "./components/modal/Modal";
+import ChatDetail from "./pages/detail/ChatDetail";
 
 const AppStyle = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const App = () => {
       <AppStyle>
         <Switch>
           <AuthRoute exact path="/" component={HomePage} />
+          <AuthRoute exact path="/chats/:id" component={ChatDetail} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />}
         </Switch>

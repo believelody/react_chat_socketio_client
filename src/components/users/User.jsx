@@ -37,8 +37,8 @@ const UserStyle = styled.li`
   }
 `;
 
-const User = ({ contact }) => {
-  const { useAuth, useTransition, useModal, history, socket } = useAppHooks();
+const User = ({ contact, match }) => {
+  const { useAuth, useTransition, useModal, history } = useAppHooks();
   const [{ user }, dispatchAuth] = useAuth;
   const [transition, dispatchTransition] = useTransition;
   const [modal, dispatchModal] = useModal;
@@ -46,31 +46,18 @@ const User = ({ contact }) => {
   const closeModal = () => dispatchModal({ type: CLOSE_MODAL });
 
   const openChat = async () => {
-    // socket.emit("new-chat", users);
     try {
-      console.log(contact);
-      console.log(user);
-      const res = await api.chat.createChat([contact, user]);
-      let chat = res.data;
-      console.log(await chat);
-      // let users = [contact, user];
-      // let res = await api.chat.createChat(users);
-      // console.log(res.data);
-      // let chatRequest = res.data;
-      // if (chatRequest) {
-      // console.log(chatRequest);
-      // history.push(`/chats/${chatRequest.id}`);
-      // } else {
-      // let res = await api.chat.createChat(users);
-      // let chat = res.data;
-      // if (chat) {
-      //   history.push(`/chats/${chat.id}`);
-      // }
-      // }
+      console.log(history)
+      let res = await api.chat.searchChatByUsers([contact.name, user.name]);
+      if (!res.data) {
+        res = await api.chat.createChat([contact.name, user.name])
+      }
       closeModal();
+      history.push(`chats/${res.data.chatId}`);
       if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
     } catch (error) {
-      throw error;
+      console.log(error);
+      closeModal()
     }
   };
 
