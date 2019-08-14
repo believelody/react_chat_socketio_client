@@ -8,6 +8,7 @@ import DropdownItem from "../dropdown/DropdownItem";
 import { useAppHooks } from "../../contexts";
 import devices from "../../utils/devices";
 import api from "../../api";
+import NotFriend from "../friends/NotFriend";
 
 const ChatStyle = styled.div`
   width: 100%;
@@ -76,6 +77,7 @@ const Chat = ({ id }) => {
             />
           </Dropdown>
           <MessageList messages={chat.messages} users={chat.users} />
+          {chat.users.length < 3 && <NotFriend contact={chat.users.find(u => u.name !== user.name)} />}
           <MessageForm chatId={chat.id} />
         </div>
       )}
