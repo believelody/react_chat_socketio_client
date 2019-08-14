@@ -47,13 +47,12 @@ const User = ({ contact, match }) => {
 
   const openChat = async () => {
     try {
-      console.log(history)
       let res = await api.chat.searchChatByUsers([contact.name, user.name]);
       if (!res.data) {
         res = await api.chat.createChat([contact.name, user.name])
       }
       closeModal();
-      history.push(`chats/${res.data.chatId}`);
+      history.push(`/chats/${res.data.chatId}`);
       if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
     } catch (error) {
       console.log(error);

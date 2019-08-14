@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import MessageItem from "./MessageItem";
+import { useAppHooks } from "../../contexts";
 
 const MessageListStyle = styled.ul`
   margin: 50px 0px 140px;
@@ -16,8 +17,11 @@ const MessageListStyle = styled.ul`
 `;
 
 const MessageList = ({ users, messages }) => {
+  const { useAuth } = useAppHooks()
+  const [{user},_] = useAuth
   const messagesRef = React.useRef();
-  const contact = users.find(user => user.username !== localStorage.username);
+
+  const contact = users.find(u => u.name !== u.name);
 
   return (
     <MessageListStyle ref={messagesRef}>

@@ -21,8 +21,8 @@ const ChatStyle = styled.div`
 `;
 
 const Chat = ({ id }) => {
-  const { useTransition } = useAppHooks();
-
+  const { useTransition, useAuth } = useAppHooks();
+  const [{user}, dispatchAuth] = useAuth
   const [{ chatSelected }, _] = useTransition;
 
   const [chat, setChat] = useState(null);
@@ -49,8 +49,6 @@ const Chat = ({ id }) => {
 
     if (!chat) fetchChat()
   }, [chat, id]);
-
-  console.log(chat)
  
   return (
     <ChatStyle>
@@ -65,7 +63,7 @@ const Chat = ({ id }) => {
           <ChatHeader
             getHeaderPosition={getHeaderPosition}
             isDisplayed={isDisplayed}
-            chat={chat}
+            users={chat.users.filter(u => u.name !== user.name)}
           />
           <Dropdown
             propsY={y}
@@ -77,7 +75,7 @@ const Chat = ({ id }) => {
               text="Add User to Chat"
             />
           </Dropdown>
-          {/* <MessageList messages={chat.messages} users={chat.users} /> */}
+          <MessageList messages={chat.messages} users={chat.users} />
           <MessageForm chatId={chat.id} />
         </div>
       )}

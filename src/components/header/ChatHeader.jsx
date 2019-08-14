@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Icon } from 'semantic-ui-react'
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import { CHAT_UNSELECTED } from "../../reducers/transitionReducer";
@@ -17,7 +18,7 @@ const ChatHeaderStyle = styled.header`
   background: #f5f5f5;
   display: flex;
   align-items: center;
-  z-index: 1;
+  color: black;
 
   & > .go-back {
     display: none;
@@ -72,12 +73,11 @@ const ChatHeaderStyle = styled.header`
   }
 `;
 
-const ChatHeader = ({ getHeaderPosition, isDisplayed, chat }) => {
+const ChatHeader = ({ getHeaderPosition, isDisplayed, users }) => {
   const { useTransition, socket } = useAppHooks();
 
   const [chatSelected, dispatchTransition] = useTransition;
 
-  const [dest, setDest] = useState(null);
   const [isTyping, setTyping] = useState(false);
   const [isSelected, setSelected] = useState(false);
 
@@ -96,11 +96,11 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, chat }) => {
 
   socket.on("is-typing", data => setTyping(data));
 
-  useEffect(() => {
-    if (localStorage.username) {
-      setDest(chat.users.find(user => user.username !== localStorage.username));
-    }
-  }, [localStorage.username, dest, chat.users]);
+  // useEffect(() => {
+  //   if (localStorage.user) {
+  //     setDest(chat.users.find(user => user.user !== localStorage.user));
+  //   }
+  // }, [localStorage.user, dest, chat.users]);
 
   useEffect(() => {
     setSelected(!isSelected);
@@ -112,12 +112,43 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, chat }) => {
         +
       </span>
       <span className="go-back" onClick={handleTransition}>
-        <i className="fas fa-chevron-left" />
+        <Icon name='arrow left' />
       </span>
-      <span className="img-contact">
-        {dest ? dest.username[0].toUpperCase() : null}
-      </span>
-      <h4>{dest ? dest.username : null}</h4>
+      {
+        users.length > 1 && (
+          <React.Fragment>
+            <span className="img-contact">
+              G
+            </span>
+            {
+              users.slice(0, 2).map((user, i) => {
+                if (i < 2) {
+                  return <span key={i}>{user.name}{i < users.length - 1 && ', '}</span>
+                }
+                else {
+                  return <h4 key={i}>+{users.length - 2}</h4>
+                }
+              })
+            }
+          </React.Fragment>
+        )
+      }
+      {
+        users.length === 1 && (
+          <React.Fragment>
+            {
+              users.map(user => (
+                <span className="img-contact" key={user.id}>
+                  {user.name[0].toUpperCase()}
+                </span>
+              ))
+            }
+            {
+              users.map(user => <h4 key={user.id}>{user.name}</h4>)
+            }
+          </React.Fragment>
+        )
+      }      
       {isTyping && <span className="header-typing">is typing...</span>}
     </ChatHeaderStyle>
   );
