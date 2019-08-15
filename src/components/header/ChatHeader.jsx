@@ -101,6 +101,10 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, users }) => {
 
   socket.on("is-typing", data => setTyping(data));
 
+  socket.on('request-confirm', data => {
+    console.log(data)
+  })
+
   // useEffect(() => {
   //   if (localStorage.user) {
   //     setDest(chat.users.find(user => user.user !== localStorage.user));
@@ -110,6 +114,10 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, users }) => {
   useEffect(() => {
     setSelected(!isSelected);
   }, []);
+
+  useEffect(() => socket.on('request-confirm', data => {
+    console.log(data)
+  }))
 
   return (
     <ChatHeaderStyle ref={headerRef}>

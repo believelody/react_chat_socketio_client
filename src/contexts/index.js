@@ -2,13 +2,9 @@ import React, { createContext, useContext, useReducer } from "react";
 import io from "socket.io-client";
 import { createBrowserHistory } from "history";
 import { authReducer, initAuthState } from "../reducers/authReducer";
-import {
-  transitionReducer,
-  initTransitionState
-} from "../reducers/transitionReducer";
+import { transitionReducer, initTransitionState } from "../reducers/transitionReducer";
 import { modalReducer, initModalState } from "../reducers/modalReducer";
 import { searchReducer, initSearchState } from "../reducers/searchReducer";
-import { hookReducer, initHookState } from "../reducers/hookReducer";
 
 export const AppContext = createContext();
 
@@ -28,7 +24,6 @@ export const AppProvider = ({ children }) => {
         useTransition: useReducer(transitionReducer, initTransitionState),
         useModal: useReducer(modalReducer, initModalState),
         useSearch: useReducer(searchReducer, initSearchState),
-        useHook: useReducer(hookReducer, initHookState),
         socket,
         history
       }}

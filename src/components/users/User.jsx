@@ -50,7 +50,7 @@ const UserStyle = styled.li`
 `;
 
 const User = ({ contact }) => {
-  const { useAuth, useTransition, useModal, history } = useAppHooks();
+  const { useAuth, useTransition, useModal, history, socket } = useAppHooks();
   const [{ user }, dispatchAuth] = useAuth;
   const [transition, dispatchTransition] = useTransition;
   const [modal, dispatchModal] = useModal;
@@ -59,6 +59,20 @@ const User = ({ contact }) => {
   const [cancel, setCancel] = useState(contact.requests.find(request => request.requesterId === user.id))
 
   const closeModal = () => dispatchModal({ type: CLOSE_MODAL });
+
+  const confirmAction = () => {
+    socket.on('request-confirm', data => {
+      if (data.error) {
+        alert(data.error)
+      }
+      else {
+        if (data.from === user.id) {
+          setRequests(data.requests)
+          alert(data.msg)
+        }
+      }
+    })
+  }
 
   const openChat = async () => {
     try {
@@ -75,33 +89,35 @@ const User = ({ contact }) => {
   };
 
   const sendFriendRequest = async () => {
-    // socket.emit("new-chat", users);
-    try {
-      let res = await api.user.requestFriend(contact.id, user.id);
-      if (res.data) {
-        alert(res.data.msg)
-        setRequests(res.data.requests)
-      }
-      // setCancel(true)
-    if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
-    } catch (error) {
-      console.log(error);
-    }
+    socket.emit("new-request", { contactId: contact.id, userId: user.id });
+    confirmAction()
+    // try {
+    //   let res = await api.user.requestFriend(contact.id, user.id);
+    //   if (res.data) {
+    //     // alert(res.data.msg)
+    //     setRequests(res.data.requests)
+    //   }
+    //   // setCancel(true)
+    // if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const cancelFriendRequest = async () => {
-    // socket.emit("new-chat", users);
-    try {
-      let res = await api.user.cancelFriendRequest(contact.id, user.id);
-      if (res.data) {
-        alert(res.data.msg)
-        setRequests(res.data.requests)
-      }
-      // setCancel(false)
-    if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
-    } catch (error) {
-      console.log(error.response.data);
-    }
+    socket.emit("cancel-request", { contactId: contact.id, userId: user.id});
+    confirmAction()
+    // try {
+    //   let res = await api.user.cancelFriendRequest(contact.id, user.id);
+    //   if (res.data) {
+    //     // alert(res.data.msg)
+    //     setRequests(res.data.requests)
+    //   }
+    //   // setCancel(false)
+    // if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
+    // } catch (error) {
+    //   console.log(error.response.data);
+    // }
   };
 
   const handleClick = () => {
@@ -114,7 +130,7 @@ const User = ({ contact }) => {
   }
 
   useEffect(() => {
-    if (requests.length > 0) setCancel(requests.find(r => r.requesterId === user.id))
+    setCancel(requests.find(r => r.requesterId === user.id))
   }, [requests, user.id])
 
   return (

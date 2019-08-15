@@ -44,19 +44,26 @@ const RequestList = styled.ul`
 `;
 
 const Requests = () => {
-    const { useAuth } = useAppHooks();
-    const [{ user }, _] = useAuth;
+    const { useAuth, socket } = useAppHooks();
+    const [{ user }, dispatchAuth] = useAuth;
 
-    const [requests, setRequests] = useState([])
+  const [requests, setRequests] = React.useState([])
 
-    useEffect(() => {
-      const getRequests = async () => {
-        let res = await api.user.getRequestList(user.id)
-        if (res.data.length > 0) setRequests(res.data)
+  socket.on('request-confirm', data => {
+    if (data.to === user.id) setRequests(data.requests)
+  })
+
+  React.useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const res = await api.user.getRequestList(user.id)
+        setRequests(res.data)
+      } catch (error) {
+        console.log(error)
       }
-
-      getRequests()
-    }, [setRequests])
+    }
+    fetchRequests()
+  }, [])
 
     return (
       <RequestsContainer>

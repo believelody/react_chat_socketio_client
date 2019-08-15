@@ -20,25 +20,27 @@ background: radial-gradient(circle at 2px 2px, #EDDE5D, #F09819); /* W3C, IE 10+
 `
 
 const ContactsTab = () => {
-  const { useAuth } = useAppHooks()
-  const [{user}, _] = useAuth
+  const { useAuth, socket } = useAppHooks()
+  const [{user}, dispatchAuth] = useAuth
 
   const [requests, setRequests] = React.useState([])
+
+  socket.on('request-confirm', data => {
+    if (data.to === user.id) setRequests(data.requests)
+  })
 
   React.useEffect(() => {
     const fetchRequests = async () => {
       try {
-          const res = await api.user.getRequestList(user.id)
-          setRequests(res.data)
+        const res = await api.user.getRequestList(user.id)
+        setRequests(res.data)
       } catch (error) {
         console.log(error)
       }
     }
-    
     fetchRequests()
-    return () => setRequests([])
   }, [])
-
+  
   return (
     <ContactsTabStyle>
       <span className='label'>Contacts</span>
