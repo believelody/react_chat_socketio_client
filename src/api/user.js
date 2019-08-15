@@ -16,13 +16,13 @@ export default {
 
   updateUser: (id, data) => axios.post(`${baseUrl}/${defaultPath}/${id}`, data),
 
-  addFriend: (id, data) => axios.post(`${baseUrl}/${defaultPath}/${id}`, data),
+  addFriend: (contactId, userId) => axios.post(`${baseUrl}/${defaultPath}/${userId}/new-friend`, { contactId }),
 
   blockFriend: (id, data) =>
-    axios.post(`${baseUrl}/${defaultPath}/${id}`, data),
+    axios.post(`${baseUrl}/${defaultPath}/${id}/new-blocked`, data),
 
-  requestFriend: (id, data) =>
-    axios.post(`${baseUrl}/${defaultPath}/${id}`, data),
+  requestFriend: (contactId, userId) =>
+    axios.post(`${baseUrl}/${defaultPath}/${userId}/new-request`, {contactId}),
 
   searchUser: (id, userQuery) =>
     axios.get(`${baseUrl}/${defaultPath}/${id}/search-user?user=${userQuery}`),

@@ -17,7 +17,7 @@ const FriendsContainer = styled.div`
 const FriendList = styled.ul`
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 12px 0px;
 
   &::-webkit-scrollbar {
     width: 8px;

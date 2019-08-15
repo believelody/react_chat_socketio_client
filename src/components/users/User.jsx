@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import { CHAT_SELECTED } from "../../reducers/transitionReducer";
 import isMobile from "../../utils/isMobile";
-import api, { baseUrl } from "../../api";
+import api from "../../api";
 import OpenChatIcon from "../icons/OpenChatIcon";
 import FriendRequestIcon from "../icons/FriendRequestIcon";
 import { CLOSE_MODAL } from "../../reducers/modalReducer";
@@ -61,26 +61,17 @@ const User = ({ contact, match }) => {
   };
 
   const sendFriendRequest = async () => {
-    alert("Friend Request");
     // socket.emit("new-chat", users);
-    // try {
-    //   let users = [contact.name, user.name];
-    //   let res = await api.chat.searchChatByUsers(users);
-    //   let chatRequest = res.data;
-    //   if (chatRequest) {
-    //     history.push(`/chats/${chatRequest.id}`);
-    //   } else {
-    //     let res = await api.chat.createChat(users);
-    //     let chat = res.data;
-    //     if (chat) {
-    //       history.push(`/chats/${chat.id}`);
-    //     }
-    //   }
-    //   closeModal();
-    // if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
-    // } catch (error) {
-    //   throw error;
-    // }
+    try {
+      let res = await api.user.requestFriend(contact.id, user.id);
+      if (res.data) {
+        alert(res.data.msg)
+      }
+      closeModal();
+    if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -30,7 +30,8 @@ const NotFriend = ({ contact }) => {
 
     const [isFriend, setIsFriend] = useState(null)
     const [isRequest, setIsRequest] = useState(null)
-    const [isBlock, setIsBlock] = useState(null)
+    const [hasBlocked, setHasBlock] = useState(null)
+    const [isBlocked, setIsBlock] = useState(null)
 
     const blockContact = () => {
         alert('contact blocked')
@@ -63,14 +64,14 @@ const NotFriend = ({ contact }) => {
     return (
         <NotFriendStyle>
             {
-                !isFriend && !isRequest && !isBlock &&
+                !isFriend && !isRequest && !hasBlocked && !isBlocked &&
                 <span className='not-friend'>
                     This contact is not among your friends. Do you want to block him?
                     <Button className='blocked-request' onClick={blockContact} content={<b>Yes</b>} />
                 </span>
             }
             {
-                !isFriend && isRequest && !isBlock && isRequest.id === contact.id &&
+                !isFriend && isRequest && !hasBlocked && !isBlocked && isRequest.id === contact.id &&
                 <span className='not-friend'>
                     This contact sent you a friend's request. What do you want to do?
                     <Button className='blocked-request' onClick={acceptContact} content={<b>Accept</b>} />
@@ -79,14 +80,14 @@ const NotFriend = ({ contact }) => {
                 </span>
             }
             {
-                !isFriend && !isRequest && isBlock && isBlock.id === contact.id &&
+                !isFriend && !isRequest && hasBlocked && isBlocked && hasBlocked.id === contact.id &&
                 <span className='not-friend'>
                     This contact has been blocked. You Do you want to unblock him?
                     <Button className='blocked-request' onClick={blockContact} content={<b>Yes</b>} />
                 </span>
             }
             {
-                !isFriend && !isRequest && isBlock && isBlock.id === user.id &&
+                !isFriend && !isRequest && hasBlocked && isBlocked && isBlocked.id === user.id &&
                 <span className='not-friend'>
                     You can no longer send message in this chat!
                 </span>

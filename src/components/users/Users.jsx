@@ -197,7 +197,7 @@ const Users = () => {
       {!notFound && content && (
         <UserList>
           {users.length > 0 &&
-            users.map(user => <User key={user.id} contact={user} />)}
+            users.filter(u => u.id !== user.id).map(u => <User key={u.id} contact={u} />)}
         </UserList>
       )}
     </UsersContainer>
