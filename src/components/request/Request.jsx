@@ -51,13 +51,27 @@ const RequestStyle = styled.li`
 `;
 
 const Request = ({ contact, setRequests }) => {
-    const { useAuth  } = useAppHooks();
+    const { useAuth, socket  } = useAppHooks();
     const [{ user }, dispatchAuth] = useAuth;
+
+    const confirmAction = () => {
+        socket.on('request-confirm', data => {
+            if (data.error) {
+                alert(data.error)
+            }
+            else {
+                if (data.from === user.id) {
+                    handlePropsFromParent(data.requests)
+                    alert(data.msg)
+                }
+            }
+        })
+    }
 
     const handlePropsFromParent = value => setRequests(value)
 
     const acceptFriendRequest = async () => {
-        try {
+        /* try {
             let res = await api.user.addFriend(contact.id, user.id);
             if (res.data) {
                 alert(res.data.msg)
@@ -65,11 +79,13 @@ const Request = ({ contact, setRequests }) => {
             }
         } catch (error) {
             console.log(error);
-        }
+        } */
     };
 
     const denyFriendRequest = async () => {
-        try {
+        socket.emit("delete-request", { contactId: contact.id, userId: user.id });
+        confirmAction()
+        /* try {
             const res = await api.user.deleteRequest(contact.id, user.id)
             if (res.data) {
                 alert(res.data.msg)
@@ -77,7 +93,7 @@ const Request = ({ contact, setRequests }) => {
             }
         } catch (error) {
             console.log(error.response.data);
-        }
+        } */
     };
 
     return (

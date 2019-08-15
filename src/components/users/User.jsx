@@ -60,19 +60,25 @@ const User = ({ contact }) => {
 
   const closeModal = () => dispatchModal({ type: CLOSE_MODAL });
 
-  const confirmAction = () => {
-    socket.on('request-confirm', data => {
-      if (data.error) {
-        alert(data.error)
-      }
-      else {
-        if (data.from === user.id) {
-          setRequests(data.requests)
-          alert(data.msg)
-        }
-      }
-    })
+  const confirmAction = data => {
+    if (data.error) {
+      alert(data.error)
+    }
+    else {
+      setRequests(data.requests)
+      // alert(data.msg)
+    }
   }
+
+  socket.on('new-request-confirm', data => {
+    if (data.from === user.id) confirmAction(data)
+  })
+  socket.on('cancel-request-confirm', data => {
+    if (data.from === user.id) confirmAction(data)
+  })
+  socket.on('delete-request-confirm', data => {
+    if (data.to === user.id) setRequests(data.requests)
+  })
 
   const openChat = async () => {
     try {
@@ -90,7 +96,6 @@ const User = ({ contact }) => {
 
   const sendFriendRequest = async () => {
     socket.emit("new-request", { contactId: contact.id, userId: user.id });
-    confirmAction()
     // try {
     //   let res = await api.user.requestFriend(contact.id, user.id);
     //   if (res.data) {
@@ -106,7 +111,6 @@ const User = ({ contact }) => {
 
   const cancelFriendRequest = async () => {
     socket.emit("cancel-request", { contactId: contact.id, userId: user.id});
-    confirmAction()
     // try {
     //   let res = await api.user.cancelFriendRequest(contact.id, user.id);
     //   if (res.data) {

@@ -25,8 +25,16 @@ const ContactsTab = () => {
 
   const [requests, setRequests] = React.useState([])
 
-  socket.on('request-confirm', data => {
+  socket.on('new-request-confirm', data => {
     if (data.to === user.id) setRequests(data.requests)
+  })
+
+  socket.on('cancel-request-confirm', data => {
+    if (data.to === user.id) setRequests(data.requests)
+  })
+
+  socket.on('delete-request-confirm', data => {
+    if (data.from === user.id) setRequests(data.requests)
   })
 
   React.useEffect(() => {
