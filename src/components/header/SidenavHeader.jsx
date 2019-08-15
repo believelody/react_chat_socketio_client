@@ -4,6 +4,8 @@ import { useAppHooks } from "../../contexts";
 import { OPEN_USER } from "../../reducers/modalReducer";
 import SearchUserIcon from "../icons/SearchUserIcon";
 import SettingIcon from "../icons/SettingIcon";
+import { Button } from "semantic-ui-react";
+import api from "../../api";
 
 const HeaderStyle = styled.header`
   text-align: center;
@@ -41,8 +43,28 @@ const SidenavHeader = () => {
     alert('settings')
   };
 
+  const dropFriendTable = async () => {
+    try {
+      const res = await api.user.dropFriend()
+      alert(res.data.msg)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const dropRequestTable = async () => {
+    try {
+      const res = await api.user.dropRequest()
+      alert(res.data.msg)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <HeaderStyle>
+      <Button circular content='DF' onClick={dropFriendTable} />
+      <Button circular content='DR' onClick={dropRequestTable} />
       <h4>SocketIO Chat</h4>
       <SearchUserIcon className="action-contact" handleClick={searchContact} />
       <SettingIcon className="action-contact" handleClick={settingUser} />

@@ -42,17 +42,19 @@ export default {
   getBlockedList: id =>
     axios.get(`${baseUrl}/${defaultPath}/${id}/blocked-list`),
 
-  deleteChat: (id, chat) =>
-    axios.put(`${baseUrl}/${defaultPath}/${id}`, { chat }),
+  deleteChat: (id, chatId) => axios.delete(`${baseUrl}/${defaultPath}/${id}/delete-chat?chatId=${chatId}`),
 
-  deleteFriend: (id, friend) =>
-    axios.put(`${baseUrl}/${defaultPath}/${id}`, { friend }),
+  deleteFriend: (id, friendId) => axios.delete(`${baseUrl}/${defaultPath}/${id}/delete-friend?friendId=${friendId}`),
 
-  deleteBlocked: (id, blocked) =>
-    axios.put(`${baseUrl}/${defaultPath}/${id}`, { blocked }),
+  deleteBlocked: (id, blockedId) => axios.delete(`${baseUrl}/${defaultPath}/${id}/delete-blocked?blockedId=${blockedId}`),
 
-  deleteRequest: (id, request) =>
-    axios.put(`${baseUrl}/${defaultPath}/${id}`, { request }),
+  deleteRequest: (contactId, userId) => axios.delete(`${baseUrl}/${defaultPath}/${userId}/delete-request?contactId=${contactId}`),
 
-  deleteUser: id => axios.delete(`${baseUrl}/${defaultPath}/${id}`)
+  cancelFriendRequest: (contactId, userId) => axios.delete(`${baseUrl}/${defaultPath}/${userId}/cancel-request?contactId=${contactId}`),
+
+  deleteUser: id => axios.delete(`${baseUrl}/${defaultPath}/${id}`),
+
+  dropFriend: () => axios.delete(`${baseUrl}/${defaultPath}/drop-friend`),
+
+  dropRequest: () => axios.delete(`${baseUrl}/${defaultPath}/drop-request`),
 };

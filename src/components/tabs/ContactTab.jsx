@@ -29,15 +29,14 @@ const ContactsTab = () => {
     const fetchRequests = async () => {
       try {
           const res = await api.user.getRequestList(user.id)
-          if (res.data.length > 0) {
-            setRequests(res.data)
-          }
+          setRequests(res.data)
       } catch (error) {
         console.log(error)
       }
     }
     
     fetchRequests()
+    return () => setRequests([])
   }, [])
 
   return (

@@ -47,30 +47,26 @@ const Requests = () => {
     const { useAuth } = useAppHooks();
     const [{ user }, _] = useAuth;
 
-    const [requests, setRequests] = useState([]);
-    const [loading, setLoading] = useState(true)
+    const [requests, setRequests] = useState([])
 
     useEffect(() => {
       const getRequests = async () => {
-        if (user) {
-            let res = await api.user.getRequestList(user.id)
-            if (res.data.length > 0) setRequests(res.data)
-        }
-        setLoading(false)
+        let res = await api.user.getRequestList(user.id)
+        if (res.data.length > 0) setRequests(res.data)
       }
 
       getRequests()
-    }, [])
-
-    console.log(requests)
+    }, [setRequests])
 
     return (
       <RequestsContainer>
+        {
+          requests.length > 0 &&
           <RequestList>
             <div className='request-label'>Friends request: <span>{requests.length > 0 ? requests.length : 0}</span></div>
-            {!loading && requests.length === 0 && <h4>You have no requests. Start search amazing people.</h4>}
-            {!loading && requests.length > 0 && requests.map(request => <Request key={request.id} request={request} />)}
+            {requests.map(request => <Request setRequests={setRequests} key={request.id} contact={request} />)}
           </RequestList>
+        }
       </RequestsContainer>
     )
 };

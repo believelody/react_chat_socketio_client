@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import { CHAT_SELECTED } from "../../reducers/transitionReducer";
@@ -34,14 +34,29 @@ const UserStyle = styled.li`
   & .contact-actions {
     margin-left: auto;
     margin-right: 8px;
+
+    & > .contact-actions-chat {
+      background-color: #FFA500;
+    }
+
+    & > .contact-actions-request {
+      background-color: ${props => props.cancel ? 'indianred' : '#8FBC8F'};
+        cursor: pointer;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+        margin: 0px 4px;
+    }
   }
 `;
 
-const User = ({ contact, match }) => {
+const User = ({ contact }) => {
   const { useAuth, useTransition, useModal, history } = useAppHooks();
   const [{ user }, dispatchAuth] = useAuth;
   const [transition, dispatchTransition] = useTransition;
   const [modal, dispatchModal] = useModal;
+
+  const [requests, setRequests] = useState(contact.requests)
+  const [cancel, setCancel] = useState(contact.requests.find(request => request.requesterId === user.id))
 
   const closeModal = () => dispatchModal({ type: CLOSE_MODAL });
 
@@ -56,7 +71,6 @@ const User = ({ contact, match }) => {
       if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
     } catch (error) {
       console.log(error);
-      closeModal()
     }
   };
 
@@ -66,20 +80,53 @@ const User = ({ contact, match }) => {
       let res = await api.user.requestFriend(contact.id, user.id);
       if (res.data) {
         alert(res.data.msg)
+        setRequests(res.data.requests)
       }
-      closeModal();
+      // setCancel(true)
     if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
     } catch (error) {
       console.log(error);
     }
   };
 
+  const cancelFriendRequest = async () => {
+    // socket.emit("new-chat", users);
+    try {
+      let res = await api.user.cancelFriendRequest(contact.id, user.id);
+      if (res.data) {
+        alert(res.data.msg)
+        setRequests(res.data.requests)
+      }
+      // setCancel(false)
+    if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+  const handleClick = () => {
+    if (cancel) {
+      cancelFriendRequest()
+    }
+    else {
+      sendFriendRequest()
+    }
+  }
+
+  useEffect(() => {
+    if (requests.length > 0) setCancel(requests.find(r => r.requesterId === user.id))
+  }, [requests, user.id])
+
   return (
-    <UserStyle>
+    <UserStyle cancel={cancel}>
       <span className="contact-name">{contact.name}</span>
       <span className="contact-actions">
-        <OpenChatIcon handleClick={openChat} />
-        <FriendRequestIcon handleClick={sendFriendRequest} />
+        <OpenChatIcon className='contact-actions-chat' handleClick={openChat} />
+        <FriendRequestIcon
+          className='contact-actions-request'
+          cancel={cancel}
+          handleClick={handleClick} 
+        />
       </span>
     </UserStyle>
   );

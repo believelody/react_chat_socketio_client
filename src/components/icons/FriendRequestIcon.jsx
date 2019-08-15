@@ -1,13 +1,13 @@
 import React from "react";
 import { Button } from "semantic-ui-react";
 
-const FriendRequestIcon = ({ handleClick, className }) => {
+const FriendRequestIcon = ({ handleClick, className, cancel }) => {
   return (
     <Button
       circular
       className={className}
       onClick={handleClick}
-      icon="user plus"
+      icon={ cancel ? "user cancel" :"user plus"}
     />
   );
 };

@@ -22,17 +22,17 @@ const RequestStyle = styled.li`
     border-right: 0.6em solid white;
   }
 
-  & .request-name {
+  & .contact-name {
     font-size: 1.5em;
     margin-left: 8px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
   }
 
-  & .request-actions {
+  & .contact-actions {
     margin-left: auto;
     margin-right: 8px;
 
-    & > .request-action-accept {
+    & > .contact-action-accept {
         background-color: #8FBC8F;
         cursor: pointer;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
@@ -40,7 +40,7 @@ const RequestStyle = styled.li`
         margin: 0px 4px;
     }
 
-    & > .request-action-close {
+    & > .contact-action-close {
         background-color: indianred;
         cursor: pointer;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
@@ -50,15 +50,18 @@ const RequestStyle = styled.li`
   }
 `;
 
-const Request = ({ request }) => {
+const Request = ({ contact, setRequests }) => {
     const { useAuth  } = useAppHooks();
     const [{ user }, dispatchAuth] = useAuth;
 
+    const handlePropsFromParent = value => setRequests(value)
+
     const acceptFriendRequest = async () => {
         try {
-            let res = await api.user.addFriend(request.id, user.id);
+            let res = await api.user.addFriend(contact.id, user.id);
             if (res.data) {
                 alert(res.data.msg)
+                handlePropsFromParent(res.data.requests)
             }
         } catch (error) {
             console.log(error);
@@ -67,18 +70,22 @@ const Request = ({ request }) => {
 
     const denyFriendRequest = async () => {
         try {
-            alert("Denied")
+            const res = await api.user.deleteRequest(contact.id, user.id)
+            if (res.data) {
+                alert(res.data.msg)
+                handlePropsFromParent(res.data.requests)
+            }
         } catch (error) {
-            console.log(error);
+            console.log(error.response.data);
         }
     };
 
     return (
         <RequestStyle>
-            <span className="request-name">{request.name}</span>
-            <span className="request-actions">
-                <AcceptIcon className='request-action-accept' handleClick={acceptFriendRequest} />
-                <CloseIcon className='request-action-close' handleClick={denyFriendRequest} />
+            <span className="contact-name">{contact.name}</span>
+            <span className="contact-actions">
+                <AcceptIcon className='contact-action-accept' handleClick={acceptFriendRequest} />
+                <CloseIcon className='contact-action-close' handleClick={denyFriendRequest} />
             </span>
         </RequestStyle>
     );

@@ -57,8 +57,11 @@ const AuthRoute = ({ component: Component, ...rest }) => {
         dispatch({ type: SET_CURRENT_PROFILE, payload: decoded });
       }
     }
+    else if (!localStorage.chat_token) {
+      dispatch({ type: DISCONNECT })
+    }
     setLoading(false);
-  }, [dispatch, isConnected]);
+  }, [localStorage.chat_token, dispatch, isConnected]);
 
   React.useEffect(() => {
     if (isConnected) {

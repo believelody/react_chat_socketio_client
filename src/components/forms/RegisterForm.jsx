@@ -53,11 +53,11 @@ const RegisterForm = () => {
         setEmail(null);
         setPassword(null);
       } else if (!email) {
-        setError({ code: "email", message: "Username is required" });
+        setError(prevError => ({ ...prevError, email: 'Username is required' }));
       } else if (!password) {
-        setError({ code: "password", message: "Password is required" });
+        setError(prevError => ({ ...prevError, password: 'Password is required' }));
       } else if (!username) {
-        setError({ code: "username", message: "Username is required" });
+        setError(prevError => ({ ...prevError, username: 'Username is required' }));
       }
     } catch (error) {
       dispatch({
@@ -80,8 +80,8 @@ const RegisterForm = () => {
       else if (errorRegister.password) {
         alert(errorRegister.password);
       }
-      else if (errorRegister.msg) {
-        alert(errorRegister.msg);
+      else if (errorRegister.username) {
+        alert(errorRegister.username);
       }
     }
     return () => setError(null)

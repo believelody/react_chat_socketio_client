@@ -55,12 +55,12 @@ const LoginForm = () => {
         setEmail(null);
         setPassword(null);
       } else if (!email) {
-        setError({ code: "email", message: "Username is required" });
+        setError(prevError => ({ ...prevError, email: "Username is required" }));
       } else if (!password) {
-        setError({ code: "password", message: "Password is required" });
+        setError(prevError => ({ ...prevError, password: "Password is required" }));
       }
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.data)
       dispatch({
         type: AUTH_FAILED,
         payload: error.response.data
@@ -79,8 +79,6 @@ const LoginForm = () => {
         alert(errorLogin.email);
       } else if (errorLogin.password) {
         alert(errorLogin.password);
-      } else if (errorLogin.msg) {
-        alert(errorLogin.msg);
       }
     }
     return () => setError(null);
