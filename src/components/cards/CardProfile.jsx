@@ -7,8 +7,7 @@ import LogoutIcon from "../icons/LogoutIcon";
 const CardProfileStyle = styled.div`
   height: 60px;
   padding: 20px 10px;
-  border-top: 2px solid rgba(255, 255, 255, 0.25);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, .8), -2px -2px 4px rgba(0, 0, 0, .8);
   display: flex;
   align-items: center;
 
@@ -21,17 +20,22 @@ const CardProfileStyle = styled.div`
     text-align: center;
     font-size: 2em;
     cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+    padding: 0px 4px;
   }
 
   & .name-card {
     width: 100%;
     margin: 0 0 0 20px;
     padding: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
   }
 
   & .logout-card {
     margin-left: auto;
     cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
   }
 `;
 

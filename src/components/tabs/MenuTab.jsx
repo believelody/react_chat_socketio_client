@@ -7,7 +7,7 @@ import Friends from "../friends/Friends";
 
 const TabStyle = styled.li`
   width: 100%;
-  border-radius: 8px;
+  // border-radius: 8px;
   border: ${props =>
     !props.isSelected ? "2px solid rgba(0, 0, 0, 0.3)" : "none"};
   cursor: pointer;
@@ -16,8 +16,10 @@ const TabStyle = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-shadow: ${props => !props.isSelected && '2px 2px 4px rgba(0, 0, 0, .6)'};
   background-color: ${props => props.isSelected && "white"};
   color: ${props => props.isSelected && "black"};
+  font-weight: bold;
   transition: all 200ms ease-in;
 `;
 

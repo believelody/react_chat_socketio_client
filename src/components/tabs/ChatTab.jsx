@@ -3,11 +3,7 @@ import styled from 'styled-components'
 import { useAppHooks } from "../../contexts";
 import api from "../../api";
 
-const ChatsTabStyle = styled.div`
-  & .label {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
-  }
-  
+const ChatsTabStyle = styled.div`  
   & .number {
     margin-left: 8px;
     padding: 2px 8px;

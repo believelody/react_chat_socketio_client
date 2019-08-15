@@ -9,7 +9,7 @@ const RequestStyle = styled.li`
   margin: 0;
   padding: 8px 0;
   width: auto;
-  height: 40px;
+  height: 50px;
   display: flex;
   align-items: center;
   color: white;
@@ -37,6 +37,7 @@ const RequestStyle = styled.li`
         cursor: pointer;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
         box-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+        margin: 0px 4px;
     }
 
     & > .request-action-close {
@@ -44,6 +45,7 @@ const RequestStyle = styled.li`
         cursor: pointer;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
         box-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+        margin: 0px 4px;
     }
   }
 `;

@@ -4,10 +4,6 @@ import { useAppHooks } from "../../contexts";
 import api from "../../api";
 
 const ContactsTabStyle = styled.div`
-  & .label {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
-  }
-  
   & .number {
     margin-left: 8px;
     padding: 2px 8px;
