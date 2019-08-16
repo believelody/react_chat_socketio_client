@@ -60,29 +60,29 @@ const User = ({ contact }) => {
 
   const closeModal = () => dispatchModal({ type: CLOSE_MODAL });
 
-  const confirmAction = data => {
+  const confirmAction = (data, cancel, display) => {
     if (data.error) {
       alert(data.error)
     }
     else {
       setRequests(data.requests)
-      // alert(data.msg)
+      setCancel(cancel)
+      if (display) alert(data.from.msg)
     }
   }
 
   socket.on('new-request-confirm', data => {
     console.log(data)
-    if (data.from.id === user.id) confirmAction(data)
+    if (data.from.id === user.id) confirmAction(data, true, false)
   })
 
   socket.on('cancel-request-confirm', data => {
-    console.log(data)
-    if (data.from.id === user.id) confirmAction(data)
+    if (data.from.id === user.id) confirmAction(data, false, false)
   })
 
   socket.on('delete-request-confirm', data => {
     console.log(data)
-    if (data.to.id === user.id) setRequests(data.requests)
+    if (data.to.id === user.id) confirmAction(data, false, false)
   })
 
   const openChat = async () => {
@@ -142,7 +142,7 @@ const User = ({ contact }) => {
 
   useEffect(() => {
     console.log(requests)
-    setCancel(requests.length > 0 ? requests.find(r => r.requesterId === user.id) : false)
+    setCancel(requests.length > 0 ? requests.find(r => r.id === user.id) : false)
   }, [requests, cancel])
 
   return (
