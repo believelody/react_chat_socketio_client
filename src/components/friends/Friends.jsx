@@ -37,7 +37,13 @@ const Friends = () => {
   const [loading, setLoading] = useState(true)
 
   socket.on('new-friend-confirm', data => {
-    if (data.to === user.id || data.from === user.id) setFriends(data.friends)
+    if (data.to.id === user.id) setFriends(data.to.friends)
+    if (data.from.id === user.id) setFriends(data.from.friends)
+  })
+
+  socket.on('delete-friend-confirm', data => {
+    if (data.to.id === user.id) setFriends(data.to.friends)
+    if (data.from.id === user.id) setFriends(data.from.friends)
   })
 
   useEffect(() => {

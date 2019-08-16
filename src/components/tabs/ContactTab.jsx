@@ -35,25 +35,37 @@ const ContactsTab = () => {
   const [requests, setRequests] = React.useState([])
 
   socket.on('new-request-confirm', data => {
-    if (data.to === user.id) setRequests(data.requests)
+    if (data.error) {
+      alert(data.error)
+    }
+    else if (data.to.id === user.id) setRequests(data.requests)
   })
 
   socket.on('cancel-request-confirm', data => {
-    if (data.to === user.id) setRequests(data.requests)
+    if (data.error) {
+      alert(data.error)
+    }
+    else if (data.to.id === user.id) setRequests(data.requests)
   })
 
   socket.on('delete-request-confirm', data => {
-    if (data.from === user.id) setRequests(data.requests)
+    if (data.error) {
+      alert(data.error)
+    }
+    else if (data.from.id === user.id) setRequests(data.requests)
   })
 
   socket.on('new-friend-confirm', data => {
-    console.log(data.to, user.id)
-    if (data.from === user.id || data.to === user.id) setFriends(data.friends)
-    if (data.from === user.id) setRequests(data.requests)
+    if (data.from.id === user.id) setFriends(data.from.friends)
+    if (data.to.id === user.id) setFriends(data.to.friends)
+    if (data.from.id === user.id || data.to === user.id) setRequests(data.requests)
   })
 
   socket.on('delete-friend-confirm', data => {
-    if (data.from === user.id || data.to === user.id) setFriends(data.friends)
+    console.log(data)
+    console.log(user.id)
+    if (data.from.id === user.id) setFriends(data.from.friends)
+    if (data.to.id === user.id) setFriends(data.to.friends)
   })
 
   React.useEffect(() => {

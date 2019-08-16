@@ -50,15 +50,15 @@ const Requests = () => {
   const [requests, setRequests] = React.useState([])
 
   socket.on('new-request-confirm', data => {
-    if (data.to === user.id) setRequests(data.requests)
+    if (data.to.id === user.id) setRequests(data.requests)
   })
 
   socket.on('cancel-request-confirm', data => {
-    if (data.to === user.id) setRequests(data.requests)
+    if (data.to.id === user.id) setRequests(data.requests)
   })
 
   socket.on('delete-request-confirm', data => {
-    if (data.from === user.id) setRequests(data.requests)
+    if (data.from.id === user.id) setRequests(data.requests)
   })
 
   React.useEffect(() => {

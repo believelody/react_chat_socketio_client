@@ -56,7 +56,7 @@ const User = ({ contact }) => {
   const [modal, dispatchModal] = useModal;
 
   const [requests, setRequests] = useState(contact.requests)
-  const [cancel, setCancel] = useState(contact.requests.find(request => request.requesterId === user.id))
+  const [cancel, setCancel] = useState(false)
 
   const closeModal = () => dispatchModal({ type: CLOSE_MODAL });
 
@@ -71,13 +71,18 @@ const User = ({ contact }) => {
   }
 
   socket.on('new-request-confirm', data => {
-    if (data.from === user.id) confirmAction(data)
+    console.log(data)
+    if (data.from.id === user.id) confirmAction(data)
   })
+
   socket.on('cancel-request-confirm', data => {
-    if (data.from === user.id) confirmAction(data)
+    console.log(data)
+    if (data.from.id === user.id) confirmAction(data)
   })
+
   socket.on('delete-request-confirm', data => {
-    if (data.to === user.id) setRequests(data.requests)
+    console.log(data)
+    if (data.to.id === user.id) setRequests(data.requests)
   })
 
   const openChat = async () => {
@@ -127,15 +132,18 @@ const User = ({ contact }) => {
   const handleClick = () => {
     if (cancel) {
       cancelFriendRequest()
+      setCancel(false)
     }
     else {
       sendFriendRequest()
+      setCancel(true)
     }
   }
 
   useEffect(() => {
-    setCancel(requests.find(r => r.requesterId === user.id))
-  }, [requests, user.id])
+    console.log(requests)
+    setCancel(requests.length > 0 ? requests.find(r => r.requesterId === user.id) : false)
+  }, [requests, cancel])
 
   return (
     <UserStyle cancel={cancel}>

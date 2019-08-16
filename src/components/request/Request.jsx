@@ -54,14 +54,16 @@ const Request = ({ contact }) => {
     const { useAuth, socket  } = useAppHooks();
     const [{ user }, dispatchAuth] = useAuth;
 
+    console.log(contact)
+
     const confirmRequestDenied = () => {
         socket.on('delete-request-confirm', data => {
             if (data.error) {
                 alert(data.error)
             }
             else {
-                if (data.from === user.id) {
-                    alert(data.msg)
+                if (data.from.id === user.id) {
+                    alert(data.from.msg)
                 }
             }
         })
