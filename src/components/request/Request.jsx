@@ -23,7 +23,7 @@ const RequestStyle = styled.li`
   }
 
   & .contact-name {
-    font-size: 1.5em;
+    font-size: 1.2em;
     margin-left: 8px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
   }
@@ -50,27 +50,42 @@ const RequestStyle = styled.li`
   }
 `;
 
-const Request = ({ contact, setRequests }) => {
+const Request = ({ contact }) => {
     const { useAuth, socket  } = useAppHooks();
     const [{ user }, dispatchAuth] = useAuth;
 
-    const confirmAction = () => {
+    const confirmRequestDenied = () => {
         socket.on('delete-request-confirm', data => {
             if (data.error) {
                 alert(data.error)
             }
             else {
                 if (data.from === user.id) {
-                    handlePropsFromParent(data.requests)
                     alert(data.msg)
                 }
             }
         })
     }
 
-    const handlePropsFromParent = value => setRequests(value)
+    const confirmFriendAccepted = () => {
+        socket.on('new-friend-confirm', data => {
+            if (data.error) {
+                alert(data.error)
+            }
+            else {
+                if (data.from === user.id) {
+                    alert(data.msgToReceiverRequest)
+                }
+                else if (data.to === user.id) {
+                    alert(data.msgToSenderRequest)
+                }
+            }
+        })
+    }
 
     const acceptFriendRequest = async () => {
+        socket.emit('new-friend', { contactId: contact.id, userId: user.id })
+        confirmFriendAccepted()
         /* try {
             let res = await api.user.addFriend(contact.id, user.id);
             if (res.data) {
@@ -84,7 +99,7 @@ const Request = ({ contact, setRequests }) => {
 
     const denyFriendRequest = async () => {
         socket.emit("delete-request", { contactId: contact.id, userId: user.id });
-        confirmAction()
+        confirmRequestDenied()
         /* try {
             const res = await api.user.deleteRequest(contact.id, user.id)
             if (res.data) {

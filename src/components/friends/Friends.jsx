@@ -17,7 +17,7 @@ const FriendsContainer = styled.div`
 const FriendList = styled.ul`
   list-style: none;
   margin: 0;
-  padding: 12px 0px;
+  padding: 0px;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -29,32 +29,36 @@ const FriendList = styled.ul`
   }
 `;
 
-// const socket = io(":5000");
-
 const Friends = () => {
-  const { useAuth } = useAppHooks();
+  const { useAuth, socket } = useAppHooks();
   const [{ user }, _] = useAuth;
 
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true)
 
+  socket.on('new-friend-confirm', data => {
+    if (data.to === user.id || data.from === user.id) setFriends(data.friends)
+  })
+
   useEffect(() => {
     const getFriends = async () => {
       if (user) {
-        let f = await api.user.getFriendList(user.id)
-        if (f.length > 0) setFriends(f)
+        let res = await api.user.getFriendList(user.id)
+        setFriends(res.data)
       }
       setLoading(false)
     }
 
     getFriends()
-  }, [user])
+  }, [])
+
+  console.log(friends)
 
   return (
     <FriendsContainer>
       <FriendList>
         {!loading && friends.length === 0 && <h4>You have no friends. Start search amazing people.</h4>}
-        {!loading && friends.length > 0 && console.log(friends)}
+        {!loading && friends.length > 0 && friends.map(friend => <Friend key={friend.id} friend={friend} />)}
       </FriendList>
       <Requests />
     </FriendsContainer>

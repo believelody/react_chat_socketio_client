@@ -79,7 +79,7 @@ const Requests = () => {
           requests.length > 0 &&
           <RequestList>
             <div className='request-label'>Friends request: <span>{requests.length > 0 ? requests.length : 0}</span></div>
-            {requests.map(request => <Request setRequests={setRequests} key={request.id} contact={request} />)}
+            {requests.map(request => <Request key={request.id} contact={request} />)}
           </RequestList>
         }
       </RequestsContainer>

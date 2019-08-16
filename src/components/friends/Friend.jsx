@@ -4,28 +4,57 @@ import { useAppHooks } from "../../contexts";
 import { CHAT_SELECTED } from "../../reducers/transitionReducer";
 import isMobile from "../../utils/isMobile";
 import api from "../../api";
+import OpenChatIcon from "../icons/OpenChatIcon";
+import FriendRequestIcon from "../icons/FriendRequestIcon";
 
 const FriendStyle = styled.li`
   margin: 0;
-  padding-left: 8px;
-  transition: all 300ms ease-in;
+  padding: 4px 0;
   cursor: pointer;
+  width: auto;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  transition: all 300ms ease-in;
 
-  &:hover,
-  &:active {
+  &:hover {
     background-color: #32465a;
-    padding-left: 24px;
-    border-right: 2px solid #2c3e50;
+    padding-left: 16px;
+    border-right: 0.6em solid white;
+    color: white;
+  }
+
+  & .friend-name {
+    font-size: 1.8em;
+    margin-left: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+  }
+
+  & .friend-actions {
+    margin-left: auto;
+    margin-right: 8px;
+
+    & > .friend-actions-chat {
+      background-color: #FFA500;
+    }
+
+    & > .friend-actions-unfriend {
+      background-color: indianred;
+        cursor: pointer;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+        margin: 0px 4px;
+    }
   }
 `;
 
-const Friend = ({ contact }) => {
+const Friend = ({ friend }) => {
   const { useAuth, useTransition, history, socket } = useAppHooks();
   const [{ user }, dispatchAuth] = useAuth;
   const [transition, dispatchTransition] = useTransition;
 
-  const handleClick = async () => {
-    let users = [contact.id, user.id];
+  const openChat = async () => {
+    let users = [friend.id, user.id];
     socket.emit("new-chat", users);
     if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
     // try {
@@ -44,7 +73,21 @@ const Friend = ({ contact }) => {
     // }
   };
 
-  return <FriendStyle onClick={handleClick}>{contact.username}</FriendStyle>;
+  const unfriend = () => {
+
+  }
+
+  return <FriendStyle>
+    <span className="friend-name">{friend.name}</span>
+    <span className="friend-actions">
+      <OpenChatIcon className='friend-actions-chat' handleClick={openChat} />
+      <FriendRequestIcon
+        className='friend-actions-unfriend'
+        cancel={true}
+        handleClick={unfriend}
+      />
+    </span>
+  </FriendStyle>;
 };
 
 export default Friend;
