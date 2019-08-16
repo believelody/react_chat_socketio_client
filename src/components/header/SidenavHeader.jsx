@@ -48,7 +48,7 @@ const SidenavHeader = () => {
       const res = await api.user.dropFriend()
       alert(res.data.msg)
     } catch (error) {
-      console.log(error)
+      console.log(error.response.data)
     }
   }
 
@@ -63,7 +63,7 @@ const SidenavHeader = () => {
 
   return (
     <HeaderStyle>
-      {/* <Button circular content='DF' onClick={dropFriendTable} /> */}
+      <Button circular content='DF' onClick={dropFriendTable} />
       {/* <Button circular content='DR' onClick={dropRequestTable} /> */}
       <h4>SocketIO Chat</h4>
       <SearchUserIcon className="action-contact" handleClick={searchContact} />

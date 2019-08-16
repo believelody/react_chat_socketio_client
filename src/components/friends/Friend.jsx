@@ -74,7 +74,7 @@ const Friend = ({ friend }) => {
   };
 
   const unfriend = () => {
-
+    socket.emit('delete-friend', {contactId: friend.id, userId: user.id})
   }
 
   return <FriendStyle>
