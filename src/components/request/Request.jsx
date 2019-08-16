@@ -55,7 +55,7 @@ const Request = ({ contact, setRequests }) => {
     const [{ user }, dispatchAuth] = useAuth;
 
     const confirmAction = () => {
-        socket.on('request-confirm', data => {
+        socket.on('delete-request-confirm', data => {
             if (data.error) {
                 alert(data.error)
             }

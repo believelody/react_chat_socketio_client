@@ -63,8 +63,8 @@ const SidenavHeader = () => {
 
   return (
     <HeaderStyle>
-      <Button circular content='DF' onClick={dropFriendTable} />
-      <Button circular content='DR' onClick={dropRequestTable} />
+      {/* <Button circular content='DF' onClick={dropFriendTable} /> */}
+      {/* <Button circular content='DR' onClick={dropRequestTable} /> */}
       <h4>SocketIO Chat</h4>
       <SearchUserIcon className="action-contact" handleClick={searchContact} />
       <SettingIcon className="action-contact" handleClick={settingUser} />
