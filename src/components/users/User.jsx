@@ -72,7 +72,6 @@ const User = ({ contact }) => {
   }
 
   socket.on('new-request-confirm', data => {
-    console.log(data)
     if (data.from.id === user.id) confirmAction(data, true, false)
   })
 
@@ -81,7 +80,6 @@ const User = ({ contact }) => {
   })
 
   socket.on('delete-request-confirm', data => {
-    console.log(data)
     if (data.to.id === user.id) confirmAction(data, false, false)
   })
 
@@ -141,9 +139,11 @@ const User = ({ contact }) => {
   }
 
   useEffect(() => {
-    console.log(requests)
-    setCancel(requests.length > 0 ? requests.find(r => r.id === user.id) : false)
-  }, [requests, cancel])
+    if (requests.length > 0) {
+      let cancel = requests.find(r => r.requesterId === user.id ? true : false)
+      setCancel(!!cancel)
+    }
+  }, [cancel, requests])
 
   return (
     <UserStyle cancel={cancel}>

@@ -9,7 +9,7 @@ const RequestStyle = styled.li`
   margin: 0;
   padding: 8px 0;
   width: auto;
-  height: 50px;
+  height: 40px;
   display: flex;
   align-items: center;
   color: white;
@@ -32,20 +32,22 @@ const RequestStyle = styled.li`
     margin-left: auto;
     margin-right: 8px;
 
-    & > .contact-action-accept {
-        background-color: #8FBC8F;
+    & > .contact-action-btn {
+        width: 30px;
+        height: 30px;
         cursor: pointer;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
         box-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
         margin: 0px 4px;
+        padding: 0;
     }
 
-    & > .contact-action-close {
+    & > .accept {
+        background-color: #8FBC8F;
+    }
+
+    & > .close {
         background-color: indianred;
-        cursor: pointer;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
-        box-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
-        margin: 0px 4px;
     }
   }
 `;
@@ -53,8 +55,6 @@ const RequestStyle = styled.li`
 const Request = ({ contact }) => {
     const { useAuth, socket  } = useAppHooks();
     const [{ user }, dispatchAuth] = useAuth;
-
-    console.log(contact)
 
     const confirmRequestDenied = () => {
         socket.on('delete-request-confirm', data => {
@@ -117,8 +117,8 @@ const Request = ({ contact }) => {
         <RequestStyle>
             <span className="contact-name">{contact.name}</span>
             <span className="contact-actions">
-                <AcceptIcon className='contact-action-accept' handleClick={acceptFriendRequest} />
-                <CloseIcon className='contact-action-close' handleClick={denyFriendRequest} />
+                <AcceptIcon className='contact-action-btn accept' handleClick={acceptFriendRequest} />
+                <CloseIcon className='contact-action-btn close' handleClick={denyFriendRequest} />
             </span>
         </RequestStyle>
     );

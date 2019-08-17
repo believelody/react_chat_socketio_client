@@ -9,6 +9,7 @@ import { useAppHooks } from "../../contexts";
 import devices from "../../utils/devices";
 import api from "../../api";
 import NotFriend from "../friends/NotFriend";
+import { DELETE_CHAT } from "../../reducers/chatReducer";
 
 const ChatStyle = styled.div`
   width: 100%;
@@ -40,6 +41,7 @@ const Chat = ({ id }) => {
     const fetchChat = async () => {
       try {
         const res = await api.chat.getChat(id)
+        console.log(res.data)
         setChat(res.data)
         setLoading(false)
       } catch (error) {

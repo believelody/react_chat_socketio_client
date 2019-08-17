@@ -114,11 +114,7 @@ const ChatHeader = ({ getHeaderPosition, isDisplayed, users }) => {
   useEffect(() => {
     setSelected(!isSelected);
   }, []);
-
-  useEffect(() => socket.on('request-confirm', data => {
-    console.log(data)
-  }))
-
+  
   return (
     <ChatHeaderStyle ref={headerRef}>
       <span className="btn-option" onClick={handleClick}>

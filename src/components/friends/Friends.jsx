@@ -58,8 +58,6 @@ const Friends = () => {
     getFriends()
   }, [])
 
-  console.log(friends)
-
   return (
     <FriendsContainer>
       <FriendList>

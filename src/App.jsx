@@ -8,6 +8,8 @@ import HomePage from "./pages/home/HomePage";
 import devices from "./utils/devices";
 import Modal from "./components/modal/Modal";
 import ChatDetail from "./pages/detail/ChatDetail";
+import { useAppHooks } from "./contexts";
+import api from "./api";
 
 const AppStyle = styled.div`
   display: flex;
@@ -33,6 +35,10 @@ const AppStyle = styled.div`
 `;
 
 const App = () => {
+  const { socket } = useAppHooks()
+
+  socket.emit('purge-chat')
+
   return (
     <BrowserRouter>
       <AppStyle>

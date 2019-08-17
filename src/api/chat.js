@@ -6,8 +6,7 @@ const defaultPath = "chats";
 export default {
   getChats: () => axios.get(`${baseUrl}/${defaultPath}`),
 
-  searchChatByUsers: users =>
-    axios.get(`${baseUrl}/${defaultPath}/searching-chat?users=${users}`),
+  searchChatByUsers: users => axios.get(`${baseUrl}/${defaultPath}/searching-chat?users=${users}`),
 
   getChat: id => axios.get(`${baseUrl}/${defaultPath}/${id}`),
 

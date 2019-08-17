@@ -12,7 +12,7 @@ const FriendStyle = styled.li`
   padding: 4px 0;
   cursor: pointer;
   width: auto;
-  height: 40px;
+  height: 50px;
   display: flex;
   align-items: center;
   transition: all 300ms ease-in;
@@ -34,16 +34,19 @@ const FriendStyle = styled.li`
     margin-left: auto;
     margin-right: 8px;
 
-    & > .friend-actions-chat {
+    & > .chat {
       background-color: #FFA500;
     }
 
-    & > .friend-actions-unfriend {
+    & > .unfriend {
       background-color: indianred;
-        cursor: pointer;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
-        box-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
-        margin: 0px 4px;
+    }
+
+    & > .friend-actions-btn {
+      cursor: pointer;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, .6);
+      margin: 0px 4px;
     }
   }
 `;
@@ -55,22 +58,22 @@ const Friend = ({ friend }) => {
 
   const openChat = async () => {
     let users = [friend.id, user.id];
-    socket.emit("new-chat", users);
-    if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
-    // try {
-    //   let chatRequest = await api.chat.searchChatByFriends(users);
-
-    //   if (chatRequest) {
-    //     history.push(`/chats/${chatRequest.id}`);
-    //   } else {
-    //     let chat = await api.chat.createChat(users);
-    //     if (chat) {
-    //       history.push(`/chats/${chat.id}`);
-    //     }
-    //   }
-    // } catch (error) {
-    //   throw error;
-    // }
+    // socket.emit("new-chat", users);
+    try {
+      let res = await api.chat.searchChatByUsers(users);
+      
+      if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
+      if (res.data.id) {
+        history.push(`/chats/${res.data.id}`);
+      } else {
+        let res = await api.chat.createChat(users);
+        if (res.data.id) {
+          history.push(`/chats/${res.data.id}`);
+        }
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
   };
 
   const unfriend = () => {
@@ -80,9 +83,9 @@ const Friend = ({ friend }) => {
   return <FriendStyle>
     <span className="friend-name">{friend.name}</span>
     <span className="friend-actions">
-      <OpenChatIcon className='friend-actions-chat' handleClick={openChat} />
+      <OpenChatIcon className='friend-actions-btn chat' handleClick={openChat} />
       <FriendRequestIcon
-        className='friend-actions-unfriend'
+        className='friend-actions-btn unfriend'
         cancel={true}
         handleClick={unfriend}
       />
