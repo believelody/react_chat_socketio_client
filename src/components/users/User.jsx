@@ -61,33 +61,32 @@ const User = ({ contact }) => {
 
   const closeModal = () => dispatchModal({ type: CLOSE_MODAL });
 
-  const confirmAction = (user, data, cancel, display) => {
-    if (data.from.id === user.id) {
-      if (data.error) {
-        alert(data.error)
-      }
-      else {
-        setRequests(data.requests)
-        setCancel(cancel)
-        if (display) alert(data.from.msg)
-      }
+  const confirmAction = (data, user, cancel, display) => {
+    console.log(data)
+    if (data.error) {
+      alert(data.error)
+    }
+    else if (data.from.id === user.id){
+      setRequests(data.requests)
+      setCancel(cancel)
+      if (display) alert(data.from.msg)
     }
   }
 
-  socketOn('new-request-confirm', socket, user, (user, data) => confirmAction(user, data, true, false))
-  socketOn('cancel-request-confirm', socket, user, (user, data) => confirmAction(user, data, false, false))
-  socketOn('delete-request-confirm', socket, user, (user, data) => confirmAction(user, data, false, false))
+  socketOn('new-request-confirm', socket, user, (data, user) => confirmAction(data, user, true, false))
+  socketOn('cancel-request-confirm', socket, user, (data, user) => confirmAction(data, user, false, false))
+  socketOn('delete-request-confirm', socket, user, (data, user) => confirmAction(data, user, false, false))
 
   const openChat = async () => {
     try {
       let users = [contact.id, user.id];
-      let res = await api.chat.searchChatByUsers(users);
+      let res = await api.chat.searchChatByUsers(contact.id, user.id);
       if (!res.data) {
         res = await api.chat.createChat(users)
       }
       closeModal();
       if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
-      history.push(`/chats/${res.data.id}`);
+      if (res.data && res.data.id) history.push(`/chats/${res.data.id}`);
     } catch (error) {
       console.log(error);
     }
@@ -98,7 +97,7 @@ const User = ({ contact }) => {
   };
 
   const cancelFriendRequest = async () => {
-    socketEmit('cancel-request', socket, contact, user)
+    socketEmit('cancel-request', socket, { contactId: contact.id, userId: user.id })
   };
 
   const handleClick = () => {

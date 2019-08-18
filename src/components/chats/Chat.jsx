@@ -36,7 +36,6 @@ const Chat = ({ id }) => {
     setDisplay(isDisplayed);
     setY(y);
   };
-
   
   useEffect(() => {
     const fetchChat = async () => {
@@ -80,7 +79,7 @@ const Chat = ({ id }) => {
           </Dropdown>
           <MessageList messages={chat.messages} users={chat.users} />
           {
-            chat.users.length === 2 && 
+            chat.users.length === 2 && chat.messages.length > 0 &&
             <NotFriend contact={chat.users.find(u => u.name !== user.name)} />
           }
           <MessageForm chatId={chat.id} />

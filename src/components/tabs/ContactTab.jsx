@@ -2,6 +2,7 @@ import React from "react";
 import styled from 'styled-components'
 import { useAppHooks } from "../../contexts";
 import api from "../../api";
+import { socketOn } from "../../socket";
 
 const ContactsTabStyle = styled.div`
   & .friend {
@@ -34,37 +35,34 @@ const ContactsTab = () => {
   const [friends, setFriends] = React.useState([])
   const [requests, setRequests] = React.useState([])
 
-  socket.on('new-request-confirm', data => {
+  socketOn('new-request-confirm', socket, user, (data, user) => {
     if (data.error) {
       alert(data.error)
     }
     else if (data.to.id === user.id) setRequests(data.requests)
   })
 
-  socket.on('cancel-request-confirm', data => {
+  socketOn('cancel-request-confirm', socket, user, (data, user) => {
     if (data.error) {
       alert(data.error)
     }
     else if (data.to.id === user.id) setRequests(data.requests)
   })
 
-  socket.on('delete-request-confirm', data => {
+  socketOn('delete-request-confirm', socket, user, (data, user) => {
     if (data.error) {
       alert(data.error)
     }
     else if (data.from.id === user.id) setRequests(data.requests)
   })
 
-  socket.on('new-friend-confirm', data => {
-    console.log(data)
+  socketOn('new-friend-confirm', socket, user, (data, user) => {
     if (data.from.id === user.id) setFriends(data.from.friends)
     if (data.to.id === user.id) setFriends(data.to.friends)
     if (data.from.id === user.id) setRequests(data.from.requests)
   })
 
-  socket.on('delete-friend-confirm', data => {
-    console.log(data)
-    console.log(user.id)
+  socketOn('delete-friend-confirm', socket, user, (data, user) => {
     if (data.from.id === user.id) setFriends(data.from.friends)
     if (data.to.id === user.id) setFriends(data.to.friends)
   })

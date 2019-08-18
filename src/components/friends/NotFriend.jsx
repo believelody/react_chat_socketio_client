@@ -39,8 +39,6 @@ const NotFriend = ({ contact }) => {
     const [isBlocked, setIsBlock] = useState(false)
 
     const checkResponse = (data, user, cb) => {
-        console.log(data)
-        console.log(user)
         if (!data) {
             cb(false)
         }
@@ -64,7 +62,6 @@ const NotFriend = ({ contact }) => {
     const acceptContact = () => {
         socketEmit('new-friend', socket, { contactId: contact.id, userId: user.id })
         socketOn('new-friend-confirm', socket, user, (data, user) => {
-            console.log(data)
             if (data.from.id === user.id) setIsFriend(true)
             if (data.from.id === user.id) setIsRequest(false)
         })
@@ -74,6 +71,9 @@ const NotFriend = ({ contact }) => {
 
     socketOn('check-friend-response', socket, contact, (data, contact) => checkResponse(data, contact, setIsFriend))
     socketOn('check-request-response', socket, contact, (data, contact) => checkResponse(data, contact, setIsRequest))
+    socketOn('delete-friend-confirm', socket, user, (data, user) => {
+        if (data.from.id === user.id) setIsFriend(false)
+    })
     // socketOn('check-is-blocked-response', socket, user, (data, user) => checkResponse(data, user, setIsBlock))
     // socketOn('check-has-blocked-response', socket, contact, (data, contact) => checkResponse(data, contact, setHasBlock))
 
@@ -83,6 +83,9 @@ const NotFriend = ({ contact }) => {
         // socketEmit('check-is-blocked', socket, {contactId: contact.id, userId: user.id})
         // socketEmit('check-has-blocked', socket, {contactId: contact.id, userId: user.id})
     }, [])
+
+    console.log(isFriend)
+    console.log(isRequest)
 
     return (
         <NotFriendStyle>
