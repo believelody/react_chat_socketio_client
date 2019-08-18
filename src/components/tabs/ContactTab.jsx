@@ -56,6 +56,7 @@ const ContactsTab = () => {
   })
 
   socket.on('new-friend-confirm', data => {
+    console.log(data)
     if (data.from.id === user.id) setFriends(data.from.friends)
     if (data.to.id === user.id) setFriends(data.to.friends)
     if (data.from.id === user.id) setRequests(data.from.requests)

@@ -4,6 +4,7 @@ import { useAppHooks } from "../../contexts";
 import api from "../../api";
 import AcceptIcon from "../icons/AcceptIcon";
 import CloseIcon from "../icons/CloseIcon";
+import { socketEmit, socketOn } from "../../socket";
 
 const RequestStyle = styled.li`
   margin: 0;
@@ -53,64 +54,42 @@ const RequestStyle = styled.li`
 `;
 
 const Request = ({ contact }) => {
-    const { useAuth, socket  } = useAppHooks();
-    const [{ user }, dispatchAuth] = useAuth;
+    const { useAuth, socket  } = useAppHooks()
+    const [{ user }, dispatchAuth] = useAuth
 
-    const confirmRequestDenied = () => {
-        socket.on('delete-request-confirm', data => {
-            if (data.error) {
-                alert(data.error)
+    const confirmFriendAccepted = (data, user) => {
+        if (data.error) {
+            alert(data.error)
+        }
+        else {
+            if (data.from === user.id) {
+                alert(data.msgToReceiverRequest)
             }
-            else {
-                if (data.from.id === user.id) {
-                    alert(data.from.msg)
-                }
+            else if (data.to === user.id) {
+                alert(data.msgToSenderRequest)
             }
-        })
+        }
     }
 
-    const confirmFriendAccepted = () => {
-        socket.on('new-friend-confirm', data => {
-            if (data.error) {
-                alert(data.error)
+    const confirmRequestDenied = (data, user) => {
+        if (data.error) {
+            alert(data.error)
+        }
+        else {
+            if (data.from.id === user.id) {
+                alert(data.from.msg)
             }
-            else {
-                if (data.from === user.id) {
-                    alert(data.msgToReceiverRequest)
-                }
-                else if (data.to === user.id) {
-                    alert(data.msgToSenderRequest)
-                }
-            }
-        })
+        }
     }
 
     const acceptFriendRequest = async () => {
-        socket.emit('new-friend', { contactId: contact.id, userId: user.id })
-        confirmFriendAccepted()
-        /* try {
-            let res = await api.user.addFriend(contact.id, user.id);
-            if (res.data) {
-                alert(res.data.msg)
-                handlePropsFromParent(res.data.requests)
-            }
-        } catch (error) {
-            console.log(error);
-        } */
+        socketEmit('new-friend', socket, { contactId: contact.id, userId: user.id })
+        socketOn('new-friend-confirm', socket, user, (data, user) => confirmFriendAccepted(data, user))
     };
 
     const denyFriendRequest = async () => {
-        socket.emit("delete-request", { contactId: contact.id, userId: user.id });
-        confirmRequestDenied()
-        /* try {
-            const res = await api.user.deleteRequest(contact.id, user.id)
-            if (res.data) {
-                alert(res.data.msg)
-                handlePropsFromParent(res.data.requests)
-            }
-        } catch (error) {
-            console.log(error.response.data);
-        } */
+        socketEmit('delete-request', socket, { contactId: contact.id, userId: user.id })
+        socketOn('delete-request-confirm', socket, user, (data, user) => confirmRequestDenied(data, user))
     };
 
     return (

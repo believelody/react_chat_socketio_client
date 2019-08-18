@@ -37,15 +37,15 @@ const Chat = ({ id }) => {
     setY(y);
   };
 
+  
   useEffect(() => {
     const fetchChat = async () => {
       try {
         const res = await api.chat.getChat(id)
-        console.log(res.data)
         setChat(res.data)
         setLoading(false)
       } catch (error) {
-        console.log(error)
+        console.log(error.response.data)
         setLoading(false)
       }
     }
@@ -79,7 +79,10 @@ const Chat = ({ id }) => {
             />
           </Dropdown>
           <MessageList messages={chat.messages} users={chat.users} />
-          {chat.users.length < 3 && <NotFriend contact={chat.users.find(u => u.name !== user.name)} />}
+          {
+            chat.users.length === 2 && 
+            <NotFriend contact={chat.users.find(u => u.name !== user.name)} />
+          }
           <MessageForm chatId={chat.id} />
         </div>
       )}

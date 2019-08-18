@@ -71,22 +71,24 @@ const AuthRoute = ({ component: Component, ...rest }) => {
   }, [isConnected, socket, user]);
 
   return (
-    <Route
-      {...rest}
-      render={props => (
-        <React.Fragment>
-          {isLoaded && <div>Loading...</div>}
-          {
-            !isLoaded && isConnected &&
-            <PageStyle isSelected={chatSelected}>
-              <Sidenav />
-              <Component {...props} />
-            </PageStyle>
-            }
-          {!isLoaded && !isConnected && <Redirect to="/login" />}
-        </React.Fragment>
-      )}
-    />
+    <React.Fragment>
+      {isLoaded && <div>Loading...</div>}
+      {
+        !isLoaded && isConnected &&
+        <Route
+          {...rest}
+          render={
+            props => (
+              <PageStyle isSelected={chatSelected}>
+                <Sidenav />
+                <Component {...props} />
+              </PageStyle>
+            )
+          }
+        />
+      }
+      {!isLoaded && !isConnected && <Redirect to="/login" />}
+    </React.Fragment>
   );
 };
 

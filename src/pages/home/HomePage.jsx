@@ -10,7 +10,7 @@ const HomePageStyle = styled.div`
 const HomePage = ({ match }) => {
   const { useTransition } = useAppHooks();
   const [{ chatSelected }, _] = useTransition;
-
+  
   return (
     <HomePageStyle>
       <NoChat />

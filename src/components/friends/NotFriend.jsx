@@ -3,10 +3,11 @@ import { Button } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { useAppHooks } from '../../contexts';
 import api from '../../api';
+import { socketEmit, socketOn } from '../../socket';
 
 const NotFriendStyle = styled.div`
     text-align: center;
-    background-color: white;
+    background-color: transparent;
     color: black;
     position: absolute;
     padding: 5px 0px;
@@ -22,44 +23,66 @@ const NotFriendStyle = styled.div`
         // border-radius: 4px;
         box-shadow: 2px 2px 4px rgba(0, 0, 0, .4);
     }
+
+    & .or {
+        margin: 0px 4px 0px 8px;
+    }
 `
 
 const NotFriend = ({ contact }) => {
-    const { useAuth } = useAppHooks()
+    const { useAuth, socket } = useAppHooks()
     const [{user}, _] = useAuth
 
-    const [isFriend, setIsFriend] = useState(null)
-    const [isRequest, setIsRequest] = useState(null)
-    const [hasBlocked, setHasBlock] = useState(null)
-    const [isBlocked, setIsBlock] = useState(null)
+    const [isFriend, setIsFriend] = useState(false)
+    const [isRequest, setIsRequest] = useState(false)
+    const [hasBlocked, setHasBlock] = useState(false)
+    const [isBlocked, setIsBlock] = useState(false)
+
+    const checkResponse = (data, user, cb) => {
+        console.log(data)
+        console.log(user)
+        if (!data) {
+            cb(false)
+        }
+        else if (data.id === user.id) {
+            cb(true)
+        }
+    }
+
+    const unblockContact = () => {
+        alert('contact blocked')
+        // socketEmit('check-is-blocked', socket, {contactId: contact.id, userId: user.id})
+        // socketEmit('check-has-blocked', socket, {contactId: contact.id, userId: user.id})
+    }
 
     const blockContact = () => {
         alert('contact blocked')
+        // socketEmit('check-is-blocked', socket, {contactId: contact.id, userId: user.id})
+        // socketEmit('check-has-blocked', socket, {contactId: contact.id, userId: user.id})
     }
     
     const acceptContact = () => {
-        alert('friend\'s request accepted')
+        socketEmit('new-friend', socket, { contactId: contact.id, userId: user.id })
+        socketOn('new-friend-confirm', socket, user, (data, user) => {
+            console.log(data)
+            if (data.from.id === user.id) setIsFriend(true)
+            if (data.from.id === user.id) setIsRequest(false)
+        })
+        socketEmit('check-friend', socket, {contactId: contact.id, userId: user.id})
+        // socketEmit('check-request', socket, {contactId: contact.id, userId: user.id})
     }
 
+    socketOn('check-friend-response', socket, contact, (data, contact) => checkResponse(data, contact, setIsFriend))
+    socketOn('check-request-response', socket, contact, (data, contact) => checkResponse(data, contact, setIsRequest))
+    // socketOn('check-is-blocked-response', socket, user, (data, user) => checkResponse(data, user, setIsBlock))
+    // socketOn('check-has-blocked-response', socket, contact, (data, contact) => checkResponse(data, contact, setHasBlock))
+
     useEffect(() => {
-        const checkFriend = async () => {
-            const res = await api.user.getFriendList(user.id)
-            const friends = res.data
-            if (friends.length > 0) {
-                let match = friends.find(friend => friend.id === contact.id)
-                if (match) {
-                    setIsFriend(match)
-                }
-                else {
-                    setIsFriend(null)
-                }
-            }
-        }
-
-        checkFriend()
-    }, [isFriend])
-
-    console.log('not friend')
+        socketEmit('check-friend', socket, {contactId: contact.id, userId: user.id})
+        socketEmit('check-request', socket, {contactId: contact.id, userId: user.id})
+        // socketEmit('check-is-blocked', socket, {contactId: contact.id, userId: user.id})
+        // socketEmit('check-has-blocked', socket, {contactId: contact.id, userId: user.id})
+    }, [])
 
     return (
         <NotFriendStyle>
@@ -71,7 +94,7 @@ const NotFriend = ({ contact }) => {
                 </span>
             }
             {
-                !isFriend && isRequest && !hasBlocked && !isBlocked && isRequest.id === contact.id &&
+                !isFriend && isRequest && !hasBlocked && !isBlocked &&
                 <span className='not-friend'>
                     This contact sent you a friend's request. What do you want to do?
                     <Button className='blocked-request' onClick={acceptContact} content={<b>Accept</b>} />
@@ -83,7 +106,7 @@ const NotFriend = ({ contact }) => {
                 !isFriend && !isRequest && hasBlocked && isBlocked && hasBlocked.id === contact.id &&
                 <span className='not-friend'>
                     This contact has been blocked. You Do you want to unblock him?
-                    <Button className='blocked-request' onClick={blockContact} content={<b>Yes</b>} />
+                    <Button className='blocked-request' onClick={unblockContact} content={<b>Yes</b>} />
                 </span>
             }
             {

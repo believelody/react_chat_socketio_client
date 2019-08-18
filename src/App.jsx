@@ -35,10 +35,6 @@ const AppStyle = styled.div`
 `;
 
 const App = () => {
-  const { socket } = useAppHooks()
-
-  socket.emit('purge-chat')
-
   return (
     <BrowserRouter>
       <AppStyle>

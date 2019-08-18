@@ -6,11 +6,11 @@ import isMobile from "../../utils/isMobile";
 import api from "../../api";
 import OpenChatIcon from "../icons/OpenChatIcon";
 import FriendRequestIcon from "../icons/FriendRequestIcon";
+import { socketEmit } from "../../socket";
 
 const FriendStyle = styled.li`
   margin: 0;
   padding: 4px 0;
-  cursor: pointer;
   width: auto;
   height: 50px;
   display: flex;
@@ -57,27 +57,21 @@ const Friend = ({ friend }) => {
   const [transition, dispatchTransition] = useTransition;
 
   const openChat = async () => {
-    let users = [friend.id, user.id];
-    // socket.emit("new-chat", users);
-    try {
+    try {      
+      let users = [friend.id, user.id];
       let res = await api.chat.searchChatByUsers(users);
-      
-      if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
-      if (res.data.id) {
-        history.push(`/chats/${res.data.id}`);
-      } else {
-        let res = await api.chat.createChat(users);
-        if (res.data.id) {
-          history.push(`/chats/${res.data.id}`);
-        }
+      if (!res.data) {
+        res = await api.chat.createChat(users)
       }
+      if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
+      history.push(`/chats/${res.data.id}`);
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error);
     }
   };
 
   const unfriend = () => {
-    socket.emit('delete-friend', {contactId: friend.id, userId: user.id})
+    socketEmit('delete-friend', socket, {contactId: friend.id, userId: user.id})
   }
 
   return <FriendStyle>
