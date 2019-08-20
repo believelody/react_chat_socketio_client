@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import api from "../../api";
+import ChatItem from "./ChatItem";
 
 const ChatsContainer = styled.div`
   padding: 0;
@@ -36,15 +37,20 @@ const Chats = () => {
 
   useEffect(() => {
     const getChats = async () => {
-      if (user) {
-        let c = await api.user.getChatList(user.id)
-        if (c.length > 0) setChats(c)
+      try {
+        if (user) {
+          let res = await api.user.getChatList(user.id)
+          if (res.data.length > 0) setChats(res.data)
+        }
+        setLoading(false)
+      } catch (error) {
+        console.log(error)
+        setLoading(false)
       }
-      setLoading(false)
     }
 
     getChats()
-  }, [user])
+  }, [])
 
   return (
     <ChatsContainer>
@@ -53,7 +59,7 @@ const Chats = () => {
           !loading && chats.length === 0 && <h4>You have no chats. Choose a Chat and start talking.</h4>
         }
         {
-          !loading && chats.length > 0 && console.log(chats)
+          !loading && chats.length > 0 && chats.map(chat => <ChatItem key={chat.id} chat={chat} />)
         }
       </ChatListStyle>
     </ChatsContainer>

@@ -8,7 +8,7 @@ const InputStyle = styled.input`
   color: white;
 `;
 
-const TextInput = ({ value, placeholder, handleChange, handleKeyPress }) => {
+const TextInput = ({ value, placeholder, handleChange, handleKeyPress, handleFocus }) => {
   return (
     <InputStyle
       type="text"
@@ -16,6 +16,7 @@ const TextInput = ({ value, placeholder, handleChange, handleKeyPress }) => {
       placeholder={placeholder}
       onChange={e => handleChange(e.target.value)}
       onKeyPress={handleKeyPress}
+      onFocus={handleFocus}
     />
   );
 };

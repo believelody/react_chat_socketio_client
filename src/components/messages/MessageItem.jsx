@@ -3,6 +3,7 @@ import moment from "moment";
 import Moment from "react-moment";
 import styled from "styled-components";
 import devices from "../../utils/devices";
+import { useAppHooks } from "../../contexts";
 
 const MessageStyle = styled.li`
   border-radius: 8px;
@@ -14,8 +15,10 @@ const MessageStyle = styled.li`
   padding: 0px 5px 2px;
   max-width: 40%;
   position: relative;
+  color: black;
   left: ${props => (!props.isYou ? "0px" : "60%")};
   /* right: ${props => (props.isYou ? "0px" : "40%")}; */
+
   & .message-author {
     padding: 0;
     margin: 4px 0;
@@ -46,10 +49,15 @@ const MessageStyle = styled.li`
 `;
 
 const MessageItem = ({ message, contact }) => {
+  const { useAuth } = useAppHooks()
+  const [{user}, dispatchAuth] = useAuth
+
+  // console.log(message)
+
   return (
-    <MessageStyle isYou={message.author === localStorage.username}>
+    <MessageStyle isYou={message.authorId === user.id}>
       <h5 className="message-author">
-        {message.author === localStorage.username ? "You" : contact.username}
+        {message.authorId === user.id ? "You" : contact.name}
       </h5>
       <p className="message-text">{message.text}</p>
       <span className="message-date">

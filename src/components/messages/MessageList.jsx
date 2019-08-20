@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import MessageItem from "./MessageItem";
 import { useAppHooks } from "../../contexts";
+import { socketOn } from "../../socket";
 
 const MessageListStyle = styled.ul`
   margin: 50px 0px 140px;
@@ -16,12 +17,20 @@ const MessageListStyle = styled.ul`
   scroll-behavior: smooth;
 `;
 
-const MessageList = ({ users, messages }) => {
-  const { useAuth } = useAppHooks()
+const MessageList = ({ chat }) => {
+  const { useAuth, socket } = useAppHooks()
   const [{user},_] = useAuth
   const messagesRef = React.useRef();
+  
+  const [messages, setMessages] = useState(chat.messages)
+  const [users, setUsers] = useState(chat.users)
+  const contact = users.find(u => u.name !== user.name);
 
-  const contact = users.find(u => u.name !== u.name);
+  socketOn('fetch-messages', socket, messages, (data, messages) => {
+    if (data.chatId === chat.id && messages.length !== data.messages.length) {
+      setMessages(data.messages)
+    }
+  })
 
   return (
     <MessageListStyle ref={messagesRef}>

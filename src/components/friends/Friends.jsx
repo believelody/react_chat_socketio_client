@@ -19,6 +19,18 @@ const FriendList = styled.ul`
   margin: 0;
   padding: 0px;
 
+  & > .friend-label {
+    width: 100%;
+    height: 100%;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, .6);
+    padding: 12px 8px;
+    text-align: left;
+    font-size: 1.2em;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, .8), -1px -1px 2px rgba(0, 0, 0, .8);
+    background-color: white;
+    border-radius: 2px;
+  }
+
   &::-webkit-scrollbar {
     width: 8px;
     background: #2c3e50;
@@ -60,10 +72,16 @@ const Friends = () => {
 
   return (
     <FriendsContainer>
-      <FriendList>
-        {!loading && friends.length === 0 && <h4>You have no friends. Start search amazing people.</h4>}
-        {!loading && friends.length > 0 && friends.map(friend => <Friend key={friend.id} friend={friend} />)}
-      </FriendList>
+      {!loading && friends.length === 0 && <h4>You have no friends. Start search amazing people.</h4>}
+        {
+          !loading && friends.length > 0 &&
+          <FriendList>
+          <div className='request-label'>
+            Your Friends: <span>{friends.length > 0 ? friends.length : 0}</span>
+          </div>
+          {friends.map(friend => <Friend key={friend.id} friend={friend} />)}
+          </FriendList>
+        }
       <Requests />
     </FriendsContainer>
   );

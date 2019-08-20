@@ -59,12 +59,12 @@ const Friend = ({ friend }) => {
   const openChat = async () => {
     try {      
       let users = [friend.id, user.id];
-      let res = await api.chat.searchChatByUsers(users);
+      let res = await api.chat.searchChatByUsers(friend.id, user.id);
       if (!res.data) {
         res = await api.chat.createChat(users)
       }
       if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
-      history.push(`/chats/${res.data.id}`);
+      if (res.data && res.data.id) history.push(`/chats/${res.data.id}`);
     } catch (error) {
       console.log(error);
     }

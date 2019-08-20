@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from 'styled-components'
 import { useAppHooks } from "../../contexts";
 import api from "../../api";
+import { socketOn } from "../../socket";
 
 const ChatsTabStyle = styled.div`  
   & .number {
@@ -20,10 +21,34 @@ background: radial-gradient(circle at 2px 2px, #EDDE5D, #F09819); /* W3C, IE 10+
 `
 
 const ChatsTab = () => {
+  const { useAuth, socket } = useAppHooks()
+  const [{user}, dispatchAuth] = useAuth
+
+  const [unreads, setUnreads] = useState(0)
+
+  socketOn('count-unread-chat', socket, user, (data, user) => {
+    console.log('outside')
+    if (data.users.find(u => u.id === user.id)) {
+      console.log('inside')
+      setUnreads(prevUnreads => prevUnreads + 1)
+    }
+  })
+
+  useEffect(() => {
+    const fetchUnread = async () => {
+      try {
+        
+      } catch (error) {
+        
+      }
+    }
+
+  }, [])
+
   return (
     <ChatsTabStyle>
       <span className='label'>Chats</span>
-      {/*requests.length > 0 && <span className='number'>{requests.length}</span>*/}
+      {unreads > 0 && <span className='number'>{unreads}</span>}
     </ChatsTabStyle>
   );
 };

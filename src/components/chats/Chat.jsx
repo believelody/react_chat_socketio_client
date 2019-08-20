@@ -10,6 +10,7 @@ import devices from "../../utils/devices";
 import api from "../../api";
 import NotFriend from "../friends/NotFriend";
 import { DELETE_CHAT } from "../../reducers/chatReducer";
+import { socketOn } from "../../socket";
 
 const ChatStyle = styled.div`
   width: 100%;
@@ -23,7 +24,7 @@ const ChatStyle = styled.div`
 `;
 
 const Chat = ({ id }) => {
-  const { useTransition, useAuth } = useAppHooks();
+  const { useTransition, useAuth, socket } = useAppHooks();
   const [{user}, dispatchAuth] = useAuth
   const [{ chatSelected }, _] = useTransition;
 
@@ -36,7 +37,16 @@ const Chat = ({ id }) => {
     setDisplay(isDisplayed);
     setY(y);
   };
+
+  // socketOn('fetch-chat', socket, id, async (data, id) => {
+  //   console.log(id)
+  //   if (data.chat.id === +id) {
+  //     setChat(res.data)
+  //   }
+  // })
   
+  console.log(chat)
+
   useEffect(() => {
     const fetchChat = async () => {
       try {
@@ -44,13 +54,13 @@ const Chat = ({ id }) => {
         setChat(res.data)
         setLoading(false)
       } catch (error) {
-        console.log(error.response.data)
+        console.log(error)
         setLoading(false)
       }
     }
 
     if (!chat) fetchChat()
-  }, [chat, id]);
+  }, []);
  
   return (
     <ChatStyle>
@@ -77,7 +87,7 @@ const Chat = ({ id }) => {
               text="Add User to Chat"
             />
           </Dropdown>
-          <MessageList messages={chat.messages} users={chat.users} />
+          <MessageList chat={chat} />
           {
             chat.users.length === 2 && chat.messages.length > 0 &&
             <NotFriend contact={chat.users.find(u => u.name !== user.name)} />

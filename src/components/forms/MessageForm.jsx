@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import devices from "../../utils/devices";
 import TextInput from "../inputs/TextInput";
+import { socketEmit, socketOn } from "../../socket";
+import chat from "../../api/chat";
 
 const MessageFormStyle = styled.form`
   position: absolute;
@@ -40,7 +42,7 @@ const MessageForm = ({ chatId }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    socket.emit("new-message", { chatId, author: localStorage.username, text });
+    socket.emit("new-message", { chatId, authorId: user.id, text });
     socket.emit("stop-typing");
     setText(null);
   };
@@ -57,12 +59,17 @@ const MessageForm = ({ chatId }) => {
     }, 1500);
   };
 
+  const handleFocus = () => {
+    socketEmit('message-read', socket, {userId: user.id, chatId})
+  }
+
   return (
     <MessageFormStyle isSelected={chatSelected} onSubmit={handleSubmit}>
       <TextInput
         value={text}
         handleChange={setText}
         handleKeyPress={handleKeyPress}
+        handleFocus={handleFocus}
         placeholder="Type your message..."
       />
       <MessageBtnStyle as="button" type="submit" disabled={!text}>

@@ -84,8 +84,8 @@ const NotFriend = ({ contact }) => {
         // socketEmit('check-has-blocked', socket, {contactId: contact.id, userId: user.id})
     }, [])
 
-    console.log(isFriend)
-    console.log(isRequest)
+    // console.log(isFriend)
+    // console.log(isRequest)
 
     return (
         <NotFriendStyle>
