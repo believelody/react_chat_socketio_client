@@ -24,31 +24,40 @@ const ChatsTab = () => {
   const { useAuth, socket } = useAppHooks()
   const [{user}, dispatchAuth] = useAuth
 
-  const [unreads, setUnreads] = useState(0)
+  const [nbUnread, setUnread] = useState(0)
 
   socketOn('count-unread-chat', socket, user, (data, user) => {
     console.log('outside')
-    if (data.users.find(u => u.id === user.id)) {
+    if (data && data.chat.users.find(u => u.id === user.id)) {
       console.log('inside')
-      setUnreads(prevUnreads => prevUnreads + 1)
+      setUnread(prevUnread => prevUnread + 1)
+    }
+    else {
+      setUnread(prevUnread => prevUnread === 1 ? 0 : prevUnread - 1)
     }
   })
 
   useEffect(() => {
-    const fetchUnread = async () => {
+    const fetchChat = async () => {
       try {
-        
+        const res = await api.user.getChatList(user.id)
+        if (res.data.chats.length > 0) {
+          let chatsUnread = res.data.chats.filter(chat => chat.unreads.length > 0)
+          setUnread(chatsUnread.length)
+        }
       } catch (error) {
-        
+        console.log(error)
+        alert(error.response.data.msg)
       }
     }
 
+    fetchChat()
   }, [])
 
   return (
     <ChatsTabStyle>
       <span className='label'>Chats</span>
-      {unreads > 0 && <span className='number'>{unreads}</span>}
+      {nbUnread > 0 && <span className='number'>{nbUnread}</span>}
     </ChatsTabStyle>
   );
 };

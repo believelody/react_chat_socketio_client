@@ -62,7 +62,6 @@ const User = ({ contact }) => {
   const closeModal = () => dispatchModal({ type: CLOSE_MODAL });
 
   const confirmAction = (data, user, cancel, display) => {
-    console.log(data)
     if (data.error) {
       alert(data.error)
     }

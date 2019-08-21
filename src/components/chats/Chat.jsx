@@ -51,7 +51,7 @@ const Chat = ({ id }) => {
     const fetchChat = async () => {
       try {
         const res = await api.chat.getChat(id)
-        setChat(res.data)
+        setChat(res.data.chat)
         setLoading(false)
       } catch (error) {
         console.log(error)

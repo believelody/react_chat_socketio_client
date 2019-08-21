@@ -17,6 +17,7 @@ const ChatItemStyle = styled.li`
   align-items: start;
   transition: all 300ms ease-in;
   border-bottom: 2px solid rgba(255, 255, 255, .4);
+  position: relative;
 
   &:hover {
     background-color: #32465a;
@@ -35,6 +36,13 @@ const ChatItemStyle = styled.li`
     font-size: 1.2em;
     padding: 4px 0px;
     margin-left: 16px;
+  }
+
+  & .chat-count-unreads {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
   }
 
   & .chat-actions {
@@ -61,7 +69,7 @@ const ChatItem = ({ chat }) => {
 
     const [contact, setContact] = useState(chat.users.find(u => u.id !== user.id))
     const [lastMsg, setLastMsg] = useState(chat.messages[0].text)
-    const [unreads, setUnread] = useState(0)
+    const [nbUnread, setUnread] = useState(chat.unreads.length)
 
     const openChat = async () => {
         if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
@@ -69,7 +77,12 @@ const ChatItem = ({ chat }) => {
     };
 
     socketOn('count-unread-message', socket, chat, (data, chat) => {
-
+      if (data && data.unread && data.unread.userId === user.id && data.unread.chatId === chat.id) {
+        setUnread(prevUnread => prevUnread + 1)
+      }
+      else {
+        setUnread(prevUnread => prevUnread === 1 ? 0 : prevUnread - 1)
+      }
     })
 
     console.log(chat)
@@ -77,13 +90,7 @@ const ChatItem = ({ chat }) => {
     return <ChatItemStyle handleClick={openChat}>
         {contact && <span className="chat-name">{contact.name}</span>}
         <span className="chat-text">{lastMsg}</span>
-        {/* <span className="chat-actions">
-            <OpenChatIcon className='chat-actions-btn chat' />
-            {<ChatItemRequestIcon
-                className='chat-actions-btn unchat'
-                cancel={true}
-            />}
-        </span> */}
+        {nbUnreads > 0 && <span className='count-unread'>{nbUnreads}</span>}
     </ChatItemStyle>;
 };
 

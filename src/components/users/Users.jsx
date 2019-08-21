@@ -174,10 +174,10 @@ const Users = () => {
     const fetchUsers = async () => {
       try {
         let res = await api.user.searchUser(user.id, content);
-        if (res.data.length === 0) {
+        if (res.data.users.length === 0) {
           setNotFound("Nothing found");
         } else {
-          setUsers(res.data);
+          setUsers(res.data.users);
         }
       } catch (error) {
         alert(error.response.data.msg);

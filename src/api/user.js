@@ -36,11 +36,9 @@ export default {
 
   getFriendList: id => axios.get(`${baseUrl}/${defaultPath}/${id}/friend-list`),
 
-  getRequestList: id =>
-    axios.get(`${baseUrl}/${defaultPath}/${id}/request-list`),
+  getRequestList: id => axios.get(`${baseUrl}/${defaultPath}/${id}/request-list`),
 
-  getBlockedList: id =>
-    axios.get(`${baseUrl}/${defaultPath}/${id}/blocked-list`),
+  getBlockedList: id => axios.get(`${baseUrl}/${defaultPath}/${id}/blocked-list`),
 
   deleteChat: (id, chatId) => axios.delete(`${baseUrl}/${defaultPath}/${id}/delete-chat?chatId=${chatId}`),
 

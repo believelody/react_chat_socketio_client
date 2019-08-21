@@ -40,7 +40,7 @@ const Chats = () => {
       try {
         if (user) {
           let res = await api.user.getChatList(user.id)
-          if (res.data.length > 0) setChats(res.data)
+          if (res.data.chats.length > 0) setChats(res.data.chats)
         }
         setLoading(false)
       } catch (error) {
