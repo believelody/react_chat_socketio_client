@@ -40,14 +40,16 @@ const ChatsTab = () => {
       try {
         const res = await api.user.getChatList(user.id)
         if (res.data.chats.length > 0) {
-          let unreadChats = res.chats.filter(c => c.unreads.length > 0)
-          if (unreadChats.length > 0 && unreadChats.unreads.find(unread => unread.authorId !== user.id)){
+          let unreadChats = res.data.chats.filter(c => c.unreads.length > 0)
+          console.log(unreadChats)
+          if (unreadChats.length > 0 && unreadChats.find(chat => chat.unreads.find(unread => unread.authorId !== user.id))){
+            console.log('inside')
             setUnread(unreadChats.length)
           }
         }
       } catch (error) {
-        console.log(error.response.data.msg)
-        alert(error.response.data.msg)
+        console.log(error)
+        // alert(error.response.data.msg)
       }
     }
 

@@ -73,8 +73,8 @@ const ChatItem = ({ chat }) => {
     const [transition, dispatchTransition] = useTransition;
 
     const [contact, setContact] = useState(chat.users.find(u => u.id !== user.id))
-    const [lastMsg, setLastMsg] = useState(chat.messages[0].text)
-    const [nbUnread, setUnread] = useState(chat.unreads.length)
+    const [lastMsg, setLastMsg] = useState()
+    const [nbUnread, setUnread] = useState(0)
 
     const openChat = async () => {
         if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
@@ -88,9 +88,18 @@ const ChatItem = ({ chat }) => {
       else {
         setUnread(prevUnread => prevUnread === 1 ? 0 : prevUnread - 1)
       }
+
+      if (data && data.message) {
+        setLastMsg(data.message.text)
+      }
     })
 
-    console.log(chat)
+    useEffect(() => {
+      if (chat.messages.length > 0) setLastMsg(chat.messages.reverse()[0].text)
+      if (chat.unreads.length > 0 && chat.unreads.find(u => u.authorId !== user.id)) setUnread(chat.unreads.length)
+    }, [])
+
+    // console.log(chat)
 
     return <ChatItemStyle handleClick={openChat}>
         {nbUnread > 0 && <span className='chat-count-unread'>{nbUnread}</span>}

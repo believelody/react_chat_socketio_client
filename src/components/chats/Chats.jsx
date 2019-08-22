@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import api from "../../api";
 import ChatItem from "./ChatItem";
+import { socketOn } from "../../socket";
 
 const ChatsContainer = styled.div`
   padding: 0;
@@ -29,11 +30,17 @@ const ChatListStyle = styled.ul`
 `;
 
 const Chats = () => {
-  const {useAuth} = useAppHooks()
+  const { useAuth, socket } = useAppHooks()
   const [{user}, _] = useAuth
 
   const [chats, setChats] = useState([])
   const [loading, setLoading] = useState(true)
+
+  socketOn('new-chat', socket, user, (data, user) => {
+    if (!chats.find(chat => chat.id === data.chat.id)) {
+      setChats([...chats, data.chat])
+    }
+  })
 
   useEffect(() => {
     const getChats = async () => {
