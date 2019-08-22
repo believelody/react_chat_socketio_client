@@ -12,7 +12,8 @@ const MessageStyle = styled.li`
     props.isYou
       ? "linear-gradient(45deg, #eee, #fff)"
       : "linear-gradient(45deg, #06beb6, #48b1bf)"};
-  padding: 0px 5px 2px;
+  padding: 8px 5px;
+  margin: 4px 0px;
   max-width: 40%;
   position: relative;
   color: black;
@@ -33,6 +34,9 @@ const MessageStyle = styled.li`
     float: right;
     font-size: .8em;
     font-style: oblique;
+    position: absolute;
+    right: 5%;
+    bottom: 0;
   }
 
   @media ${devices.tablet} {

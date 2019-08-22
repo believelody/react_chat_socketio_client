@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import MessageItem from "./MessageItem";
 import { useAppHooks } from "../../contexts";
@@ -7,13 +7,13 @@ import { socketOn } from "../../socket";
 const MessageListStyle = styled.ul`
   margin: 50px 0px 140px;
   padding: 10px 10px 10px;
-  display: flex;
+  display: block;
   list-style: none;
-  flex-direction: column-reverse;
   height: calc(100vh - 130px);
   width: 100%;
   position: relative;
   bottom: 0;
+  overflow-y: auto;
   scroll-behavior: smooth;
 `;
 
@@ -32,11 +32,16 @@ const MessageList = ({ chat }) => {
     }
   })
 
+  useEffect(() => {
+    if (messagesRef) {
+      messagesRef.current.scrollTo(0, window.screen.height - 130)
+    }
+  }, [messages])
+
   return (
     <MessageListStyle ref={messagesRef}>
       {messages.length > 0 &&
         messages
-          .reverse()
           .map((message, i) => (
             <MessageItem key={i} contact={contact} message={message} />
           ))}
