@@ -34,14 +34,19 @@ const ChatItemStyle = styled.li`
 
   & .chat-text {
     font-size: 1.2em;
-    padding: 4px 0px;
+    padding-left: 8px;
+    padding-right: 16px;
     margin-left: 16px;
   }
 
-  & .chat-count-unreads {
+  & .chat-count-unread {
     position: absolute;
+    font-size: 1.5em;
     right: 5%;
     top: 50%;
+    border: 1px solid white;
+    border-radius: 50%;
+    padding: 4px;
     transform: translate3d(0, -50%, 0);
   }
 
@@ -77,7 +82,7 @@ const ChatItem = ({ chat }) => {
     };
 
     socketOn('count-unread-message', socket, chat, (data, chat) => {
-      if (data && data.unread && data.unread.userId === user.id && data.unread.chatId === chat.id) {
+      if (data && data.unread && data.users.find(u => u.id === user.id) && data.chat.id === chat.id) {
         setUnread(prevUnread => prevUnread + 1)
       }
       else {
@@ -88,9 +93,9 @@ const ChatItem = ({ chat }) => {
     console.log(chat)
 
     return <ChatItemStyle handleClick={openChat}>
+        {nbUnread > 0 && <span className='chat-count-unread'>{nbUnread}</span>}
         {contact && <span className="chat-name">{contact.name}</span>}
         <span className="chat-text">{lastMsg}</span>
-        {nbUnreads > 0 && <span className='count-unread'>{nbUnreads}</span>}
     </ChatItemStyle>;
 };
 

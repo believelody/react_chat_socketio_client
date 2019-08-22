@@ -27,9 +27,7 @@ const ChatsTab = () => {
   const [nbUnread, setUnread] = useState(0)
 
   socketOn('count-unread-chat', socket, user, (data, user) => {
-    console.log('outside')
-    if (data && data.chat.users.find(u => u.id === user.id)) {
-      console.log('inside')
+    if (data && data.chat.unreads.length > 0 && data.users.find(u => u.id === user.id)) {
       setUnread(prevUnread => prevUnread + 1)
     }
     else {
@@ -42,11 +40,13 @@ const ChatsTab = () => {
       try {
         const res = await api.user.getChatList(user.id)
         if (res.data.chats.length > 0) {
-          let chatsUnread = res.data.chats.filter(chat => chat.unreads.length > 0)
-          setUnread(chatsUnread.length)
+          let unreadChats = res.chats.filter(c => c.unreads.length > 0)
+          if (unreadChats.length > 0 && unreadChats.unreads.find(unread => unread.authorId !== user.id)){
+            setUnread(unreadChats.length)
+          }
         }
       } catch (error) {
-        console.log(error)
+        console.log(error.response.data.msg)
         alert(error.response.data.msg)
       }
     }

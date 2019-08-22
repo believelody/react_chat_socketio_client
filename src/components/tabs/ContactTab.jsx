@@ -80,7 +80,7 @@ const ContactsTab = () => {
     const fetchRequests = async () => {
       try {
         const res = await api.user.getRequestList(user.id)
-        setRequests(res.data)
+        setRequests(res.data.requests)
       } catch (error) {
         console.log(error)
       }
