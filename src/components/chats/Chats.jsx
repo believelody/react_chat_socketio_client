@@ -56,8 +56,8 @@ const Chats = () => {
       }
     }
 
-    getChats()
-  }, [])
+    if (user) getChats()
+  }, [user])
 
   return (
     <ChatsContainer>

@@ -10,7 +10,7 @@ import devices from "../../utils/devices";
 import api from "../../api";
 import NotFriend from "../friends/NotFriend";
 import { DELETE_CHAT } from "../../reducers/chatReducer";
-import { socketOn } from "../../socket";
+import { socketOn, socketEmit } from "../../socket";
 
 const ChatStyle = styled.div`
   width: 100%;
@@ -38,15 +38,12 @@ const Chat = ({ id }) => {
     setY(y);
   };
 
-  // socketOn('fetch-chat', socket, id, async (data, id) => {
-  //   console.log(id)
-  //   if (data.chat.id === +id) {
-  //     setChat(res.data)
-  //   }
-  // })
-  
-  console.log(chat)
+  const handleFocus = () => {
+    socketEmit('message-read', socket, { userId: user.id, chatId: chat.id })
+  }
 
+  // console.log(chat)
+  
   useEffect(() => {
     const fetchChat = async () => {
       try {
@@ -58,12 +55,18 @@ const Chat = ({ id }) => {
         setLoading(false)
       }
     }
-
-    if (!chat) fetchChat()
-  }, []);
+    
+    if (!chat) {
+      fetchChat()
+    }
+    else {
+      console.log('damn')
+      socketEmit('message-read', socket, {userId: user.id, chatId: id})
+    }
+  }, [chat]);
  
   return (
-    <ChatStyle>
+    <ChatStyle onFocus={handleFocus}>
       {
         loading && <h3>Loading...</h3>
       }

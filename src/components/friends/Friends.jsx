@@ -62,26 +62,26 @@ const Friends = () => {
     const getFriends = async () => {
       if (user) {
         let res = await api.user.getFriendList(user.id)
-        setFriends(res.data)
+        setFriends(res.data.friends)
       }
       setLoading(false)
     }
 
-    getFriends()
-  }, [])
+    if (user) getFriends()
+  }, [user])
 
   return (
     <FriendsContainer>
       {!loading && friends.length === 0 && <h4>You have no friends. Start search amazing people.</h4>}
-        {
-          !loading && friends.length > 0 &&
-          <FriendList>
-          <div className='request-label'>
-            Your Friends: <span>{friends.length > 0 ? friends.length : 0}</span>
-          </div>
-          {friends.map(friend => <Friend key={friend.id} friend={friend} />)}
-          </FriendList>
-        }
+      {
+        !loading && friends.length > 0 &&
+        <FriendList>
+        <div className='request-label'>
+          Your Friends: <span>{friends.length > 0 ? friends.length : 0}</span>
+        </div>
+        {friends.map(friend => <Friend key={friend.id} friend={friend} />)}
+        </FriendList>
+      }
       <Requests />
     </FriendsContainer>
   );

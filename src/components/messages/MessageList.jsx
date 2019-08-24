@@ -34,7 +34,7 @@ const MessageList = ({ chat }) => {
 
   useEffect(() => {
     if (messagesRef) {
-      messagesRef.current.scrollTo(0, window.screen.height - 130)
+      messagesRef.current.scrollTo(0, window.screen.width*2)
     }
   }, [messages])
 

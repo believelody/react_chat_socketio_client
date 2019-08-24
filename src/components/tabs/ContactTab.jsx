@@ -86,9 +86,11 @@ const ContactsTab = () => {
       }
     }
 
-    fetchFriends()
-    fetchRequests()
-  }, [])
+    if (user) {
+      fetchRequests()
+      fetchFriends()
+    }
+  }, [user])
   
   return (
     <ContactsTabStyle>

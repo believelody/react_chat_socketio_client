@@ -25,25 +25,37 @@ const ChatsTab = () => {
   const [{user}, dispatchAuth] = useAuth
 
   const [nbUnread, setUnread] = useState(0)
+  const [chatUnreads, setChatUnread] = useState([])
 
   socketOn('count-unread-chat', socket, user, (data, user) => {
-    if (data && data.chat.unreads.length > 0 && data.users.find(u => u.id === user.id)) {
-      setUnread(prevUnread => prevUnread + 1)
-    }
-    else {
-      setUnread(prevUnread => prevUnread === 1 ? 0 : prevUnread - 1)
+    if (user && data && data.users.find(u => u.id === user.id) && !chatUnreads.find(chatId => chatId === data.chat.id)) {
+      console.log('chat-tab')
+      setChatUnread([...chatUnreads, data.chat.id])
+      setUnread(nbUnread + 1)
     }
   })
+
+  socketOn('count-read-chat', socket, user, (data, user) => {
+    if (user && data && chatUnreads.find(chatId => chatId === data.chat.id) && data.chat.users.find(u => u.id === user.id) && data.userId === user.id) {
+      setChatUnread(chatUnreads.filter(chatId => chatId !== data.chat.id))
+      setUnread(nbUnread === 1 ? 0 : nbUnread - 1)
+    }
+  })
+
+  /* socketOn('new-chat', socket, user, (data, user) => {
+    if (data.users.find(u => u.id === user.id)) {
+      setUnread(nbUnread + 1)
+    }
+  }) */
 
   useEffect(() => {
     const fetchChat = async () => {
       try {
         const res = await api.user.getChatList(user.id)
         if (res.data.chats.length > 0) {
-          let unreadChats = res.data.chats.filter(c => c.unreads.length > 0)
-          console.log(unreadChats)
+          let unreadChats = res.data.chats.filter(c => c.unreads.length > 0 && c.unreads.find(u => u.authorId !== user.id))
           if (unreadChats.length > 0 && unreadChats.find(chat => chat.unreads.find(unread => unread.authorId !== user.id))){
-            console.log('inside')
+            setChatUnread(unreadChats.map(chat => chat.id))
             setUnread(unreadChats.length)
           }
         }
@@ -53,8 +65,8 @@ const ChatsTab = () => {
       }
     }
 
-    fetchChat()
-  }, [])
+    if (user) fetchChat()
+  }, [user])
 
   return (
     <ChatsTabStyle>
