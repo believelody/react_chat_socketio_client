@@ -65,7 +65,7 @@ const MessageItem = ({ message, contact }) => {
       </h5>
       <p className="message-text">{message.text}</p>
       <span className="message-date">
-        - <Moment date={message.createdAt} fromNow /> -
+        - <Moment format="HH:mm" date={message.createdAt} /> -
       </span>
     </MessageStyle>
   );

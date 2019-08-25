@@ -3,6 +3,7 @@ import styled from "styled-components";
 import MessageItem from "./MessageItem";
 import { useAppHooks } from "../../contexts";
 import { socketOn } from "../../socket";
+import Moment from "react-moment";
 
 const MessageListStyle = styled.ul`
   margin: 50px 0px 140px;
@@ -16,6 +17,45 @@ const MessageListStyle = styled.ul`
   overflow-y: scroll;
   // scroll-behavior: smooth;
 `;
+
+const MessageDate = styled.div`
+  width: 100%;
+  height: 50px;
+  color: black;
+  // background-color: rgba(255, 255, 255, .4);
+  text-align: center;
+  line-height: 50px;
+  font-size: 1.7em;
+`
+
+const MessageSortedByDate = ({ messages, contact }) => {
+  let dates = []
+  const day = date => new Date(date).getDate()
+  const month = date => new Date(date).getMonth()
+  const year = date => new Date(date).getFullYear()
+
+  messages.reduce((m, d) => {
+    if (m && d && day(d.createdAt) !== day(m.createdAt) || month(d.createdAt) !== month(m.createdAt) || year(d.createdAt) !== year(m.createdAt)) {
+      dates.push(d.createdAt)
+    }
+    return d
+  })
+
+  return dates.map(date =>
+    <React.Fragment key={date}>
+      <MessageDate>
+        <Moment format="D MMM YYYY" date={date} />
+      </MessageDate>
+      {
+        messages
+          .filter(message => day(date) !== day(message.createdAt) || month(date) !== month(message.createdAt) || year(date) !== year(message.createdAt))
+          .map(message => (
+            <MessageItem key={message.id} contact={contact} message={message} />
+          ))
+      }
+    </React.Fragment>
+  )
+}
 
 const MessageList = ({ chat }) => {
   const { useAuth, socket } = useAppHooks()
@@ -41,9 +81,8 @@ const MessageList = ({ chat }) => {
   return (
     <MessageListStyle ref={messagesRef}>
       {
-        messages.length > 0 && messages.map(message => (
-          <MessageItem key={message.id} contact={contact} message={message} />
-        ))
+        messages.length > 0 && 
+        <MessageSortedByDate contact={contact} messages={messages} />
       }
     </MessageListStyle>
   );
