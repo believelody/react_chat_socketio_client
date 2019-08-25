@@ -7,7 +7,7 @@ import { socketEmit, socketOn } from '../../socket';
 
 const NotFriendStyle = styled.div`
     text-align: center;
-    background-color: transparent;
+    background-color: ${props => props.isDisplayed ? 'white' : 'transparent'};
     color: black;
     position: absolute;
     padding: 5px 0px;
@@ -84,11 +84,8 @@ const NotFriend = ({ contact }) => {
         // socketEmit('check-has-blocked', socket, {contactId: contact.id, userId: user.id})
     }, [])
 
-    // console.log(isFriend)
-    // console.log(isRequest)
-
     return (
-        <NotFriendStyle>
+        <NotFriendStyle isDisplayed={!isFriend || isRequest || isBlocked || hasBlocked}>
             {
                 !isFriend && !isRequest && !hasBlocked && !isBlocked &&
                 <span className='not-friend'>

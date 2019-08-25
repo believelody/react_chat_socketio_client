@@ -60,7 +60,6 @@ const Chat = ({ id }) => {
       fetchChat()
     }
     else {
-      console.log('damn')
       socketEmit('message-read', socket, {userId: user.id, chatId: id})
     }
   }, [chat]);

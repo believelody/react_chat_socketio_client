@@ -6,15 +6,15 @@ import { socketOn } from "../../socket";
 
 const MessageListStyle = styled.ul`
   margin: 50px 0px 140px;
-  padding: 10px 10px 10px;
+  padding: 10px 10px 50px;
   display: block;
   list-style: none;
   height: calc(100vh - 130px);
   width: 100%;
   position: relative;
   bottom: 0;
-  overflow-y: auto;
-  scroll-behavior: smooth;
+  overflow-y: scroll;
+  // scroll-behavior: smooth;
 `;
 
 const MessageList = ({ chat }) => {
@@ -34,17 +34,17 @@ const MessageList = ({ chat }) => {
 
   useEffect(() => {
     if (messagesRef) {
-      messagesRef.current.scrollTo(0, window.screen.width*2)
+      messagesRef.current.scrollTo(0, messagesRef.current.scrollHeight)
     }
   }, [messages])
 
   return (
     <MessageListStyle ref={messagesRef}>
-      {messages.length > 0 &&
-        messages
-          .map((message, i) => (
-            <MessageItem key={i} contact={contact} message={message} />
-          ))}
+      {
+        messages.length > 0 && messages.map((message, i) => (
+          <MessageItem key={i} contact={contact} message={message} />
+        ))
+      }
     </MessageListStyle>
   );
 };
