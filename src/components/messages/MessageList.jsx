@@ -41,8 +41,8 @@ const MessageList = ({ chat }) => {
   return (
     <MessageListStyle ref={messagesRef}>
       {
-        messages.length > 0 && messages.map((message, i) => (
-          <MessageItem key={i} contact={contact} message={message} />
+        messages.length > 0 && messages.map(message => (
+          <MessageItem key={message.id} contact={contact} message={message} />
         ))
       }
     </MessageListStyle>
