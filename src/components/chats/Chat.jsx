@@ -63,6 +63,8 @@ const Chat = ({ id }) => {
       socketEmit('message-read', socket, {userId: user.id, chatId: id})
     }
   }, [chat]);
+
+  console.log(chat)
  
   return (
     <ChatStyle onFocus={handleFocus}>

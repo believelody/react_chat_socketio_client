@@ -37,7 +37,7 @@ const Chats = () => {
   const [loading, setLoading] = useState(true)
 
   socketOn('new-chat', socket, user, (data, user) => {
-    console.log('new-chat')
+    console.log(data.chat.users)
     if (!chats.find(chat => chat.id === data.chat.id)) {
       setChats([...chats, data.chat])
     }

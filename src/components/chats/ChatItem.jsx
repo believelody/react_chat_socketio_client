@@ -108,6 +108,7 @@ const ChatItem = ({ chat }) => {
 
   useEffect(() => {
     if (user && chat) {
+      console.log(chat)
       if (chat.users.length === 1) {
         setContact(chat.users.find(u => u.id !== user.id))
       }
@@ -121,7 +122,7 @@ const ChatItem = ({ chat }) => {
         setUnread(chat.unreads.length)
       }
     }
-  }, [])
+  }, [chat])
 
   return user &&
     <ChatItemStyle onClick={openChat}>
