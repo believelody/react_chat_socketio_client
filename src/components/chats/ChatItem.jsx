@@ -107,7 +107,7 @@ const ChatItem = ({ chat }) => {
   })
 
   useEffect(() => {
-    if (user) {
+    if (user && chat) {
       if (chat.users.length === 1) {
         setContact(chat.users.find(u => u.id !== user.id))
       }

@@ -34,13 +34,18 @@ const MessageSortedByDate = ({ messages, contact }) => {
   const month = date => new Date(date).getMonth()
   const year = date => new Date(date).getFullYear()
 
-  messages.reduce((m, d) => {
-    if (m && d && day(d.createdAt) !== day(m.createdAt) || month(d.createdAt) !== month(m.createdAt) || year(d.createdAt) !== year(m.createdAt)) {
-      dates.push(d.createdAt)
+  for (let i = 0; i < messages.length; i++) {
+    if (i > 0) {
+      if (day(messages[i].createdAt) !== day(messages[i - 1].createdAt) || month(messages[i].createdAt) !== month(messages[i - 1].createdAt) || year(messages[i].createdAt) !== year(messages[i - 1].createdAt)) {
+        console.log(i)
+        dates.push(messages[i].createdAt)
+      }
     }
-    return d
-  })
-
+    else {
+      dates.push(messages[i].createdAt)
+    }
+  }
+  
   return dates.map(date =>
     <React.Fragment key={date}>
       <MessageDate>
@@ -48,10 +53,11 @@ const MessageSortedByDate = ({ messages, contact }) => {
       </MessageDate>
       {
         messages
-          .filter(message => day(date) !== day(message.createdAt) || month(date) !== month(message.createdAt) || year(date) !== year(message.createdAt))
+          .filter(message => day(date) === day(message.createdAt) || month(date) === month(message.createdAt) || year(date) === year(message.createdAt))
           .map(message => (
             <MessageItem key={message.id} contact={contact} message={message} />
-          ))
+          )
+        )
       }
     </React.Fragment>
   )

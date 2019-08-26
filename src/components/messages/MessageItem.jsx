@@ -56,8 +56,6 @@ const MessageItem = ({ message, contact }) => {
   const { useAuth } = useAppHooks()
   const [{user}, dispatchAuth] = useAuth
 
-  // console.log(message)
-
   return (
     <MessageStyle isYou={message.authorId === user.id}>
       <h5 className="message-author">
