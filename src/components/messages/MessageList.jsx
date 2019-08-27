@@ -53,7 +53,7 @@ const MessageSortedByDate = ({ messages, contact }) => {
       </MessageDate>
       {
         messages
-          .filter(message => day(date) === day(message.createdAt) || month(date) === month(message.createdAt) || year(date) === year(message.createdAt))
+          .filter(message => day(date) === day(message.createdAt) && month(date) === month(message.createdAt) && year(date) === year(message.createdAt))
           .map(message => (
             <MessageItem key={message.id} contact={contact} message={message} />
           )
