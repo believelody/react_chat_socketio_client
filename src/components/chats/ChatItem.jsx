@@ -84,7 +84,6 @@ const ChatItem = ({ chat }) => {
   const [nbUnread, setUnread] = useState(0)
 
   const openChat = e => {
-    console.log('open')
     if (isMobile) dispatchTransition({ type: CHAT_SELECTED, payload: true });
     history.push(`/chats/${chat.id}`);
   };
@@ -94,7 +93,6 @@ const ChatItem = ({ chat }) => {
       setUnread(nbUnread + 1)
     }
     if (data && data.chat.id === chat.id && data.message) {
-      console.log('message')
       setLastMsg(data.message)
     }
   })
@@ -108,7 +106,6 @@ const ChatItem = ({ chat }) => {
 
   useEffect(() => {
     if (user && chat) {
-      console.log(chat)
       if (chat.users.length === 1) {
         setContact(chat.users.find(u => u.id !== user.id))
       }

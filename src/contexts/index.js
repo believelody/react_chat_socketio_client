@@ -12,7 +12,7 @@ export const AppContext = createContext();
 const history = createBrowserHistory({
   forceRefresh: true
 });
-let herokuUrl = process.env.REACT_APP_SERVER_URL
+let herokuUrl = process.env.NODE_ENV === 'production'
   ? process.env.REACT_APP_SERVER_URL
   : "http://localhost:5000";
 const socket = io(herokuUrl);

@@ -37,7 +37,6 @@ const Chats = () => {
   const [loading, setLoading] = useState(true)
 
   socketOn('new-chat', socket, user, (data, user) => {
-    console.log(data.chat.users)
     if (!chats.find(chat => chat.id === data.chat.id)) {
       setChats([...chats, data.chat])
     }
@@ -60,6 +59,8 @@ const Chats = () => {
     if (user) getChats()
   }, [user])
 
+  // console.log(chats)
+
   return (
     <ChatsContainer>
       <ChatListStyle>
@@ -67,7 +68,45 @@ const Chats = () => {
           !loading && chats.length === 0 && <h4>You have no chats. Choose a Chat and start talking.</h4>
         }
         {
-          !loading && chats.length > 0 && chats.map(chat => <ChatItem key={chat.id} chat={chat} />)
+          !loading && chats.length > 0 &&
+          chats
+            .sort((a, b) => {
+              const sec = date => new Date(date).getSeconds()
+              const min = date => new Date(date).getMinutes()
+              const hour = date => new Date(date).getHours()
+              const day = date => new Date(date).getDate()
+              const month = date => new Date(date).getMonth()
+              const year = date => new Date(date).getFullYear()
+              /* console.log(a.messages.reverse()[0])
+              return day(a.messages[0].createdAt) - day(b.messages[0].createdAt) || month(a.messages[0].createdAt) - month(b.messages[0].createdAt) || year(a.messages[0].createdAt) - year(b.messages[0].createdAt) */
+              if (sec(a.messages.reverse()[0].createdAt) === sec(b.messages.reverse()[0].createdAt)) {
+                if (min(a.messages.reverse()[0].createdAt) === min(b.messages.reverse()[0].createdAt)) {
+                  if (hour(a.messages.reverse()[0].createdAt) === hour(b.messages.reverse()[0].createdAt)) {
+                    if (day(a.messages.reverse()[0].createdAt) === day(b.messages.reverse()[0].createdAt)) {
+                      if (month(a.messages.reverse()[0].createdAt) === month(b.messages.reverse()[0].createdAt)) {
+                        return year(a.messages.reverse()[0].createdAt) - year(b.messages.reverse()[0].createdAt)
+                      }
+                      else {
+                        return month(a.messages.reverse()[0].createdAt) - month(b.messages.reverse()[0].createdAt)
+                      }
+                    }
+                    else {
+                      return day(a.messages.reverse()[0].createdAt) - day(b.messages.reverse()[0].createdAt)
+                    }
+                  }
+                  else {
+                    return hour(a.messages.reverse()[0].createdAt) - hour(b.messages.reverse()[0].createdAt)
+                  }
+                }
+                else {
+                  return min(a.messages.reverse()[0].createdAt) - min(b.messages.reverse()[0].createdAt)
+                }
+              }
+              else {
+                return sec(a.messages.reverse()[0].createdAt) - sec(b.messages.reverse()[0].createdAt)
+              }
+            })
+            .map(chat => <ChatItem key={chat.id} chat={chat} />)
         }
       </ChatListStyle>
     </ChatsContainer>

@@ -29,7 +29,6 @@ const ChatsTab = () => {
 
   socketOn('count-unread-chat', socket, user, (data, user) => {
     if (user && data && data.users.find(u => u.id === user.id) && !chatUnreads.find(chatId => chatId === data.chat.id)) {
-      console.log('chat-tab')
       setChatUnread([...chatUnreads, data.chat.id])
       setUnread(nbUnread + 1)
     }

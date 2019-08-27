@@ -72,6 +72,7 @@ const Request = ({ contact }) => {
     }
 
     const confirmRequestDenied = (data, user) => {
+        console.log(user)
         if (data.error) {
             alert(data.error)
         }

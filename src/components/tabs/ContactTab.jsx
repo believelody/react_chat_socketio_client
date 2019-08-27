@@ -35,25 +35,31 @@ const ContactsTab = () => {
   const [friends, setFriends] = React.useState([])
   const [requests, setRequests] = React.useState([])
 
-  socketOn('new-request-confirm', socket, user, (data, user) => {
-    if (data.error) {
-      alert(data.error)
+  socketOn('new-request-confirm', socket, user, (data, user) => { 
+    if (user) {
+      if (data.error) {
+        alert(data.error)
+      }
+      else if (data.to.id === user.id) setRequests(data.requests)
     }
-    else if (data.to.id === user.id) setRequests(data.requests)
   })
 
-  socketOn('cancel-request-confirm', socket, user, (data, user) => {
-    if (data.error) {
-      alert(data.error)
+  socketOn('cancel-request-confirm', socket, user, (data, user) => { 
+    if (user) {
+      if (data.error) {
+        alert(data.error)
+      }
+      else if (data.to.id === user.id) setRequests(data.requests)
     }
-    else if (data.to.id === user.id) setRequests(data.requests)
   })
 
-  socketOn('delete-request-confirm', socket, user, (data, user) => {
-    if (data.error) {
-      alert(data.error)
+  socketOn('delete-request-confirm', socket, user, (data, user) => { 
+    if (user) {
+      if (data.error) {
+        alert(data.error)
+      }
+      else if (data.from.id === user.id) setRequests(data.requests)
     }
-    else if (data.from.id === user.id) setRequests(data.requests)
   })
 
   socketOn('new-friend-confirm', socket, user, (data, user) => {

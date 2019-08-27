@@ -41,8 +41,6 @@ const Chat = ({ id }) => {
   const handleFocus = () => {
     socketEmit('message-read', socket, { userId: user.id, chatId: chat.id })
   }
-
-  // console.log(chat)
   
   useEffect(() => {
     const fetchChat = async () => {
@@ -64,7 +62,7 @@ const Chat = ({ id }) => {
     }
   }, [chat]);
 
-  console.log(chat)
+  // console.log(chat)
  
   return (
     <ChatStyle onFocus={handleFocus}>

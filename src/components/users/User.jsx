@@ -110,12 +110,25 @@ const User = ({ contact }) => {
     }
   }
 
+  socketOn('delete-request-confirm', socket, user, (data, user) => {
+    if (user) {
+      if (data.to.id === user.id) {
+        setCancel(false)
+      }
+      else if (data.error) {
+        alert(data.error.msg)
+      }
+    }
+  })
+
   useEffect(() => {
     if (requests.length > 0) {
-      let cancel = requests.find(r => r.requesterId === user.id ? true : false)
-      setCancel(!!cancel)
+      let requester = requests.find(r => r.requesterId === user.id ? true : false)
+      console.log(cancel)
+      setCancel(!!requester)
     }
-  }, [cancel, requests])
+  }, [])
+
 
   return (
     <UserStyle cancel={cancel}>
