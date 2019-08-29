@@ -27,9 +27,18 @@ const UserStyle = styled.li`
     color: white;
   }
 
-  & .contact-name {
-    font-size: 1.5em;
-    letter-spacing: 4px;
+  & .contact-info {
+    display: flex;
+    flex-direction: column;
+
+    & .contact-name {
+      font-size: 1.5em;
+      letter-spacing: 4px;
+    }
+
+    & .contact-email {
+      font-style: italic;
+    }
   }
 
   & .contact-actions {
@@ -129,10 +138,12 @@ const User = ({ contact }) => {
     }
   }, [])
 
-
   return (
     <UserStyle cancel={cancel}>
-      <span className="contact-name">{contact.name}</span>
+      <span className='contact-info'>
+        <span className="contact-name">{contact.name}</span>
+        <span className="contact-email">{contact.email}</span>
+      </span>
       <span className="contact-actions">
         <OpenChatIcon className='contact-actions-chat' handleClick={openChat} />
         <FriendRequestIcon
