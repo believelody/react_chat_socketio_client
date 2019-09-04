@@ -30,11 +30,11 @@ const ChatsTab = () => {
   socketOn('count-unread-chat', socket, user, (data, user) => {
     if (user && data && data.receivers.find(u => u.id === user.id)) {
       if (chatUnreads.length === 0) {
-        setChatUnread([data.chat.id])
+        setChatUnread([data.chatId])
         setUnread(1)
       }
-      else if (!chatUnreads.find(chatId => chatId === data.chat.id)) {
-        setChatUnread([...chatUnreads, data.chat.id])
+      else if (!chatUnreads.find(chatId => chatId === data.chatId)) {
+        setChatUnread([...chatUnreads, data.chatId])
         setUnread(nbUnread + 1)
       }
     }

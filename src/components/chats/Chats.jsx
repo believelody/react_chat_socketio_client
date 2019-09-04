@@ -38,6 +38,8 @@ const Chats = () => {
   const [msgMax, setMax] = useState([])
 
   const refreshChats = (data, chats) => {
+    console.log(data.receivers)
+    console.log(data.sender)
     if (data && user && data.receivers.find(u => u.id === user.id)) {
       let currentUser = data.receivers.find(u => u.id === user.id)
       if (currentUser && currentUser.chats.length !== chats.length) {
@@ -47,10 +49,11 @@ const Chats = () => {
     else if (user && data.sender.id === user.id) {
       setChats(data.sender.chats)
     }
+    // setChats(data.chatsFromUsers)
   }
 
   // socketOn('new-chat', socket, chats, (data, chats) => refreshChats(data, chats))
-  // socketOn('count-unread-message', socket, chats, (data, chats) => refreshChats(data, chats))
+  socketOn('count-unread-message', socket, chats, (data, chats) => refreshChats(data, chats))
   
   useEffect(() => {
     const getChats = async () => {
@@ -72,7 +75,9 @@ const Chats = () => {
     if (user) {
       getChats()
     }
-  }, [user, chats])
+  }, [user])
+
+  console.log(chats)
 
   return (
     <ChatsContainer>
