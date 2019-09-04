@@ -28,7 +28,7 @@ const ChatsTab = () => {
   const [chatUnreads, setChatUnread] = useState([])
 
   socketOn('count-unread-chat', socket, user, (data, user) => {
-    if (user && data && data.users.find(u => u.id === user.id)) {
+    if (user && data && data.receivers.find(u => u.id === user.id)) {
       if (chatUnreads.length === 0) {
         setChatUnread([data.chat.id])
         setUnread(1)

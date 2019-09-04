@@ -38,22 +38,19 @@ const Chats = () => {
   const [msgMax, setMax] = useState([])
 
   const refreshChats = (data, chats) => {
-    // console.log('chats in socket: ', chats)
-    if (data && !chats.find(chat => chat.id === data.chat.id)) {
-      console.log('outside')
-      if (chats.length > 0) {
-        console.log('inside')
-        let tab = chats
-        tab.filter(item => item.id !== data.chat.id)
-        tab.push(data.chat)
-        setChats(tab)
+    if (data && user && data.receivers.find(u => u.id === user.id)) {
+      let currentUser = data.receivers.find(u => u.id === user.id)
+      if (currentUser && currentUser.chats.length !== chats.length) {
+        setChats(currentUser.chats)
       }
-      // else setChats([data.chat])  console.log(chats)
+    }
+    else if (user && data.sender.id === user.id) {
+      setChats(data.sender.chats)
     }
   }
 
   // socketOn('new-chat', socket, chats, (data, chats) => refreshChats(data, chats))
-  socketOn('count-unread-message', socket, chats, (data, chats) => refreshChats(data, chats))
+  // socketOn('count-unread-message', socket, chats, (data, chats) => refreshChats(data, chats))
   
   useEffect(() => {
     const getChats = async () => {
@@ -75,9 +72,7 @@ const Chats = () => {
     if (user) {
       getChats()
     }
-  }, [user])
-
-  console.log("length: ", chats.length)
+  }, [user, chats])
 
   return (
     <ChatsContainer>
