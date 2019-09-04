@@ -37,7 +37,6 @@ const MessageSortedByDate = ({ messages, contact }) => {
   for (let i = 0; i < messages.length; i++) {
     if (i > 0) {
       if (day(messages[i].createdAt) !== day(messages[i - 1].createdAt) || month(messages[i].createdAt) !== month(messages[i - 1].createdAt) || year(messages[i].createdAt) !== year(messages[i - 1].createdAt)) {
-        console.log(i)
         dates.push(messages[i].createdAt)
       }
     }

@@ -10,10 +10,10 @@ import { CLOSE_MODAL } from "../../reducers/modalReducer";
 import { socketOn, socketEmit } from "../../socket";
 
 const UserStyle = styled.li`
-  margin: 0;
+  margin: 0 auto;
   padding: 4px 0;
   cursor: pointer;
-  width: auto;
+  max-width: 500px;
   height: 40px;
   color: black;
   display: flex;

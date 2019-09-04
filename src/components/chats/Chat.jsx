@@ -91,8 +91,8 @@ const Chat = ({ id }) => {
           </Dropdown>
           <MessageList chat={chat} />
           {
-            chat.users.length === 2 && chat.messages.length > 0 &&
-            <NotFriend contact={chat.users.find(u => u.name !== user.name)} />
+            /* chat.users.length === 2 && chat.messages.length > 0 &&
+            <NotFriend contact={chat.users.find(u => u.name !== user.name)} /> */
           }
           <MessageForm chatId={chat.id} />
         </div>

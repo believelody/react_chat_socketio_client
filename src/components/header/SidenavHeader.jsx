@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom'
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import { OPEN_USER } from "../../reducers/modalReducer";
@@ -43,30 +44,12 @@ const SidenavHeader = () => {
     alert('settings')
   };
 
-  const dropFriendTable = async () => {
-    try {
-      const res = await api.user.dropFriend()
-      alert(res.data.msg)
-    } catch (error) {
-      console.log(error.response.data)
-    }
-  }
-
-  const dropRequestTable = async () => {
-    try {
-      const res = await api.user.dropRequest()
-      alert(res.data.msg)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return (
     <HeaderStyle>
-      {/* <Button circular content='DF' onClick={dropFriendTable} /> */}
-      {/* <Button circular content='DR' onClick={dropRequestTable} /> */}
       <h4>SocketIO Chat</h4>
-      <SearchUserIcon className="action-contact" handleClick={searchContact} />
+      <Link to='/search-users'>
+        <SearchUserIcon className="action-contact" />
+      </Link>
       <SettingIcon className="action-contact" handleClick={settingUser} />
     </HeaderStyle>
   );

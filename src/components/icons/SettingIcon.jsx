@@ -1,9 +1,9 @@
 import React from "react";
 import { Button } from "semantic-ui-react";
 
-const SettingIcon = ({ handleClick, className }) => {
+const SettingIcon = ({ className }) => {
     return (
-        <Button circular className={className} onClick={handleClick} icon="setting" />
+        <Button circular className={className} icon="setting" />
     );
 };
 

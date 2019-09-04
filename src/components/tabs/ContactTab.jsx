@@ -63,14 +63,18 @@ const ContactsTab = () => {
   })
 
   socketOn('new-friend-confirm', socket, user, (data, user) => {
-    if (data.from.id === user.id) setFriends(data.from.friends)
-    if (data.to.id === user.id) setFriends(data.to.friends)
-    if (data.from.id === user.id) setRequests(data.from.requests)
+    if (user) {
+      if (data.from.id === user.id) setFriends(data.from.friends)
+      if (data.to.id === user.id) setFriends(data.to.friends)
+      if (data.from.id === user.id) setRequests(data.from.requests)
+    }
   })
 
   socketOn('delete-friend-confirm', socket, user, (data, user) => {
-    if (data.from.id === user.id) setFriends(data.from.friends)
-    if (data.to.id === user.id) setFriends(data.to.friends)
+    if (user) {
+      if (data.from.id === user.id) setFriends(data.from.friends)
+      if (data.to.id === user.id) setFriends(data.to.friends)
+    }
   })
 
   React.useEffect(() => {

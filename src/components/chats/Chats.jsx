@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useAppHooks } from "../../contexts";
 import api from "../../api";
@@ -29,25 +29,51 @@ const ChatListStyle = styled.ul`
   }
 `;
 
+const usePrevious = value => {
+  const ref = useRef()
+
+  useEffect(() => {
+    ref.current = value
+  }, [value])
+
+  return ref.current
+}
+
 const Chats = () => {
   const { useAuth, socket } = useAppHooks()
   const [{user}, _] = useAuth
 
   const [chats, setChats] = useState([])
   const [loading, setLoading] = useState(true)
+  const [msgMax, setMax] = useState([])
 
-  socketOn('new-chat', socket, user, (data, user) => {
+  const previousChats = null
+
+  const refreshChats = (data, chats) => {
+    // console.log('chats in socket: ', chats)
     if (!chats.find(chat => chat.id === data.chat.id)) {
-      setChats([...chats, data.chat])
+      if (chats.length > 0) {
+        let tab = chats
+        tab.filter(item => item.id !== data.chat.id)
+        tab.push(data.chat)
+        setChats(tab)
+      }
+      // else setChats([data.chat])
     }
-  })
+  }
 
+  socketOn('new-chat', socket, chats, (data, chats) => refreshChats(data, chats))
+  socketOn('count-unread-message', socket, chats, (data, chats) => refreshChats(data, chats))
+  
   useEffect(() => {
     const getChats = async () => {
       try {
         if (user) {
           let res = await api.user.getChatList(user.id)
-          if (res.data.chats.length > 0) setChats(res.data.chats)
+          if (res.data.chats.length > 0) {
+            setMax(res.data.chats.map(c => new Date(c.messages.reverse()[0].createdAt).getTime()))
+            setChats(res.data.chats)
+          }
         }
         setLoading(false)
       } catch (error) {
@@ -55,11 +81,11 @@ const Chats = () => {
         setLoading(false)
       }
     }
-
-    if (user) getChats()
+    
+    if (user) {
+      getChats()
+    }
   }, [user])
-
-  // console.log(chats)
 
   return (
     <ChatsContainer>
@@ -70,42 +96,7 @@ const Chats = () => {
         {
           !loading && chats.length > 0 &&
           chats
-            .sort((a, b) => {
-              const sec = date => new Date(date).getSeconds()
-              const min = date => new Date(date).getMinutes()
-              const hour = date => new Date(date).getHours()
-              const day = date => new Date(date).getDate()
-              const month = date => new Date(date).getMonth()
-              const year = date => new Date(date).getFullYear()
-              /* console.log(a.messages.reverse()[0])
-              return day(a.messages[0].createdAt) - day(b.messages[0].createdAt) || month(a.messages[0].createdAt) - month(b.messages[0].createdAt) || year(a.messages[0].createdAt) - year(b.messages[0].createdAt) */
-              if (sec(a.messages.reverse()[0].createdAt) === sec(b.messages.reverse()[0].createdAt)) {
-                if (min(a.messages.reverse()[0].createdAt) === min(b.messages.reverse()[0].createdAt)) {
-                  if (hour(a.messages.reverse()[0].createdAt) === hour(b.messages.reverse()[0].createdAt)) {
-                    if (day(a.messages.reverse()[0].createdAt) === day(b.messages.reverse()[0].createdAt)) {
-                      if (month(a.messages.reverse()[0].createdAt) === month(b.messages.reverse()[0].createdAt)) {
-                        return year(a.messages.reverse()[0].createdAt) - year(b.messages.reverse()[0].createdAt)
-                      }
-                      else {
-                        return month(a.messages.reverse()[0].createdAt) - month(b.messages.reverse()[0].createdAt)
-                      }
-                    }
-                    else {
-                      return day(a.messages.reverse()[0].createdAt) - day(b.messages.reverse()[0].createdAt)
-                    }
-                  }
-                  else {
-                    return hour(a.messages.reverse()[0].createdAt) - hour(b.messages.reverse()[0].createdAt)
-                  }
-                }
-                else {
-                  return min(a.messages.reverse()[0].createdAt) - min(b.messages.reverse()[0].createdAt)
-                }
-              }
-              else {
-                return sec(a.messages.reverse()[0].createdAt) - sec(b.messages.reverse()[0].createdAt)
-              }
-            })
+            .sort((a, b) => new Date(a.messages.reverse()[0].createdAt).getTime() < new Date(b.messages.reverse()[0].createdAt).getTime())
             .map(chat => <ChatItem key={chat.id} chat={chat} />)
         }
       </ChatListStyle>

@@ -80,7 +80,7 @@ const ChatItem = ({ chat }) => {
 
   const [contact, setContact] = useState(null)
   const [contacts, setContacts] = useState([])
-  const [lastMsg, setLastMsg] = useState([])
+  const [lastMsg, setLastMsg] = useState(null)
   const [nbUnread, setUnread] = useState(0)
 
   const openChat = e => {
@@ -121,6 +121,8 @@ const ChatItem = ({ chat }) => {
     }
   }, [chat])
 
+  console.log(chat.messages)
+
   return user &&
     <ChatItemStyle onClick={openChat}>
       {nbUnread > 0 && <span className='chat-count-unread'>{nbUnread}</span>}
@@ -134,7 +136,7 @@ const ChatItem = ({ chat }) => {
           </span>
         ))
       }
-      <span className={`chat-text ${lastMsg.authorId !== user.id && 'green'}`}>{lastMsg.text}</span>
+      {lastMsg && <span className={`chat-text ${lastMsg.authorId !== user.id && 'green'}`}>{lastMsg.text}</span>}
     </ChatItemStyle>
 };
 

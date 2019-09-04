@@ -10,6 +10,7 @@ import Modal from "./components/modal/Modal";
 import ChatDetail from "./pages/detail/ChatDetail";
 import { useAppHooks } from "./contexts";
 import api from "./api";
+import UserPage from "./pages/user/UserPage";
 
 const AppStyle = styled.div`
   display: flex;
@@ -41,8 +42,9 @@ const App = () => {
         <Switch>
           <AuthRoute exact path="/" component={HomePage} />
           <AuthRoute exact path="/chats/:id" component={ChatDetail} />
+          <AuthRoute exact path="/search-users" component={UserPage} />
           <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/register" component={RegisterPage} />}
+          <Route exact path="/register" component={RegisterPage} />
         </Switch>
         <Modal />
       </AppStyle>
