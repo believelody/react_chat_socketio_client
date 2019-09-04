@@ -89,10 +89,14 @@ const ChatItem = ({ chat }) => {
   };
 
   socketOn('count-unread-message', socket, chat, (data, chat) => {
-    if (data && data.users.find(u => u.id === user.id) && data.chat.id === chat.id) {
+    if (data && chat && data.users.find(u => u.id === user.id) && data.chat.id === chat.id) {
       setUnread(nbUnread + 1)
     }
-    if (data && data.chat.id === chat.id && data.message) {
+
+    if (data && chat && data.chat.id === chat.id && data.message) {
+      console.log(data.chat)
+      console.log(data.message)
+      console.log(chat)
       setLastMsg(data.message)
     }
   })
@@ -104,6 +108,8 @@ const ChatItem = ({ chat }) => {
     }
   })
 
+  console.log(chat.id)
+
   useEffect(() => {
     if (user && chat) {
       if (chat.users.length === 1) {
@@ -113,15 +119,13 @@ const ChatItem = ({ chat }) => {
         setContacts(chat.users.filter(u => u.id !== user.id))
       }
       if (chat.messages.length > 0) {
-        setLastMsg(chat.messages.reverse()[0])
+        setLastMsg(chat.messages[0])
       }
       if (chat.unreads.length > 0 && chat.unreads.find(u => u.authorId !== user.id)) {
         setUnread(chat.unreads.length)
       }
     }
   }, [chat])
-
-  console.log(chat.messages)
 
   return user &&
     <ChatItemStyle onClick={openChat}>

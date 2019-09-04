@@ -33,7 +33,7 @@ const NotFriend = ({ contact }) => {
     const { useAuth, socket } = useAppHooks()
     const [{user}, _] = useAuth
 
-    const [isFriend, setIsFriend] = useState(false)
+    const [isFriend, setIsFriend] = useState(true)
     const [isRequest, setIsRequest] = useState(false)
     const [hasBlocked, setHasBlock] = useState(false)
     const [isBlocked, setIsBlock] = useState(false)

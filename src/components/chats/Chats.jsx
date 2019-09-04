@@ -29,16 +29,6 @@ const ChatListStyle = styled.ul`
   }
 `;
 
-const usePrevious = value => {
-  const ref = useRef()
-
-  useEffect(() => {
-    ref.current = value
-  }, [value])
-
-  return ref.current
-}
-
 const Chats = () => {
   const { useAuth, socket } = useAppHooks()
   const [{user}, _] = useAuth
@@ -47,22 +37,22 @@ const Chats = () => {
   const [loading, setLoading] = useState(true)
   const [msgMax, setMax] = useState([])
 
-  const previousChats = null
-
   const refreshChats = (data, chats) => {
     // console.log('chats in socket: ', chats)
-    if (!chats.find(chat => chat.id === data.chat.id)) {
+    if (data && !chats.find(chat => chat.id === data.chat.id)) {
+      console.log('outside')
       if (chats.length > 0) {
+        console.log('inside')
         let tab = chats
         tab.filter(item => item.id !== data.chat.id)
         tab.push(data.chat)
         setChats(tab)
       }
-      // else setChats([data.chat])
+      // else setChats([data.chat])  console.log(chats)
     }
   }
 
-  socketOn('new-chat', socket, chats, (data, chats) => refreshChats(data, chats))
+  // socketOn('new-chat', socket, chats, (data, chats) => refreshChats(data, chats))
   socketOn('count-unread-message', socket, chats, (data, chats) => refreshChats(data, chats))
   
   useEffect(() => {
@@ -71,7 +61,7 @@ const Chats = () => {
         if (user) {
           let res = await api.user.getChatList(user.id)
           if (res.data.chats.length > 0) {
-            setMax(res.data.chats.map(c => new Date(c.messages.reverse()[0].createdAt).getTime()))
+            // setMax(res.data.chats.map(c => new Date(c.messages.reverse()[0].createdAt).getTime()))
             setChats(res.data.chats)
           }
         }
@@ -87,6 +77,8 @@ const Chats = () => {
     }
   }, [user])
 
+  console.log("length: ", chats.length)
+
   return (
     <ChatsContainer>
       <ChatListStyle>
@@ -96,7 +88,6 @@ const Chats = () => {
         {
           !loading && chats.length > 0 &&
           chats
-            .sort((a, b) => new Date(a.messages.reverse()[0].createdAt).getTime() < new Date(b.messages.reverse()[0].createdAt).getTime())
             .map(chat => <ChatItem key={chat.id} chat={chat} />)
         }
       </ChatListStyle>
